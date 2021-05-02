@@ -1,10 +1,12 @@
 
 import Others.DBConnection;
+import Others.Venta;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class JInventory {
 
@@ -13,49 +15,40 @@ public class JInventory {
 
         Connection con = DBConnection.getConnection();
         // create a Statement from the connection
+        while(true){
+            menu();
+            ejecutar(leerNumero(), con);
 
-        viewTable(con);
-        updateItemById(1, 120, 2000, con);
-        viewTable(con);
-
+        }
 // insert the data
     }
+    public static void menu(){
+        System.out.println("Ingrese si desea realizar una venta");
+        System.out.println("[1] Si");
+        System.out.println("[2] No");
+    }
 
-    public static void viewTable(Connection con) throws SQLException {
-        String query = "select NOMBRE, ID, STOCK, PRECIO, TIPO, MARCA from ITEMS";
-        try (Statement stmt = con.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                String coffeeName = rs.getString("NOMBRE");
-                int supplierID = rs.getInt("ID");
-                int price = rs.getInt("STOCK");
-                float sales = rs.getFloat("PRECIO");
-                String total = rs.getString("TIPO");
-                String marca = rs.getString("MARCA");
-                System.out.println(coffeeName + ", " + supplierID + ", " + price +
-                        ", " + sales + ", " + total+", "+marca);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error con la base de datos");
+    public static int leerNumero(){
+        Scanner scan = new Scanner(System.in);
+        return scan.nextInt();
+    }
+
+    public static void ejecutar(int eleccion, Connection con) throws SQLException {
+        switch(eleccion){
+            case 1:
+                Venta venta = new Venta(con);
+                break;
+            case 2:
+                System.exit(1);
+                System.out.println("Finalizando...");
         }
     }
-
-    public static void updateItemById(int id, int stock, float precio, Connection con){
-
-        Statement stmt = null;
-        try {
-            stmt = con.createStatement();
-            stmt.executeUpdate("update ITEMS set STOCK ='" + stock + "' where ID = '"+ id +"'"  );
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-    }
+}
 
 
 
 
 
-    }
+
 
 
