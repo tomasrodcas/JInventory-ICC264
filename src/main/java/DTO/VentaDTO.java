@@ -4,9 +4,10 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class VentaDTO {
-    private int idProducto;
-    private int cantidadVendida;
-    private int rutCliente;
+    private final int idProducto;
+    private final int cantidadVendida;
+    private final int rutCliente;
+
 
 
     public VentaDTO(int idProducto, int cantidadVendida, int rutCliente){
