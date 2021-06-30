@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-06-2021 a las 05:50:42
+-- Tiempo de generación: 30-06-2021 a las 17:06:04
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.5
 
@@ -55,7 +55,7 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `nombre`, `cantidad`, `precio`, `marca`, `rut_proveedor`) VALUES
-(1, 'switch', 88, 10000, 'MercuSys', 775475893);
+(1, 'switch', 84, 10000, 'MercuSys', 775475893);
 
 -- --------------------------------------------------------
 
@@ -178,8 +178,7 @@ ALTER TABLE `usuarios`
 -- Indices de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `rut_cliente` (`rut_cliente`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -213,7 +212,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

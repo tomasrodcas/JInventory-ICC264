@@ -1,12 +1,11 @@
 package DTO;
 
 public class ItemDTO {
-    private int id;
-    private String nombre;
-    private int cantidad;
-    private int precio;
-    private int proveedor;
-    private String marca;
+    private final String nombre;
+    private final int cantidad;
+    private final int precio;
+    private final int proveedor;
+    private final String marca;
 
     public ItemDTO(String nombre, int cantidad, int precio, int proveedor, String marca) {
         this.nombre = nombre;
@@ -20,40 +19,19 @@ public class ItemDTO {
         return this.nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public int getCantidad() {
         return this.cantidad;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public int getProveedor(){
+        return this.proveedor;
     }
 
     public int getPrecio() {
         return this.precio;
     }
 
-    public void setPrecio(int precio) {
-        this.precio = precio;
-    }
-
-    public int getProveedor() {
-        return this.proveedor;
-    }
-
-    public void setProveedor(int proveedor) {
-        this.proveedor = proveedor;
-    }
-
     public String getMarca() {
         return this.marca;
     }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
 }

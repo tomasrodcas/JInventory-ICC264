@@ -30,7 +30,7 @@ public class ItemDAO {
         boolean existe = false;
         try{
             String query = "SELECT * FROM items WHERE nombre='"+item.getNombre()+"' AND precio='"+item.getPrecio()+"' AND " +
-                    "cantidad='"+item.getCantidad()+"' AND marca='"+item.getMarca()+"' AND proveedor='"+item.getProveedor()+"'";
+                    "cantidad='"+item.getCantidad()+"' AND marca='"+item.getMarca()+"' AND rut_proveedor='"+item.getProveedor()+"'";
             rs=stmt.executeQuery(query);
             if(rs.next()){
                 existe = true;

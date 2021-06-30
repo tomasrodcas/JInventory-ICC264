@@ -78,7 +78,7 @@ public class VentaDAO {
                 int cantidad = rs.getInt("cantidad");
                 int precio = rs.getInt("precio");
                 String marca = rs.getString("marca");
-                String proveedor = rs.getString("proveedor");
+                int proveedor = rs.getInt("rut_proveedor");
 
                 item = new ItemDTO(nombre, cantidad, precio, proveedor, marca);
             }
