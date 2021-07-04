@@ -1,8 +1,10 @@
 package DAO;
+
 import DBConnection.DBConnection;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
 import java.sql.*;
+
 
 
 public class VentaDAO {
@@ -95,6 +97,7 @@ public class VentaDAO {
         }
         return existsStock;
     }
+
     public ResultSet getVentasDB(){
         ResultSet rs;
         try{
@@ -137,6 +140,8 @@ public class VentaDAO {
         }
         return exists;
     }
+
+
 
 
 }
