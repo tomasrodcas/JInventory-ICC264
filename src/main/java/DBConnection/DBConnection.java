@@ -1,4 +1,4 @@
-package Others;
+package DBConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,23 +9,18 @@ public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/jinventory";
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         Connection con;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(URL,"root", "root");
-            System.out.println("Connection is Successful to the database" + URL);
+            con = DriverManager.getConnection(URL,"root", "");
 
 
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return null;
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
         }
+
         return con;
     }
 }
