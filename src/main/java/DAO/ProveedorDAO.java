@@ -2,6 +2,9 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ProveedorDTO;
+
+import java.sql.*;
+
 public class ProveedorDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
@@ -90,3 +93,4 @@ public class ProveedorDAO {
             e.printStackTrace();
         }
     }
+}
