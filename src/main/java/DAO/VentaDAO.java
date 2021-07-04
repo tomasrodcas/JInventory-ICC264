@@ -3,11 +3,9 @@ package DAO;
 import DBConnection.DBConnection;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
-import DAO.VentaDAO;
-
-
-
 import java.sql.*;
+
+
 
 public class VentaDAO {
     private Connection con = null;
@@ -99,6 +97,51 @@ public class VentaDAO {
         }
         return existsStock;
     }
+
+    public ResultSet getVentasDB(){
+        ResultSet rs;
+        try{
+            String query = "SELECT * FROM ventas";
+            rs=stmt.executeQuery(query);
+        }catch(SQLException e){
+            rs = null;
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    public void deleteSaleById(int id){
+        if(checkSaleExistence(id)){
+            try{
+                String query = "DELETE FROM ventas WHERE id='"+id+"'";
+                pstmt = con.prepareStatement(query);
+                pstmt.executeUpdate();
+
+                new ItemDAO().updateStock(this.venta.getIdProducto(), this.venta.getCantidadVendida());
+
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+
+        }else{
+            System.out.println("La venta no existe en los registros");
+        }
+    }
+    private boolean checkSaleExistence(int id){
+        boolean exists = false;
+        try{
+            String query = "SELECT producto FROM ventas WHERE id='"+id+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                exists = true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
+
 
 
 }
