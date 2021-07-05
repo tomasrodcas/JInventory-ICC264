@@ -4,6 +4,7 @@ import DBConnection.DBConnection;
 import DTO.ClienteDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ClienteDAO {
     private Connection con = null;
@@ -28,9 +29,10 @@ public class ClienteDAO {
                 String query = "INSERT INTO clientes VALUES (null, ?,?,?,?) ";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, cliente.getNombre());
-                pstmt.setString(2, cliente.getEmail());
-                pstmt.setInt(3, cliente.getTelefono());
-                pstmt.setInt(4, cliente.getRut());
+                pstmt.setInt(2, cliente.getRut());
+                pstmt.setString(3, cliente.getEmail());
+                pstmt.setInt(4, cliente.getTelefono());
+
                 pstmt.executeUpdate();
 
             }catch(SQLException e){
@@ -68,17 +70,31 @@ public class ClienteDAO {
         }
 
     }
-    public ResultSet getClientesDB(){
-        rs = null;
+    public ArrayList<ClienteDTO> getClientesDB(){
+        ArrayList<ClienteDTO> clientes = new ArrayList<>();
         try{
             String query = "SELECT * FROM clientes";
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
+            clientes = rsIntoArray(rs);
 
         }catch(SQLException e){
             e.printStackTrace();
         }
-        return rs;
+        return clientes;
+    }
+
+    private ArrayList<ClienteDTO> rsIntoArray(ResultSet rs){
+        ArrayList<ClienteDTO> array = new ArrayList<>();
+        try{
+            while(rs.next()){
+                array.add(new ClienteDTO(rs.getString("nombre"), rs.getString("email"),
+                        rs.getInt("telefono"), rs.getInt("rut")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return array;
     }
     public ClienteDTO getClienteById(int id ){
         ClienteDTO cliente = null;
