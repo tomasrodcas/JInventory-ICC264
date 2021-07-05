@@ -1,5 +1,6 @@
 package Utils;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +12,9 @@ public class DataValidation {
     public boolean validarRut(String rut) {
 
         boolean validacion = false;
-
+        if(rut.length() == 0){
+            return false;
+        }
         rut = replaceRutCharacters(rut);
         char dv = rut.charAt(rut.length() - 1);
         if (checkCompleteRut(rut.substring(0, rut.length() - 1))) {
@@ -104,8 +107,22 @@ public class DataValidation {
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
-
     }
+
+    public boolean validarRutDB(int rut){
+        return 1000000 <= rut && rut <= 100000000;
+    }
+
+    public String getCompleteRut(int rut){
+        if(validarRutDB(rut)){
+            char dv = calcularDV(Integer.toString(rut));
+            return Integer.toString(rut)+"-"+dv;
+        }else{
+            return "";
+        }
+    }
+
+
 
 
 }

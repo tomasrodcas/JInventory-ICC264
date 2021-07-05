@@ -14,7 +14,6 @@ public class Hash {
             digest.reset();
             digest.update(password.getBytes("utf8"));
             hashedPassword = String.format("%040x", new BigInteger(1, digest.digest()));
-            hashedPassword = hashedPassword.substring(0, 20);
         } catch (Exception e){
             e.printStackTrace();
         }

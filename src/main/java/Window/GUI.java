@@ -18,8 +18,6 @@ public class GUI extends JFrame implements ActionListener {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
             }
         });
     }

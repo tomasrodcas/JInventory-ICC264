@@ -15,12 +15,10 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(URL,"root", "");
 
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return null;
         }
-
         return con;
     }
 }
