@@ -22,4 +22,21 @@ public class UsuarioDTO {
     public String getPassword(){
         return this.password;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if( o == this){
+            return true;
+        }
+        if(!(o instanceof UsuarioDTO)){
+            return false;
+        }
+
+        UsuarioDTO c = (UsuarioDTO) o;
+
+        return this.getNombre().equals(c.getNombre()) && this.getUsuario().equals(c.getUsuario())
+                && this.getPassword().equals(c.getPassword());
+    }
+
+
 }
