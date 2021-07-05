@@ -3,6 +3,8 @@ package Window;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Auth.LoginDAO;
+import Auth.LoginDTO;
 
 public class Login extends JFrame implements ActionListener {
     private JPanel panel1;
