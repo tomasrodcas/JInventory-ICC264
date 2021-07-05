@@ -26,4 +26,19 @@ public class ClienteDTO {
     public int getRut(){
         return this.rut;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if( o == this){
+            return true;
+        }
+        if(!(o instanceof ClienteDTO)){
+            return false;
+        }
+        ClienteDTO c = (ClienteDTO) o;
+
+        return this.getNombre().equals(c.getNombre()) && this.getEmail().equals(c.getEmail())
+                && this.getRut() == c.getRut() && this.getTelefono() == c.getTelefono();
+
+    }
 }
