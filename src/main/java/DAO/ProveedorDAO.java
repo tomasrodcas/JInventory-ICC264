@@ -1,4 +1,5 @@
 package DAO;
+
 import DBConnection.DBConnection;
 import DTO.ProveedorDTO;
 public class ProveedorDAO {
@@ -89,4 +90,3 @@ public class ProveedorDAO {
             e.printStackTrace();
         }
     }
-}
