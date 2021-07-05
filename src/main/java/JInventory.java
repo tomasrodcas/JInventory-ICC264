@@ -4,7 +4,7 @@ import Auth.LoginDAO;
 import Auth.LoginDTO;
 import DAO.*;
 import DTO.*;
-import Window.GUI;
+import Window.Login;
 
 public class JInventory {
 
