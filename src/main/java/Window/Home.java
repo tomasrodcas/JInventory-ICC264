@@ -1,11 +1,26 @@
 package Window;
-
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Home {
+public class Home extends JFrame implements ActionListener {
     private JPanel panel1;
-    private JButton button1;
-    private JButton button2;
-    private JButton button4;
-    private JButton button5;
+    private JButton clientesButton;
+    private JButton proveedoresButton;
+    private JButton ventasButton;
+    private JButton productosButton;
+    private JButton reportesButton;
+    private JTable table1;
+
+    public Home(){
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setContentPane(panel1);
+        this.pack();
+        this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }

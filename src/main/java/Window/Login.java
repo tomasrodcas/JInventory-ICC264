@@ -26,6 +26,8 @@ public class Login extends JFrame implements ActionListener {
                 String password = String.valueOf(passwordChars);
                 if(new LoginDAO().login(new LoginDTO(usuario, password))){
                     System.out.println("Logueado");
+                    Home home = new Home();
+                    dispose();
                 }else{
                     JOptionPane.showMessageDialog(null,"Datos incorrectos");
                 }
