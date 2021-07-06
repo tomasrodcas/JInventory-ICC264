@@ -1,8 +1,7 @@
 package DAO;
-import DBConnection.DBConnection;
-import DTO.ClienteDTO;
-import DTO.ItemDTO;
 
+import DBConnection.DBConnection;
+import DTO.ItemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -71,7 +70,7 @@ public class ItemDAO {
             int cantidad = rs.getInt("cantidad");
             String marca = rs.getString("marca");
             int rut_proveedor = rs.getInt("rut_proveedor");
-            item = new ItemDTO(nombre, precio, cantidad, rut_proveedor, marca);
+            item = new ItemDTO(nombre, cantidad, precio, rut_proveedor, marca);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -92,23 +91,23 @@ public class ItemDAO {
         ArrayList<ItemDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
-                array.add(new ItemDTO(rs.getString("nombre"), rs.getInt("precio"),
-                        rs.getInt("cantidad"), rs.getInt("rut_proveedor"), rs.getString("marca")));
+                array.add(new ItemDTO(rs.getString("nombre"), rs.getInt("cantidad"),
+                        rs.getInt("precio"), rs.getInt("rut_proveedor"), rs.getString("marca")));
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return array;
     }
-    public void updateItemById(int id,String nombre, int cantidad, int precio, int proveedor, String marca){
+    public void updateItemById(int id, ItemDTO item){
         try{
             String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, rut_proveedor=?, marca=? WHERE id='"+id+"'";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, nombre);
-            pstmt.setInt(2, cantidad);
-            pstmt.setInt(3, precio);
-            pstmt.setInt(4, proveedor);
-            pstmt.setString(5, marca);
+            pstmt.setString(1, item.getNombre());
+            pstmt.setInt(2, item.getCantidad());
+            pstmt.setInt(3, item.getPrecio());
+            pstmt.setInt(4, item.getProveedor());
+            pstmt.setString(5, item.getMarca());
             pstmt.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
@@ -133,7 +132,7 @@ public class ItemDAO {
         if(checkItemExistenceById(id)){
             try{
                 ItemDTO item = getItemById(id);
-                int stockresultante = item.getCantidad() + cantidad;
+                int stockresultante = Math.max(0, item.getCantidad() + cantidad);
                 String query = "update items set cantidad='"+stockresultante+"' where id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();

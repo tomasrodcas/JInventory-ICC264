@@ -2,8 +2,8 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ProveedorDTO;
-
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ProveedorDAO {
     private Connection con = null;
@@ -20,15 +20,29 @@ public class ProveedorDAO {
         }
     }
 
-    public ResultSet getProveedoresDB() {
-        rs = null;
+    public ArrayList<ProveedorDTO> getProveedoresDB() {
+        ArrayList<ProveedorDTO> proveedores = new ArrayList<>();
         try {
             String query = "SELECT * FROM proveedores";
             rs = pstmt.executeQuery();
+            proveedores = rsIntoArray(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
+        return proveedores;
+    }
+
+    private ArrayList<ProveedorDTO> rsIntoArray(ResultSet rs){
+        ArrayList<ProveedorDTO> proveedores = new ArrayList<>();
+        try{
+            while(rs.next()){
+                proveedores.add(new ProveedorDTO(rs.getString("nombre"), rs.getInt("rut")
+                        , rs.getString("email"), rs.getInt("telefono")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return proveedores;
     }
 
     public void updateProveedorById(int id, String nombre, int rut, String email, int telefono) {
