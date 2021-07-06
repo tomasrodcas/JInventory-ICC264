@@ -1,7 +1,6 @@
 package DAO;
 
 import DBConnection.DBConnection;
-import DTO.ClienteDTO;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
 import java.sql.*;

@@ -2,7 +2,6 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ClienteDTO;
-
 import java.sql.*;
 import java.util.ArrayList;
 
