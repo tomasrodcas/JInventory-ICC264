@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/jinventory";
+    private static final String URL = "jdbc:mysql://localhost:3306/jinventorytest";
 
     public Connection getConnection() {
         Connection con;

@@ -1,8 +1,10 @@
 package DAO;
 import DBConnection.DBConnection;
+import DTO.ClienteDTO;
 import DTO.ItemDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ItemDAO {
     private Connection con = null;
@@ -58,18 +60,25 @@ public class ItemDAO {
         }
     }
 
-    public ResultSet getItemById(int id){
-        rs = null;
+    public ItemDTO getItemById(int id){
+        ItemDTO item = null;
         try{
             String query = "SELECT * FROM items WHERE id='"+id+"'";
             rs=stmt.executeQuery(query);
+            rs.next();
+            String nombre = rs.getString("nombre");
+            int precio = rs.getInt("precio");
+            int cantidad = rs.getInt("cantidad");
+            String marca = rs.getString("marca");
+            int rut_proveedor = rs.getInt("rut_proveedor");
+            item = new ItemDTO(nombre, precio, cantidad, rut_proveedor, marca);
 
         }catch(Exception e){
             e.printStackTrace();
         }
-        return rs;
+        return item;
     }
-    public ResultSet getItemsDB(){
+    public ArrayList<ItemDTO> getItemsDB(){
         rs = null;
         try{
             String query = "SELECT * FROM items";
@@ -77,7 +86,19 @@ public class ItemDAO {
         }catch(SQLException e){
             e.printStackTrace();
         }
-        return rs;
+        return rsIntoArrayList(rs);
+    }
+    private ArrayList<ItemDTO> rsIntoArrayList(ResultSet rs){
+        ArrayList<ItemDTO> array = new ArrayList<>();
+        try{
+            while(rs.next()){
+                array.add(new ItemDTO(rs.getString("nombre"), rs.getInt("precio"),
+                        rs.getInt("cantidad"), rs.getInt("rut_proveedor"), rs.getString("marca")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return array;
     }
     public void updateItemById(int id,String nombre, int cantidad, int precio, int proveedor, String marca){
         try{
@@ -111,16 +132,11 @@ public class ItemDAO {
     public void updateStock(int id, int cantidad){
         if(checkItemExistenceById(id)){
             try{
-                rs = getItemById(id);
-                if(rs.next()){
-                    int actualStock = rs.getInt("cantidad");
-                    int stockResultante = actualStock + cantidad;
-
-                    String query = "UPDATE items SET cantidad='"+stockResultante+"' WHERE id='"+id+"'";
-                    pstmt = con.prepareStatement(query);
-                    pstmt.executeUpdate();
-                }
-
+                ItemDTO item = getItemById(id);
+                int stockresultante = item.getCantidad() + cantidad;
+                String query = "update items set cantidad='"+stockresultante+"' where id='"+id+"'";
+                pstmt = con.prepareStatement(query);
+                pstmt.executeUpdate();
 
             }catch(SQLException e){
                 e.printStackTrace();
