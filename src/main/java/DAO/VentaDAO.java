@@ -1,10 +1,11 @@
 package DAO;
 
 import DBConnection.DBConnection;
+import DTO.ClienteDTO;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
 import java.sql.*;
-
+import java.util.ArrayList;
 
 
 public class VentaDAO {
@@ -12,19 +13,28 @@ public class VentaDAO {
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
-    private ItemDTO item;
-    private VentaDTO venta;
+    private ItemDTO item = null;
+    private VentaDTO venta = null;
 
     public VentaDAO(VentaDTO venta){
         try {
             con = new DBConnection().getConnection();
             stmt = con.createStatement();
             this.venta = venta;
-            this.item = getItemById();
+            this.item = new ItemDAO().getItemById(venta.getIdProducto());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    public VentaDAO(){
+        try {
+            con = new DBConnection().getConnection();
+            stmt = con.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void executeSale(){
         if(this.item !=  null){
             if(checkStockSufficiency()){
@@ -56,7 +66,7 @@ public class VentaDAO {
             pstmt.setInt(3, this.venta.getCantidadVendida());
             pstmt.setInt(4, total);
             pstmt.setInt(5, this.venta.getRutCliente());
-            java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+            java.sql.Date sqlDate = new java.sql.Date(this.venta.getFecha().getTime());
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
@@ -67,28 +77,6 @@ public class VentaDAO {
         }
     }
 
-    private ItemDTO getItemById(){
-        ItemDTO item = null;
-        try{
-            rs = new ItemDAO().getItemById(this.venta.getIdProducto());
-            if(rs.next()){
-                String nombre = rs.getString("nombre");
-                int cantidad = rs.getInt("cantidad");
-                int precio = rs.getInt("precio");
-                String marca = rs.getString("marca");
-                int proveedor = rs.getInt("rut_proveedor");
-
-                item = new ItemDTO(nombre, cantidad, precio, proveedor, marca);
-            }
-            else{
-                item = null;
-            }
-        }catch(Exception e){
-            item = null;
-            e.printStackTrace();
-        }
-        return item;
-    }
 
     private boolean checkStockSufficiency(){
         boolean existsStock = false;
@@ -98,7 +86,7 @@ public class VentaDAO {
         return existsStock;
     }
 
-    public ResultSet getVentasDB(){
+    public ArrayList<VentaDTO> getVentasDB(){
         ResultSet rs;
         try{
             String query = "SELECT * FROM ventas";
@@ -107,7 +95,19 @@ public class VentaDAO {
             rs = null;
             e.printStackTrace();
         }
-        return rs;
+        return rsIntoArrayList(rs);
+    }
+    private ArrayList<VentaDTO> rsIntoArrayList(ResultSet rs){
+        ArrayList<VentaDTO> array = new ArrayList<>();
+        try{
+            while(rs.next()){
+                array.add(new VentaDTO(rs.getInt("id_producto"),
+                        rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return array;
     }
     public void deleteSaleById(int id){
         if(checkSaleExistence(id)){

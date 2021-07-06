@@ -12,6 +12,7 @@ import javax.xml.crypto.Data;
 public class JInventory {
 
     public static void main(String[] args) throws SQLException {
+        new ReporteDAO();
         Login interfaz = new Login();
         interfaz.setVisible(true);
     }

@@ -7,14 +7,17 @@ public class VentaDTO {
     private final int idProducto;
     private final int cantidadVendida;
     private final int rutCliente;
+    private final Date fecha;
 
 
 
-    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente){
+    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha){
         this.idProducto = idProducto;
         this.cantidadVendida = cantidadVendida;
         this.rutCliente =  rutCliente;
+        this.fecha = fecha;
     }
+
 
 
     public int getIdProducto(){
@@ -25,6 +28,9 @@ public class VentaDTO {
     }
     public int getRutCliente(){
         return this.rutCliente;
+    }
+    public Date getFecha(){
+        return this.fecha;
     }
 
     @Override
