@@ -34,4 +34,18 @@ public class ItemDTO {
     public String getMarca() {
         return this.marca;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == this){
+            return true;
+        }
+        if(!(o instanceof ItemDTO)){
+            return false;
+        }
+        ItemDTO c = (ItemDTO) o;
+
+        return this.getNombre().equals(c.getNombre()) && this.getCantidad() == c.getCantidad() && this.getProveedor() == c.getProveedor()
+               && this.getPrecio() == c.getPrecio() && this.getMarca().equals(c.getMarca());
+    }
 }

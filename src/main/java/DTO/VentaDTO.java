@@ -32,4 +32,21 @@ public class VentaDTO {
     public Date getFecha(){
         return this.fecha;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if( o == this){
+            return true;
+        }
+        if(!(o instanceof VentaDTO)){
+            return false;
+        }
+
+        VentaDTO c = (VentaDTO) o;
+
+        return this.getIdProducto() == c.getIdProducto() && this.getCantidadVendida() == c.getCantidadVendida()
+                && this.getRutCliente() == c.getRutCliente();
+    }
+
+
 }

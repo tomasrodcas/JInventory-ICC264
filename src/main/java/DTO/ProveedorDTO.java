@@ -26,4 +26,18 @@ public class ProveedorDTO {
         return this.telefono;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if( o == this){
+            return true;
+        }
+        if(!(o instanceof ProveedorDTO)){
+            return false;
+        }
+        ProveedorDTO c = (ProveedorDTO) o;
+
+        return this.getNombre().equals(c.getNombre()) && this.getRut() == c.getRut() && this.getEmail().equals(c.getEmail())
+               && this.getTelefono() == c.getTelefono();
+
+    }
 }
