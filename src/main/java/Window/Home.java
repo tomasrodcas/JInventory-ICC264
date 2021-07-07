@@ -17,6 +17,12 @@ public class Home extends JFrame implements ActionListener {
         this.setContentPane(panel1);
         this.pack();
         this.setVisible(true);
+        productosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaProductos ventanaProductos = new VentanaProductos();
+            }
+        });
     }
 
     @Override

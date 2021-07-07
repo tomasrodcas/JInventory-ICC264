@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-07-2021 a las 07:39:50
+-- Tiempo de generación: 07-07-2021 a las 05:35:49
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.5
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `jinventory`
+-- Base de datos: `jinventorytest`
 --
 
 -- --------------------------------------------------------
@@ -128,7 +128,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `password`, `tipo_usuario`) VALUES
-(1, 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 0),
+(1, 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
 (2, 'Tomas Rodriguez', 'tomas', 'f10e2821bbbea527ea02200352313bc059445190', 0);
 
 -- --------------------------------------------------------

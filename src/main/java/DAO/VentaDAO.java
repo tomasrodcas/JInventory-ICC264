@@ -4,7 +4,7 @@ import DBConnection.DBConnection;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
 import java.sql.*;
-
+import java.util.ArrayList;
 
 
 public class VentaDAO {
@@ -12,34 +12,42 @@ public class VentaDAO {
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
-    private ItemDTO item;
-    private VentaDTO venta;
+    private ItemDTO item = null;
+    private VentaDTO venta = null;
 
     public VentaDAO(VentaDTO venta){
         try {
             con = new DBConnection().getConnection();
             stmt = con.createStatement();
             this.venta = venta;
-            this.item = getItemById();
+            this.item = new ItemDAO().getItemById(venta.getIdProducto());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void executeSale(){
+    public VentaDAO(){
+        try {
+            con = new DBConnection().getConnection();
+            stmt = con.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeSale(boolean saleMaxStock){
         if(this.item !=  null){
             if(checkStockSufficiency()){
-                int cantidadRestante = this.item.getCantidad() - this.venta.getCantidadVendida();
-                String query = "UPDATE items SET cantidad = '"+cantidadRestante+"' WHERE id='"+this.venta.getIdProducto()+"'";
-                try{
-                    pstmt = (PreparedStatement) con.prepareStatement(query);
-                    pstmt.executeUpdate();
                     saveSaleDB();
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+                    new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
             }
             else{
-                System.out.println("No existe stock o no hay suficiente");
+                if(saleMaxStock){
+                    venta.setCantidadVendida(item.getCantidad());
+                    saveSaleDB();
+                    new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
+                }else{
+                    System.out.println("No existe stock o no hay suficiente");
+                }
             }
         }else{
             System.out.println("El item no existe");
@@ -56,7 +64,7 @@ public class VentaDAO {
             pstmt.setInt(3, this.venta.getCantidadVendida());
             pstmt.setInt(4, total);
             pstmt.setInt(5, this.venta.getRutCliente());
-            java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+            java.sql.Date sqlDate = new java.sql.Date(this.venta.getFecha().getTime());
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
@@ -66,28 +74,25 @@ public class VentaDAO {
 
         }
     }
-
-    private ItemDTO getItemById(){
-        ItemDTO item = null;
+    public void editSaleById(int id, VentaDTO infoVenta){
+        this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
         try{
-            rs = new ItemDAO().getItemById(this.venta.getIdProducto());
-            if(rs.next()){
-                String nombre = rs.getString("nombre");
-                int cantidad = rs.getInt("cantidad");
-                int precio = rs.getInt("precio");
-                String marca = rs.getString("marca");
-                int proveedor = rs.getInt("rut_proveedor");
+            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, rut_cliente=?, fecha=? " +
+                    "WHERE id='"+id+"'";
+            pstmt = (PreparedStatement) con.prepareStatement(query);
+            int total = this.item.getPrecio()*infoVenta.getCantidadVendida();
+            pstmt.setString(1, new VentaDAO(infoVenta).getItem().getNombre());
+            pstmt.setInt(2, infoVenta.getIdProducto());
+            pstmt.setInt(3, infoVenta.getCantidadVendida());
+            pstmt.setInt(4, total);
+            pstmt.setInt(5, infoVenta.getRutCliente());
+            java.sql.Date sqlDate = new java.sql.Date(infoVenta.getFecha().getTime());
+            pstmt.setDate(6, sqlDate);
 
-                item = new ItemDTO(nombre, cantidad, precio, proveedor, marca);
-            }
-            else{
-                item = null;
-            }
-        }catch(Exception e){
-            item = null;
+            pstmt.executeUpdate();
+        }catch(SQLException e){
             e.printStackTrace();
         }
-        return item;
     }
 
     private boolean checkStockSufficiency(){
@@ -98,7 +103,7 @@ public class VentaDAO {
         return existsStock;
     }
 
-    public ResultSet getVentasDB(){
+    public ArrayList<VentaDTO> getVentasDB(){
         ResultSet rs;
         try{
             String query = "SELECT * FROM ventas";
@@ -107,10 +112,37 @@ public class VentaDAO {
             rs = null;
             e.printStackTrace();
         }
-        return rs;
+        return rsIntoArrayList(rs);
+    }
+    private ArrayList<VentaDTO> rsIntoArrayList(ResultSet rs){
+        ArrayList<VentaDTO> array = new ArrayList<>();
+        try{
+            while(rs.next()){
+                array.add(new VentaDTO(rs.getInt("id_producto"),
+                        rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha"),
+                        rs.getInt("total")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return array;
+    }
+    public VentaDTO getVentaById(int id){
+        VentaDTO venta = null;
+        try{
+            String query = "SELECT * FROM ventas WHERE id='"+id+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            rs.next();
+            venta = new VentaDTO(rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
+                    rs.getDate("fecha"), rs.getInt("total"));
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return venta;
     }
     public void deleteSaleById(int id){
-        if(checkSaleExistence(id)){
+        if(checkSaleExistenceById(id)){
             try{
                 String query = "DELETE FROM ventas WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
@@ -126,7 +158,7 @@ public class VentaDAO {
             System.out.println("La venta no existe en los registros");
         }
     }
-    private boolean checkSaleExistence(int id){
+    private boolean checkSaleExistenceById(int id){
         boolean exists = false;
         try{
             String query = "SELECT producto FROM ventas WHERE id='"+id+"'";
@@ -141,7 +173,9 @@ public class VentaDAO {
         return exists;
     }
 
-
+    public ItemDTO getItem(){
+        return this.item;
+    }
 
 
 }

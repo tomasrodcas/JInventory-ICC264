@@ -2,8 +2,8 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ProveedorDTO;
-
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ProveedorDAO {
     private Connection con = null;
@@ -20,25 +20,40 @@ public class ProveedorDAO {
         }
     }
 
-    public ResultSet getProveedoresDB() {
-        rs = null;
+    public ArrayList<ProveedorDTO> getProveedoresDB() {
+        ArrayList<ProveedorDTO> proveedores = new ArrayList<>();
         try {
             String query = "SELECT * FROM proveedores";
+            pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
+            proveedores = rsIntoArray(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
+        return proveedores;
     }
 
-    public void updateProveedorById(int id, String nombre, int rut, String email, int telefono) {
+    private ArrayList<ProveedorDTO> rsIntoArray(ResultSet rs){
+        ArrayList<ProveedorDTO> proveedores = new ArrayList<>();
+        try{
+            while(rs.next()){
+                proveedores.add(new ProveedorDTO(rs.getString("nombre"), rs.getInt("rut")
+                        , rs.getString("email"), rs.getInt("telefono")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return proveedores;
+    }
+
+    public void updateProveedorById(int id, ProveedorDTO proveedor) {
         try {
             String query = "UPDATE proveedores SET nombre=?, rut=?, email=?, telefono=? WHERE id='" + id + "'";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, nombre);
-            pstmt.setInt(2, rut);
-            pstmt.setString(3, email);
-            pstmt.setInt(4, telefono);
+            pstmt.setString(1, proveedor.getNombre());
+            pstmt.setInt(2, proveedor.getRut());
+            pstmt.setString(3, proveedor.getEmail());
+            pstmt.setInt(4, proveedor.getTelefono());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -46,11 +61,26 @@ public class ProveedorDAO {
 
         }
     }
+    public ProveedorDTO getProveedorById(int id){
+        ProveedorDTO proveedor = null;
+        try{
+            String query = "SELECT * FROM proveedores WHERE id='"+id+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            rs.next();
+            proveedor = new ProveedorDTO(rs.getString("nombre"), rs.getInt("rut"),
+                    rs.getString("email"), rs.getInt("telefono"));
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return proveedor;
+    }
 
     public void deleteProveedorById(int id) {
         try {
             String query = "DELETE FROM proveedores WHERE id='" + id + "'";
-            pstmt.executeUpdate(query);
+            pstmt = con.prepareStatement(query);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,7 +99,8 @@ public class ProveedorDAO {
 
         try {
             String query = "SELECT rut FROM proveedores WHERE rut = '" + proveedor.getRut() + "'";
-            rs = pstmt.executeQuery(query);
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return true;
             }

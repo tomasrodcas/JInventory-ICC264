@@ -71,18 +71,19 @@ public class LoginDAO {
         }
     }
     private int getUserType(LoginDTO loginInfo){
+        int tipo_usuario = 0;
         if(checkUsernameExistence(loginInfo)){
             try{
                 String query = "SELECT tipo_usuario FROM usuarios WHERE usuario='"+loginInfo.getUsername()+"'";
                 pstmt = con.prepareStatement(query);
                 rs = pstmt.executeQuery();
                 rs.next();
-                return rs.getInt("tipo_usuario");
+                tipo_usuario = rs.getInt("tipo_usuario");
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
-        return 0;
+        return tipo_usuario;
     }
 
 }

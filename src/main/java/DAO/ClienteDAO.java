@@ -2,7 +2,6 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ClienteDTO;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -76,7 +75,7 @@ public class ClienteDAO {
             String query = "SELECT * FROM clientes";
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
-            clientes = rsIntoArray(rs);
+            clientes = rsIntoArrayList(rs);
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -84,7 +83,7 @@ public class ClienteDAO {
         return clientes;
     }
 
-    private ArrayList<ClienteDTO> rsIntoArray(ResultSet rs){
+    private ArrayList<ClienteDTO> rsIntoArrayList(ResultSet rs){
         ArrayList<ClienteDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
