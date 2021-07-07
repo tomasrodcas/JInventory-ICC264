@@ -34,21 +34,20 @@ public class VentaDAO {
         }
     }
 
-    public void executeSale(){
+    public void executeSale(boolean saleMaxStock){
         if(this.item !=  null){
             if(checkStockSufficiency()){
-                int cantidadRestante = this.item.getCantidad() - this.venta.getCantidadVendida();
-                String query = "UPDATE items SET cantidad = '"+cantidadRestante+"' WHERE id='"+this.venta.getIdProducto()+"'";
-                try{
-                    pstmt = (PreparedStatement) con.prepareStatement(query);
-                    pstmt.executeUpdate();
                     saveSaleDB();
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+                    new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
             }
             else{
-                System.out.println("No existe stock o no hay suficiente");
+                if(saleMaxStock){
+                    venta.setCantidadVendida(item.getCantidad());
+                    saveSaleDB();
+                    new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
+                }else{
+                    System.out.println("No existe stock o no hay suficiente");
+                }
             }
         }else{
             System.out.println("El item no existe");
@@ -75,7 +74,26 @@ public class VentaDAO {
 
         }
     }
+    public void editSaleById(int id, VentaDTO infoVenta){
+        this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
+        try{
+            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, rut_cliente=?, fecha=? " +
+                    "WHERE id='"+id+"'";
+            pstmt = (PreparedStatement) con.prepareStatement(query);
+            int total = this.item.getPrecio()*infoVenta.getCantidadVendida();
+            pstmt.setString(1, new VentaDAO(infoVenta).getItem().getNombre());
+            pstmt.setInt(2, infoVenta.getIdProducto());
+            pstmt.setInt(3, infoVenta.getCantidadVendida());
+            pstmt.setInt(4, total);
+            pstmt.setInt(5, infoVenta.getRutCliente());
+            java.sql.Date sqlDate = new java.sql.Date(infoVenta.getFecha().getTime());
+            pstmt.setDate(6, sqlDate);
 
+            pstmt.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     private boolean checkStockSufficiency(){
         boolean existsStock = false;
@@ -101,15 +119,30 @@ public class VentaDAO {
         try{
             while(rs.next()){
                 array.add(new VentaDTO(rs.getInt("id_producto"),
-                        rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha")));
+                        rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha"),
+                        rs.getInt("total")));
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return array;
     }
+    public VentaDTO getVentaById(int id){
+        VentaDTO venta = null;
+        try{
+            String query = "SELECT * FROM ventas WHERE id='"+id+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            rs.next();
+            venta = new VentaDTO(rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
+                    rs.getDate("fecha"), rs.getInt("total"));
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return venta;
+    }
     public void deleteSaleById(int id){
-        if(checkSaleExistence(id)){
+        if(checkSaleExistenceById(id)){
             try{
                 String query = "DELETE FROM ventas WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
@@ -125,7 +158,7 @@ public class VentaDAO {
             System.out.println("La venta no existe en los registros");
         }
     }
-    private boolean checkSaleExistence(int id){
+    private boolean checkSaleExistenceById(int id){
         boolean exists = false;
         try{
             String query = "SELECT producto FROM ventas WHERE id='"+id+"'";
@@ -140,7 +173,9 @@ public class VentaDAO {
         return exists;
     }
 
-
+    public ItemDTO getItem(){
+        return this.item;
+    }
 
 
 }
