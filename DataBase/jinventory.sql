@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-06-2021 a las 17:06:04
+-- Tiempo de generación: 05-07-2021 a las 16:10:06
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.5
 
@@ -35,6 +35,14 @@ CREATE TABLE `clientes` (
   `telefono` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nombre`, `rut`, `email`, `telefono`) VALUES
+(1, 'Alejandro Uribe', 20079853, 'asd@asd.com', 12212212),
+(2, 'Tomas Rodriguez', 20079829, 'tomasrodcas@gmail.com', 11111111);
+
 -- --------------------------------------------------------
 
 --
@@ -55,7 +63,9 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `nombre`, `cantidad`, `precio`, `marca`, `rut_proveedor`) VALUES
-(1, 'switch', 84, 10000, 'MercuSys', 775475893);
+(1, 'iphone', 300, 1000, 'Apple', 20079829),
+(2, 'Teclado RK61', 100, 69990, 'RoyalKludge', 20079853),
+(3, 'Audifonos G935', 10, 150000, 'Logitech', 7051267);
 
 -- --------------------------------------------------------
 
@@ -73,7 +83,8 @@ CREATE TABLE `login_attempts` (
 --
 
 INSERT INTO `login_attempts` (`usuario`, `login_attempts`) VALUES
-('admin', 0);
+('admin', 0),
+('tomas', 0);
 
 -- --------------------------------------------------------
 
@@ -89,6 +100,15 @@ CREATE TABLE `proveedores` (
   `telefono` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`id`, `nombre`, `rut`, `email`, `telefono`) VALUES
+(1, 'Proveedor 1', 20079829, 'tomasrodcas@gmail.com', 922222222),
+(2, 'Proveedor 2', 20079853, 'asd@asd.com', 999999999),
+(3, 'Proveedor 3', 7051267, 'asdasd@asdasd.com', 222222222);
+
 -- --------------------------------------------------------
 
 --
@@ -99,7 +119,7 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `nombre` varchar(80) NOT NULL,
   `usuario` varchar(20) NOT NULL,
-  `password` varchar(20) CHARACTER SET utf8 NOT NULL,
+  `password` varchar(40) CHARACTER SET utf8 NOT NULL,
   `tipo_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -108,7 +128,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `password`, `tipo_usuario`) VALUES
-(1, 'admin', 'admin', 'd033e22ae348aeb5660f', 0);
+(1, 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 0),
+(2, 'Tomas Rodriguez', 'tomas', 'f10e2821bbbea527ea02200352313bc059445190', 0);
 
 -- --------------------------------------------------------
 
@@ -131,7 +152,8 @@ CREATE TABLE `ventas` (
 --
 
 INSERT INTO `ventas` (`id`, `producto`, `id_producto`, `cantidad`, `total`, `rut_cliente`, `fecha`) VALUES
-(2, 'alo', 1, 4, 400, 200798245, '2021-06-28');
+(5, 'Teclado RK61', 2, 20, 100000, 20079829, '2021-07-04'),
+(6, 'Audifonos G935', 3, 2, 300000, 20079853, '2021-06-09');
 
 --
 -- Índices para tablas volcadas
@@ -188,31 +210,31 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
