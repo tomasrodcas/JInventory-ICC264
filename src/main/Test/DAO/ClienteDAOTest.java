@@ -1,8 +1,10 @@
 package DAO;
 
 import DTO.ClienteDTO;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -11,13 +13,15 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClienteDAOTest {
 
 
-
+    @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
-    void firstAddCliente(int i) {
+    void addCliente(int i) {
          int id = i+3; //Ya existen el id 1 y 2
         String[] nombres = {"Tomas", "Alejandro", "Max"};
         String[] emails = {"asd@asd2.com", "a@a.com", "e@e.com"};
@@ -31,9 +35,10 @@ class ClienteDAOTest {
 
     }
 
+    @Order(2)
     @ParameterizedTest
     @ValueSource(ints = {1,2})
-    void secondEditClienteById(int i) {
+    void editClienteById(int i) {
         String[] nombres = {"Tomas", "Aa", "Ee"};
         String[] emails = {"asd@asd22.com", "a@a2.com", "e@e2.com"};
         int[] telefonos = {2223, 2223, 23};
@@ -48,17 +53,18 @@ class ClienteDAOTest {
         assertEquals(clienteDB,cliente);
     }
 
-
+    @Order(3)
     @ParameterizedTest
     @ValueSource(ints = {3,4,5})
-    void thirdDeleteUserById(int id) {
+    void deleteUserById(int id) {
         new ClienteDAO().deleteUserById(id);
         assertNull(new ClienteDAO().getClienteById(id));
     }
 
 
+    @Order(4)
     @Test
-    void fourthGetClientesDB() {
+    void getClientesDB() {
         String[] nombres = {"Aa", "Ee"};
         String[] emails = {"a@a2.com", "e@e2.com"};
         int[] telefonos = { 2223, 23};
@@ -78,9 +84,10 @@ class ClienteDAOTest {
 
     }
 
+    @Order(5)
     @ParameterizedTest
     @ValueSource(ints = {1, 2})
-    void fifthGetClienteById(int i) {
+    void getClienteById(int i) {
         String[] nombres = {"Aa", "Ee"};
         String[] emails = {"a@a2.com", "e@e2.com"};
         int[] telefonos = { 2223, 23};

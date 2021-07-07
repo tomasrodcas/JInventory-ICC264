@@ -7,10 +7,14 @@ public class UsuarioDTO {
     private final String usuario;
     private final String password;
 
-    public UsuarioDTO(String nombre, String usuario, String password){
+    public UsuarioDTO(String nombre, String usuario, String password, boolean fromDB){
         this.nombre = nombre;
         this.usuario = usuario;
-        this.password = new Hash().hashPassword(password);
+        if(fromDB){
+            this.password = password;
+        }else{
+            this.password = new Hash().hashPassword(password);
+        }
     }
 
     public String getNombre(){

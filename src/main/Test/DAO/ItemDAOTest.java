@@ -1,8 +1,10 @@
 package DAO;
 
 import DTO.ItemDTO;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -10,9 +12,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ItemDAOTest {
 
-
+    @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
     void addItem(int i) {
@@ -29,6 +32,7 @@ class ItemDAOTest {
         assertEquals(item, new ItemDAO().getItemById(id));
     }
 
+    @Order(3)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3,4,5})
     void getItemById(int i) {
@@ -43,7 +47,7 @@ class ItemDAOTest {
         assertEquals(item, new ItemDAO().getItemById(i+1));
     }
 
-
+    @Order(2)
     @Test
     void getItemsDB() {
         String[] nombres = {"iphone","Teclado RK61","Audifonos G935","Microfono 1", "Audifonos 2", "Teclado 2"};
@@ -60,6 +64,7 @@ class ItemDAOTest {
 
     }
 
+    @Order(5)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3,4,5})
     void updateItemById(int i) {
@@ -74,6 +79,7 @@ class ItemDAOTest {
         assertEquals(item, new ItemDAO().getItemById(i+1));
     }
 
+    @Order(4)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3,4,5})
     void updateStock(int i) {
@@ -82,5 +88,20 @@ class ItemDAOTest {
         int[] resultado = {400, 0, 0, 198, 200, 1300};
         new ItemDAO().updateStock(i+1, cambios[i]);
         assertEquals(resultado[i], new ItemDAO().getItemById(i+1).getCantidad());
+    }
+
+    @Order(6)
+    @ParameterizedTest
+    @ValueSource(ints = {0,1,2,3,4,5})
+    void deleteItemById(int i){
+        int id = i+1;
+        new ItemDAO().deleteItemById(id);
+        ArrayList<ItemDTO> itemsDB = new ItemDAO().getItemsDB();
+
+        for(int j = 0; j < itemsDB.size(); j++){
+            System.out.println(itemsDB.get(j).getNombre());
+        }
+        assertNull(new ItemDAO().getItemById(id));
+
     }
 }

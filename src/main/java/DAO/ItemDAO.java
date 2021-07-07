@@ -145,6 +145,18 @@ public class ItemDAO {
             System.out.println("El item no existe en los registros");
         }
     }
+    public void deleteItemById(int id){
+        if(checkItemExistenceById(id)){
+            try{
+                String query = "DELETE FROM items WHERE id='"+id+"'";
+                pstmt = con.prepareStatement(query);
+                pstmt.executeUpdate();
+
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 

@@ -38,7 +38,7 @@ public class UsuarioDAO {
         }
     }
 
-    public void editUserById(UsuarioDTO usuario, int id){
+    public void editUserById(int id, UsuarioDTO usuario){
         if(checkUserExistenceById(id)){
             try{
                 String query = "UPDATE usuarios SET nombre=?, usuario=?, password=? WHERE id='"+id+"'";
@@ -114,7 +114,9 @@ public class UsuarioDAO {
                 String  nombre = rs.getString("nombre");
                 String password = rs.getString("password");
 
-                usuario = new UsuarioDTO(nombre, user, password);
+
+
+                usuario = new UsuarioDTO(nombre, user, password, true);
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -140,7 +142,7 @@ public class UsuarioDAO {
         try{
             while(rs.next()){
                 usuarios.add(new UsuarioDTO(rs.getString("nombre"), rs.getString("usuario")
-                        , rs.getString("password")));
+                        , rs.getString("password"), true));
             }
         }catch(SQLException e){
             e.printStackTrace();
