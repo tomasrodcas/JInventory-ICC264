@@ -109,14 +109,11 @@ public class UsuarioDAO {
                 pstmt = con.prepareStatement(query);
                 rs = pstmt.executeQuery();
                 rs.next();
-
                 String user = rs.getString("usuario");
                 String  nombre = rs.getString("nombre");
                 String password = rs.getString("password");
 
-
-
-                usuario = new UsuarioDTO(nombre, user, password, true);
+                usuario = new UsuarioDTO(id, nombre, user, password);
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -141,8 +138,8 @@ public class UsuarioDAO {
         ArrayList<UsuarioDTO> usuarios = new ArrayList<>();
         try{
             while(rs.next()){
-                usuarios.add(new UsuarioDTO(rs.getString("nombre"), rs.getString("usuario")
-                        , rs.getString("password"), true));
+                usuarios.add(new UsuarioDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("usuario")
+                        , rs.getString("password")));
             }
         }catch(SQLException e){
             e.printStackTrace();

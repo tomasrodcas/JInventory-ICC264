@@ -1,7 +1,6 @@
 package Window;
 
 import DAO.ItemDAO;
-import DTO.ItemDTO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -35,18 +34,14 @@ public class VentanaProductos extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
-                new ItemDAO().addItem(new ItemDTO(nombreTextField.getText(),Integer.parseInt(cantidadTextField1.getText())
-                        ,Integer.parseInt(precioTextField2.getText()),Integer.parseInt(proveedorTextField.getText()
-                ),marcaTextField.getText()));
+                modelo.addRow(new String[]{nombreTextField.getText(),cantidadTextField1.getText(),precioTextField2.getText(),
+                proveedorTextField.getText(),marcaTextField.getText(),IDtextField.getText()});
                 nombreTextField.setText("");
                 cantidadTextField1.setText("");
                 precioTextField2.setText("");
                 proveedorTextField.setText("");
                 marcaTextField.setText("");
                 IDtextField.setText("");
-                tablaproductos.setModel(new DefaultTableModel(null,nombreColumnas));
-                rellenarTabla(new ItemDAO().getItemsDB());
-
 
             }
         });
@@ -68,10 +63,9 @@ public class VentanaProductos extends JFrame implements ActionListener {
 
     }
 
-    public void rellenarTabla(ArrayList<ItemDTO> items){
-        for(ItemDTO item:items){
+    public void rellenarTabla(ArrayList<Object[]> datos){
+        for(Object[]dato:datos){
             DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
-            String[] dato = item.toArray();
             modelo.addRow(dato);
 
         }

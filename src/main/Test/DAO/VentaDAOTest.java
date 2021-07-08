@@ -31,13 +31,14 @@ class VentaDAOTest {
         boolean[] saleMaxStock = {true, false, false};
         int[] cantidadVendida = {300, 1};
         int[] cantidadesResultantes = {0, 99, 10};
+        int[] ids = {5,6,7,8};
 
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], fechas[i], totales[i]);
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], fechas[i], totales[i], ids[i]);
         new VentaDAO(venta).executeSale(saleMaxStock[i]);
         VentaDTO ventaDB = new VentaDAO().getVentaById(id);
 
         if(i < 2){
-            venta = new VentaDTO(productos[i], cantidadVendida[i], ruts[i], ventaDB.getFecha(), totales[i]);
+            venta = new VentaDTO(productos[i], cantidadVendida[i], ruts[i], ventaDB.getFecha(), totales[i], ids[i]);
             assertEquals(venta, ventaDB);
             assertEquals(cantidadesResultantes[i], new ItemDAO().getItemById(ventaDB.getIdProducto()).getCantidad());
         }
@@ -57,8 +58,9 @@ class VentaDAOTest {
         int[] cantidades = {200, 20, 3000, 10};
         int[] ruts = {200790829, 200079853 ,200709, 1230123};
         int[] totales = {13998000, 3000000, 3000000, 699900};
+        int[] ids = {5,6,7,8};
         VentaDTO ventaDB = new VentaDAO().getVentaById(id);
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i]);
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], ids[i]);
         new VentaDAO().editSaleById(id, venta);
         ventaDB = new VentaDAO().getVentaById(id);
         System.out.println(ventaDB.getTotal()+" "+venta.getTotal());
@@ -73,10 +75,11 @@ class VentaDAOTest {
         int[] cantidades = {20, 2, 300, 1};
         int[] ruts = {20079829, 20079853 ,20079, 123123};
         int[] totales = {100000, 300000, 300000, 69990};
+        int[] ids = {5,6,7,8};
 
         ArrayList<VentaDTO> ventasDB = new VentaDAO().getVentasDB();
         for(int i = 0; i < ventasDB.size(); i++){
-            assertEquals(ventasDB.get(i), new VentaDTO(productos[i], cantidades[i], ruts[i], ventasDB.get(i).getFecha(), totales[i]));
+            assertEquals(ventasDB.get(i), new VentaDTO(productos[i], cantidades[i], ruts[i], ventasDB.get(i).getFecha(), totales[i], ids[i]));
         }
     }
 
@@ -89,8 +92,9 @@ class VentaDAOTest {
         int[] cantidades = {20, 2, 300, 1};
         int[] ruts = {20079829, 20079853 ,20079, 123123};
         int[] totales = {100000, 300000, 300000, 69990};
+        int[] ids = {5,6,7,8};
         VentaDTO ventaDB = new VentaDAO().getVentaById(id);
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i]);
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], ids[i]);
 
         assertEquals(venta, ventaDB);
     }
