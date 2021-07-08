@@ -20,7 +20,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
     private JTextField proveedorTextField;
     private JTextField marcaTextField;
     private JButton eliminarProductoButton;
-    private JTextField textField1;
+    private JTextField IDtextField;
 
     public VentanaProductos(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -35,12 +35,13 @@ public class VentanaProductos extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
                 modelo.addRow(new String[]{nombreTextField.getText(),cantidadTextField1.getText(),precioTextField2.getText(),
-                proveedorTextField.getText(),marcaTextField.getText()});
+                proveedorTextField.getText(),marcaTextField.getText(),IDtextField.getText()});
                 nombreTextField.setText("");
                 cantidadTextField1.setText("");
                 precioTextField2.setText("");
                 proveedorTextField.setText("");
                 marcaTextField.setText("");
+                IDtextField.setText("");
 
             }
         });
@@ -50,9 +51,10 @@ public class VentanaProductos extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (tablaproductos.getSelectedRow() != -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
-                    modelo.removeRow(tablaproductos.getSelectedRow());
-                    new ItemDAO().deleteItemById(Integer.parseInt((String) tablaproductos.getModel().getValueAt(
+                    new ItemDAO().deleteItemById(Integer.parseInt((String) modelo.getValueAt(
                             tablaproductos.getSelectedRow(),5)));
+                    modelo.removeRow(tablaproductos.getSelectedRow());
+
                 }
 
             }
