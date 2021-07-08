@@ -17,6 +17,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
     private JTextField precioTextField2;
     private JTextField proveedorTextField;
     private JTextField marcaTextField;
+    private JButton eliminarProductoButton;
 
     public VentanaProductos(){
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,6 +40,17 @@ public class VentanaProductos extends JFrame implements ActionListener {
 
             }
         });
+        tablaproductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        eliminarProductoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (tablaproductos.getSelectedRow() != -1){
+                    DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
+                    modelo.removeRow(tablaproductos.getSelectedRow());
+                }
+
+            }
+        });
 
 
     }
@@ -47,6 +59,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
         for(Object[]dato:datos){
             DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
             modelo.addRow(dato);
+
         }
     }
 
