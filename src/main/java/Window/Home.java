@@ -15,6 +15,7 @@ public class Home extends JFrame implements ActionListener {
     private JButton reportesButton;
     private JTable tablaProductos;
     private JButton actualizarButton;
+    private JButton actualizarTablaButton;
 
     public Home(){
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);

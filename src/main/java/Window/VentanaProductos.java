@@ -43,6 +43,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
                 marcaTextField.setText("");
                 IDtextField.setText("");
 
+
             }
         });
         tablaproductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
