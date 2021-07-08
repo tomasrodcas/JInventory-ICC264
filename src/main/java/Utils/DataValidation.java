@@ -122,7 +122,92 @@ public class DataValidation {
         }
     }
 
+    public int getRut(String rut){
+        rut = replaceRutCharacters(rut);
+        rut = rut.substring(0,rut.length()-1);
+        return Integer.parseInt(rut);
+    }
 
+
+    public boolean clienteDTOValidation(String nombre, String email, int telefono, String rut){
+        if( nombreValidation(nombre) && validateEmail(email) && telefonoValidation(telefono) && validarRut(rut))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean nombreValidation(String nombre){
+        try {
+            int isNro = Integer.parseInt(nombre);
+            return false;
+        }catch (NumberFormatException e){
+            if(nombre.equals(""))
+                return false;
+            else
+                return true;
+        }
+    }
+
+    private boolean telefonoValidation(int telefono){
+        if( telefono < 100000000 || telefono >= 1000000000 )
+            return false;
+        else
+            return true;
+    }
+
+    public boolean itemDTOValidation(String nombre, int cantidad, int precio, int proveedor, String marca){
+        if(nombreValidation(nombre) && intValidation(precio) && intValidation(proveedor) && marcaValidation(marca))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean intValidation(int entero){ // Valida a cantidad, precio, id, total, idProducto, cantidadVendida.
+        if(entero <= 0 )
+            return false;
+        else
+            return true;
+    }
+    private boolean marcaValidation(String marca){
+        if(marca.equals(""))
+            return false;
+        else
+            return true;
+    }
+
+    public boolean proveedorDTOValidation(String nombre, String rut, String email, int telefono){
+        if(nombreValidation(nombre) && validarRut(rut) && validateEmail(email) && telefonoValidation(telefono))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean usuarioDTOValidation(String nombre, String usuario, String password){
+        if(nombreValidation(nombre) && usuarioValidation(usuario) && passwordValidation(password))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean usuarioValidation(String usuario){
+        if(usuario.length() > 4 && usuario.length() < 20)
+            return true;
+        else
+            return false;
+    }
+
+    private boolean passwordValidation(String password){
+        String passRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        return password.matches(passRegex);
+    }
+
+    public boolean ventaDTOValidation(int idProducto, int cantidadVendida, String rutCliente, int total){
+      if(intValidation(idProducto) && intValidation(cantidadVendida) && validarRut(rutCliente) && intValidation(total))
+          return true;
+      else
+          return false;
+    }
 
 
 }
+
