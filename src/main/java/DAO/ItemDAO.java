@@ -70,7 +70,7 @@ public class ItemDAO {
             int cantidad = rs.getInt("cantidad");
             String marca = rs.getString("marca");
             int rut_proveedor = rs.getInt("rut_proveedor");
-            item = new ItemDTO(nombre, cantidad, precio, rut_proveedor, marca);
+            item = new ItemDTO(id, nombre, cantidad, precio, rut_proveedor, marca);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -91,7 +91,7 @@ public class ItemDAO {
         ArrayList<ItemDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
-                array.add(new ItemDTO(rs.getString("nombre"), rs.getInt("cantidad"),
+                array.add(new ItemDTO(rs.getInt("id"), rs.getString("nombre"), rs.getInt("cantidad"),
                         rs.getInt("precio"), rs.getInt("rut_proveedor"), rs.getString("marca")));
             }
         }catch(SQLException e){
