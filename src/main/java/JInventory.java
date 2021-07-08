@@ -6,14 +6,14 @@ import Auth.LoginDAO;
 import Auth.LoginDTO;
 import DAO.*;
 import DTO.*;
-import Window.Login;
-import Window.VentanaProductos;
+import Window.*;
 
 public class JInventory {
 
     public static void main(String[] args) throws SQLException {
         new Reporte();
         Login interfaz = new Login();
+
 
 
     }
