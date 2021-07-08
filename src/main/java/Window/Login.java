@@ -16,6 +16,7 @@ public class Login extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setContentPane(panel1);
         this.pack();
+        this.setTitle("Login");
         this.setVisible(true);
 
         loginButton.addActionListener(new ActionListener() {

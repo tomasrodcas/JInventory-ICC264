@@ -1,5 +1,7 @@
 package Window;
 
+import DAO.ItemDAO;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -18,13 +20,15 @@ public class VentanaProductos extends JFrame implements ActionListener {
     private JTextField proveedorTextField;
     private JTextField marcaTextField;
     private JButton eliminarProductoButton;
+    private JTextField textField1;
 
     public VentanaProductos(){
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setContentPane(panel1);
         this.pack();
+        this.setTitle("Productos");
         this.setVisible(true);
-        Object [] nombreColumnas = {"Nombre","Cantidad","Precio","Proveedor","Marca"};
+        Object [] nombreColumnas = {"Nombre","Cantidad","Precio","Proveedor","Marca","ID"};
         tablaproductos.setModel(new DefaultTableModel(null,nombreColumnas));
         agregarButton.addActionListener(new ActionListener() {
             @Override
@@ -47,6 +51,8 @@ public class VentanaProductos extends JFrame implements ActionListener {
                 if (tablaproductos.getSelectedRow() != -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
                     modelo.removeRow(tablaproductos.getSelectedRow());
+                    new ItemDAO().deleteItemById(Integer.parseInt((String) tablaproductos.getModel().getValueAt(
+                            tablaproductos.getSelectedRow(),5)));
                 }
 
             }
