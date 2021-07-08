@@ -118,9 +118,9 @@ public class VentaDAO {
         ArrayList<VentaDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
-                array.add(new VentaDTO(rs.getInt("id_producto"),
+                array.add(new VentaDTO( rs.getInt("id_producto"),
                         rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha"),
-                        rs.getInt("total")));
+                        rs.getInt("total"), rs.getInt("id")));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -134,8 +134,8 @@ public class VentaDAO {
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             rs.next();
-            venta = new VentaDTO(rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
-                    rs.getDate("fecha"), rs.getInt("total"));
+            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
+                    rs.getDate("fecha"), rs.getInt("total"), id);
         }catch(SQLException e){
             e.printStackTrace();
         }

@@ -87,7 +87,7 @@ public class ClienteDAO {
         ArrayList<ClienteDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
-                array.add(new ClienteDTO(rs.getString("nombre"), rs.getString("email"),
+                array.add(new ClienteDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("email"),
                         rs.getInt("telefono"), rs.getInt("rut")));
             }
         }catch(SQLException e){
@@ -107,7 +107,7 @@ public class ClienteDAO {
                 String email = rs.getString("email");
                 int rut = rs.getInt("rut");
                 int telefono = rs.getInt("telefono");
-                cliente =  new ClienteDTO(nombre, email, telefono, rut);
+                cliente =  new ClienteDTO(id, nombre, email, telefono, rut);
             }catch(SQLException e){
                 e.printStackTrace();
             }
