@@ -37,7 +37,7 @@ public class ProveedorDAO {
         ArrayList<ProveedorDTO> proveedores = new ArrayList<>();
         try{
             while(rs.next()){
-                proveedores.add(new ProveedorDTO(rs.getString("nombre"), rs.getInt("rut")
+                proveedores.add(new ProveedorDTO(rs.getInt("id"),rs.getString("nombre"), rs.getInt("rut")
                         , rs.getString("email"), rs.getInt("telefono")));
             }
         }catch(SQLException e){
@@ -68,7 +68,7 @@ public class ProveedorDAO {
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             rs.next();
-            proveedor = new ProveedorDTO(rs.getString("nombre"), rs.getInt("rut"),
+            proveedor = new ProveedorDTO(id, rs.getString("nombre"), rs.getInt("rut"),
                     rs.getString("email"), rs.getInt("telefono"));
         }catch(SQLException e){
             e.printStackTrace();
