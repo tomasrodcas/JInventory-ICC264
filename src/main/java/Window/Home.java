@@ -35,6 +35,10 @@ public class Home extends JFrame implements ActionListener {
                 VentanaProductos ventanaProductos = new VentanaProductos();
             }
         });
+        ventasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { VentanaVentas ventanaVentas = new VentanaVentas();}
+        });
         tablaProductos.setModel(new DefaultTableModel(null, new String[]{"Productos sin stock"}));
     }
 
