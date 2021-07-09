@@ -77,6 +77,14 @@ public class VentaDTO {
                 && this.getRutCliente() == c.getRutCliente() && this.getFecha().getTime() == c.getFecha().getTime()
                 && this.total == c.getTotal();
     }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + ((Integer.toString(this.idProducto) == null) ? 0 : Integer.toString(idProducto).hashCode());
+        return result;
+    }
 
 
 }
