@@ -10,6 +10,7 @@ public class VentaDTO {
     private final int rutCliente;
     private final Date fecha;
     private final int  total;
+    private final String nombreProducto;
 
 
     public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha){
@@ -19,14 +20,16 @@ public class VentaDTO {
         this.fecha = fecha;
         this.total = 0;
         this.id = -1;
+        this.nombreProducto = "";
     }
-    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha, int total, int id){
+    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha, int total, int id, String nombreProducto){
         this.idProducto = idProducto;
         this.cantidadVendida = cantidadVendida;
         this.rutCliente =  rutCliente;
         this.fecha = fecha;
         this.total = total;
         this.id = id;
+        this.nombreProducto = nombreProducto;
     }
     public int getIdProducto(){
         return this.idProducto;
@@ -49,6 +52,7 @@ public class VentaDTO {
     public int getTotal(){
         return this.total;
     }
+    public String getNombreProducto(){return this.nombreProducto;}
 
     public String[] toArray() {
 
@@ -59,7 +63,7 @@ public class VentaDTO {
         String fecha = this.fecha.toString();
         String total = Integer.toString(this.total);
 
-        return new String[]{id, idProducto, cantidadVendida, rutCliente, fecha, total};
+        return new String[]{id, idProducto, nombreProducto , cantidadVendida, total, rutCliente, fecha};
     }
 
     @Override
