@@ -1,5 +1,7 @@
 package DTO;
 
+import Utils.DataValidation;
+
 import java.sql.*;
 import java.util.Scanner;
 import java.util.Date;
@@ -59,7 +61,7 @@ public class VentaDTO {
         String id = Integer.toString(this.id);
         String idProducto = Integer.toString(this.idProducto);
         String cantidadVendida = Integer.toString(this.cantidadVendida);
-        String rutCliente = Integer.toString(this.rutCliente);
+        String rutCliente = new DataValidation().getCompleteRut(this.rutCliente);
         String fecha = this.fecha.toString();
         String total = Integer.toString(this.total);
 
