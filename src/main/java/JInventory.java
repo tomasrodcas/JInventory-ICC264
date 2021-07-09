@@ -11,7 +11,7 @@ import Window.*;
 public class JInventory {
 
     public static void main(String[] args) throws SQLException {
-        Home home = new Home();
+        Login interfaz = new Login();
 
 
 
