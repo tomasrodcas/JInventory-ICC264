@@ -18,7 +18,7 @@ class VentaDTOTest {
         String[][] arrays = {{"1","1","100","200012", fecha.toString(), "1231223"},{"1","1","100","200012", fecha.toString(), "1231223"},
                 {"1","1","100","200012", fecha.toString(), "1231223"},{"1","1","100","200012", fecha.toString(), "1231223"}};
         String[] venta = new VentaDTO(parseInt(arrays[i][1]), parseInt(arrays[i][2]), parseInt(arrays[i][3]), fecha,
-                parseInt(arrays[i][5]), parseInt(arrays[i][0])).toArray();
+                parseInt(arrays[i][5]), parseInt(arrays[i][0]), "").toArray();
         boolean sonIguales = true;
         for(int j = 0; j < venta.length; j ++){
             if(!arrays[i][j].equals(venta[j])){

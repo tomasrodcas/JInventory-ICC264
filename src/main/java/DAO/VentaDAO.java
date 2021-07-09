@@ -120,7 +120,7 @@ public class VentaDAO {
             while(rs.next()){
                 array.add(new VentaDTO( rs.getInt("id_producto"),
                         rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha"),
-                        rs.getInt("total"), rs.getInt("id")));
+                        rs.getInt("total"), rs.getInt("id"), new ItemDAO().getItemById(rs.getInt("id_producto")).getNombre()));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -135,7 +135,7 @@ public class VentaDAO {
             rs = pstmt.executeQuery();
             rs.next();
             venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
-                    rs.getDate("fecha"), rs.getInt("total"), id);
+                    rs.getDate("fecha"), rs.getInt("total"), id, new ItemDAO().getItemById(rs.getInt("id_producto")).getNombre());
         }catch(SQLException e){
             e.printStackTrace();
         }
