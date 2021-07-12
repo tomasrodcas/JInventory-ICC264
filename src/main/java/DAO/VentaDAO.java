@@ -143,6 +143,7 @@ public class VentaDAO {
     }
     public void deleteSaleById(int id){
         if(checkSaleExistenceById(id)){
+            this.venta = getVentaById(id);
             try{
                 String query = "DELETE FROM ventas WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
