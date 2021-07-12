@@ -21,7 +21,7 @@ public class LoginDAO {
         boolean loggedIn = false;
         String passwordDB = retrieveUsernamePassword(loginInfo);
         if(!passwordDB.equals("")){
-            if(passwordDB.equals(loginInfo.getPassword())){
+            if(passwordDB.equals(loginInfo.password)){
                 loggedIn = true;
             }
         }
@@ -30,7 +30,7 @@ public class LoginDAO {
     private boolean checkUsernameExistence(LoginDTO loginInfo){
         boolean existe = false;
         try{
-            String query = "SELECT nombre FROM usuarios WHERE usuario='"+loginInfo.getUsername()+"'";
+            String query = "SELECT nombre FROM usuarios WHERE usuario='"+loginInfo.username+"'";
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             if(rs.next()){
@@ -45,7 +45,7 @@ public class LoginDAO {
     private String retrieveUsernamePassword(LoginDTO loginInfo){
         if(checkUsernameExistence(loginInfo)){
             try{
-                String query = "SELECT password FROM usuarios WHERE usuario='"+loginInfo.getUsername()+"'";
+                String query = "SELECT password FROM usuarios WHERE usuario='"+loginInfo.username+"'";
                 pstmt = con.prepareStatement(query);
                 rs = pstmt.executeQuery();
                 rs.next();
@@ -74,7 +74,7 @@ public class LoginDAO {
         int tipo_usuario = 0;
         if(checkUsernameExistence(loginInfo)){
             try{
-                String query = "SELECT tipo_usuario FROM usuarios WHERE usuario='"+loginInfo.getUsername()+"'";
+                String query = "SELECT tipo_usuario FROM usuarios WHERE usuario='"+loginInfo.username+"'";
                 pstmt = con.prepareStatement(query);
                 rs = pstmt.executeQuery();
                 rs.next();
