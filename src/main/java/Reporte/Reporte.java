@@ -135,6 +135,8 @@ public class Reporte {
         }
         return result;
     }
+
+
     public int getVentasUltimoMes(){
         return this.ventasUltimoMes;
     }
@@ -144,7 +146,6 @@ public class Reporte {
     public List<Entry<ItemDTO, Integer>> getMostSaledItems(){
         return this.mostSaledItems;
     }
-
     public int getTotalUltimoMes(){
         return this.totalUltimoMes;
     }

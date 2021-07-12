@@ -29,6 +29,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
         this.setVisible(true);
         Object[] columnas = {"ID Venta","ID Producto","Nombre Producto","Cantidad","Total","RUT Cliente","Fecha"};
         tablaVentas.setModel(new DefaultTableModel(null,columnas));
+        rellenarTabla(new VentaDAO().getVentasDB());
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,7 +51,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
                 if (tablaVentas.getSelectedRow() != -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
                     new VentaDAO().deleteSaleById(Integer.parseInt((String) modelo.getValueAt(
-                            tablaVentas.getSelectedRow(),5)));
+                            tablaVentas.getSelectedRow(),0)));
                     modelo.removeRow(tablaVentas.getSelectedRow());
                     tablaVentas.setModel(new DefaultTableModel(null,columnas));
                     rellenarTabla(new VentaDAO().getVentasDB());
@@ -61,10 +62,10 @@ public class VentanaVentas extends JFrame implements ActionListener {
 
     }
 
-    public void rellenarTabla(ArrayList<VentaDTO> items){
-        for(VentaDTO item:items){
+    public void rellenarTabla(ArrayList<VentaDTO> ventas){
+        for(VentaDTO venta:ventas){
             DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
-            String[] dato = item.toArray();
+            String[] dato = venta.toArray();
             modelo.addRow(dato);
 
         }
