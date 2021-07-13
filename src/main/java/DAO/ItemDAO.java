@@ -69,8 +69,8 @@ public class ItemDAO {
             int precio = rs.getInt("precio");
             int cantidad = rs.getInt("cantidad");
             String marca = rs.getString("marca");
-            int rut_proveedor = rs.getInt("rut_proveedor");
-            item = new ItemDTO(id, nombre, cantidad, precio, rut_proveedor, marca);
+            int rutProveedor =  new ProveedorDAO().getProveedorById(rs.getInt("id_proveedor")).getRut();
+            item = new ItemDTO(id, nombre, cantidad, precio, rutProveedor, marca);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -92,7 +92,8 @@ public class ItemDAO {
         try{
             while(rs.next()){
                 array.add(new ItemDTO(rs.getInt("id"), rs.getString("nombre"), rs.getInt("cantidad"),
-                        rs.getInt("precio"), rs.getInt("rut_proveedor"), rs.getString("marca")));
+                        rs.getInt("precio"), new ProveedorDAO().getProveedorById(rs.getInt("rut_proveedor")).getRut()
+                        , rs.getString("marca")));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -132,8 +133,8 @@ public class ItemDAO {
         if(checkItemExistenceById(id)){
             try{
                 ItemDTO item = getItemById(id);
-                int stockresultante = Math.max(0, item.getCantidad() + cantidad);
-                String query = "update items set cantidad='"+stockresultante+"' where id='"+id+"'";
+                int stockResultante = Math.max(0, item.getCantidad() + cantidad);
+                String query = "update items set cantidad='"+stockResultante+"' where id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();
 
