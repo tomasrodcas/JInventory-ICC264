@@ -31,6 +31,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
         this.setVisible(true);
         Object [] nombreColumnas = {"Nombre","Cantidad","Precio","Proveedor","Marca","ID"};
         tablaproductos.setModel(new DefaultTableModel(null,nombreColumnas));
+        rellenarTabla(new ItemDAO().getItemsDB());
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +58,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
                 if (tablaproductos.getSelectedRow() != -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaproductos.getModel();
                     new ItemDAO().deleteItemById(Integer.parseInt((String) modelo.getValueAt(
-                            tablaproductos.getSelectedRow(),5)));
+                            tablaproductos.getSelectedRow(),0)));
                     modelo.removeRow(tablaproductos.getSelectedRow());
 
                 }

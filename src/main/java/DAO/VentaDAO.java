@@ -36,26 +36,26 @@ public class VentaDAO {
 
     public void executeSale(boolean saleMaxStock){
         if(this.item !=  null){
+
             if(checkStockSufficiency()){
                     saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
             }
             else{
+
                 if(saleMaxStock){
                     venta.setCantidadVendida(item.getCantidad());
                     saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
-                }else{
-                    System.out.println("No existe stock o no hay suficiente");
                 }
             }
-        }else{
-            System.out.println("El item no existe");
         }
 
     }
     private void saveSaleDB(){
+
         try{
+
             String query = "INSERT INTO ventas VALUES (null, ?,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(query);
             int total = this.item.getPrecio()*this.venta.getCantidadVendida();
@@ -76,7 +76,9 @@ public class VentaDAO {
     }
     public void editSaleById(int id, VentaDTO infoVenta){
         this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
+
         try{
+
             String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, rut_cliente=?, fecha=? " +
                     "WHERE id='"+id+"'";
             pstmt = (PreparedStatement) con.prepareStatement(query);
@@ -90,6 +92,7 @@ public class VentaDAO {
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -105,44 +108,58 @@ public class VentaDAO {
 
     public ArrayList<VentaDTO> getVentasDB(){
         ResultSet rs;
+
         try{
-            String query = "SELECT * FROM ventas";
+
+            String query = "SELECT * FROM ventas v INNER JOIN items i ON v.id_producto = i.id"+
+                " INNER JOIN clientes c ON v.id_cliente = c.id";
             rs=stmt.executeQuery(query);
+
         }catch(SQLException e){
             rs = null;
             e.printStackTrace();
         }
         return rsIntoArrayList(rs);
     }
+
     private ArrayList<VentaDTO> rsIntoArrayList(ResultSet rs){
         ArrayList<VentaDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
                 array.add(new VentaDTO( rs.getInt("id_producto"),
-                        rs.getInt("cantidad"), rs.getInt("rut_cliente"), rs.getDate("fecha"),
-                        rs.getInt("total"), rs.getInt("id"), new ItemDAO().getItemById(rs.getInt("id_producto")).getNombre()));
+                        rs.getInt("cantidad"), rs.getInt("c.rut"), rs.getDate("fecha"),
+                        rs.getInt("total"), rs.getInt("id"), rs.getString("i.nombre")));
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return array;
     }
+
     public VentaDTO getVentaById(int id){
         VentaDTO venta = null;
         try{
-            String query = "SELECT * FROM ventas WHERE id='"+id+"'";
+
+            String query = "SELECT * FROM ventas v INNER JOIN items i ON v.id_producto = i.id";
+            query += " INNER JOIN clientes c ON v.id_cliente = c.id WHERE v.id='"+id+"'";
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             rs.next();
-            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("rut_cliente"),
-                    rs.getDate("fecha"), rs.getInt("total"), id, new ItemDAO().getItemById(rs.getInt("id_producto")).getNombre());
+            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("c.rut"),
+                    rs.getDate("fecha"), rs.getInt("total"), id, rs.getString("i.nombre"));
+
         }catch(SQLException e){
             e.printStackTrace();
         }
+
         return venta;
     }
+
     public void deleteSaleById(int id){
         if(checkSaleExistenceById(id)){
+
+            this.venta = getVentaById(id);
+
             try{
                 String query = "DELETE FROM ventas WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
@@ -158,6 +175,7 @@ public class VentaDAO {
             System.out.println("La venta no existe en los registros");
         }
     }
+
     private boolean checkSaleExistenceById(int id){
         boolean exists = false;
         try{

@@ -7,19 +7,25 @@ public class UsuarioDTO {
     private final String usuario;
     private final String password;
     private final int id;
+    private final int loginAttempts;
+    private final int tipoUsuario;
 
     public UsuarioDTO(String nombre, String usuario, String password){
         this.id = -1;
         this.nombre = nombre;
         this.usuario = usuario;
         this.password = new Hash().hashPassword(password);
+        this.loginAttempts = -1;
+        this.tipoUsuario = -1;
 
     }
-    public UsuarioDTO(int id, String nombre, String usuario, String password){
+    public UsuarioDTO(int id, String nombre, String usuario, String password, int loginAttempts, int tipoUsuario){
        this.id = id;
        this.nombre = nombre;
        this.usuario = usuario;
        this.password = password;
+       this.loginAttempts = loginAttempts;
+       this.tipoUsuario = tipoUsuario;
     }
 
     public String getNombre(){
@@ -34,10 +40,14 @@ public class UsuarioDTO {
     public int getId(){
         return this.id;
     }
+    public int getLogin_attempts(){return this.loginAttempts;}
+    public int getTipo_usuario(){return this.tipoUsuario;}
 
     public String[] toArray(){
         String id = Integer.toString(this.id);
-        return new String[]{id, this.nombre, this.usuario};
+        String login_attempts = Integer.toString(this.loginAttempts);
+        String tipo_usuario =  Integer.toString(this.tipoUsuario);
+        return new String[]{id, this.nombre, this.usuario, login_attempts, tipo_usuario};
     }
 
     @Override
@@ -51,9 +61,11 @@ public class UsuarioDTO {
 
         UsuarioDTO c = (UsuarioDTO) o;
 
-        return this.getNombre().toLowerCase().equals(c.getNombre().toLowerCase())
-                && this.getUsuario().toLowerCase().equals(c.getUsuario().toLowerCase())
-                && this.getPassword().toLowerCase().equals(c.getPassword().toLowerCase());
+        return this.nombre.toLowerCase().equals(c.getNombre().toLowerCase())
+                && this.usuario.toLowerCase().equals(c.getUsuario().toLowerCase())
+                && this.password.toLowerCase().equals(c.getPassword().toLowerCase())
+                && this.tipoUsuario == c.getTipo_usuario() && this.loginAttempts
+                == c.getLogin_attempts();
     }
 
     @Override

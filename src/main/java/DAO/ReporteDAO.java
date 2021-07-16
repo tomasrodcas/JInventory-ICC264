@@ -1,8 +1,9 @@
-package Reporte;
+package DAO;
 
 import DAO.ItemDAO;
 import DAO.VentaDAO;
 import DTO.ItemDTO;
+import DTO.ReporteDTO;
 import DTO.VentaDTO;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +15,7 @@ import java.util.PriorityQueue;
 
 import static java.lang.Integer.parseInt;
 
-public class Reporte {
+public class ReporteDAO {
 
     private final ArrayList<VentaDTO> ventas;
     private final HashMap<ItemDTO, Integer> items;
@@ -24,7 +25,7 @@ public class Reporte {
     private int totalUltimoMes;
     private int totalUltimos12Meses;
 
-    public Reporte(){
+    public ReporteDAO(){
         this.totalUltimoMes = 0;
         this.totalUltimos12Meses = 0;
         this.ventas = new VentaDAO().getVentasDB();
@@ -135,21 +136,10 @@ public class Reporte {
         }
         return result;
     }
-    public int getVentasUltimoMes(){
-        return this.ventasUltimoMes;
-    }
-    public ArrayList<Integer> getVentas12Meses(){
-        return this.ventas12Meses;
-    }
-    public List<Entry<ItemDTO, Integer>> getMostSaledItems(){
-        return this.mostSaledItems;
-    }
 
-    public int getTotalUltimoMes(){
-        return this.totalUltimoMes;
-    }
-    public int getTotalUltimos12Meses(){
-        return this.totalUltimos12Meses;
+
+    public ReporteDTO getReporte(){
+        return new ReporteDTO(this.ventasUltimoMes, this.ventas12Meses, this.totalUltimoMes, this.totalUltimos12Meses, this.mostSaledItems);
     }
 
 
