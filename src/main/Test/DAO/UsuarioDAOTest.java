@@ -23,7 +23,7 @@ class UsuarioDAOTest {
         String[] nombres = {"Antonia", "Max", "Felipe"};
         String[] usuarios = {"anto", "max", "felipe"};
         String[] passwords = {"anto123", "max123", "felipe123"};
-        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i]);
+        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i], 0, 0);
         new UsuarioDAO().addUser(usuario);
         assertEquals(usuario, new UsuarioDAO().getUserById(id));
     }
@@ -37,7 +37,7 @@ class UsuarioDAOTest {
         String[] usuarios = {"admian", "tomaas", "anato", "maax", "feliape"};
         String[] passwords = {"asd", "asd","asd", "asd", "asd"};
 
-        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i]);
+        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i], 0, 0);
 
         new UsuarioDAO().editUserById(id, usuario);
 
@@ -72,7 +72,7 @@ class UsuarioDAOTest {
         String[] usuarios = {"admin", "tomas", "anto", "max", "felipe"};
         String[] passwords = {"admin", "asd","anto123", "max123", "felipe123"};
 
-        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i]);
+        UsuarioDTO usuario = new UsuarioDTO(id, nombres[i], usuarios[i], passwords[i],0, 0);
 
         assertEquals(usuario, new UsuarioDAO().getUserById(id));
 
@@ -87,7 +87,7 @@ class UsuarioDAOTest {
 
         ArrayList<UsuarioDTO> usuariosDB = new UsuarioDAO().getUsersDB();
         for(int i = 0; i < nombres.length; i++){
-            UsuarioDTO usuario = new UsuarioDTO(i+1, nombres[i], usuarios[i], passwords[i]);
+            UsuarioDTO usuario = new UsuarioDTO(i+1, nombres[i], usuarios[i], passwords[i], 0, 1);
             assertEquals(usuario, usuariosDB.get(i));
         }
 

@@ -62,7 +62,8 @@ public class ItemDAO {
     public ItemDTO getItemById(int id){
         ItemDTO item = null;
         try{
-            String query = "SELECT * FROM items WHERE id='"+id+"'";
+            String query = "SELECT * FROM items i INNER JOIN proveedores p ON i.id_proveedor" +
+                    "=p.id WHERE id='"+id+"'";
             rs=stmt.executeQuery(query);
             rs.next();
             String nombre = rs.getString("nombre");
@@ -80,7 +81,7 @@ public class ItemDAO {
     public ArrayList<ItemDTO> getItemsDB(){
         rs = null;
         try{
-            String query = "SELECT * FROM items";
+            String query = "SELECT * FROM items i INNER JOIN proveedores p ON i.id_proveedor = p.id";
             rs = stmt.executeQuery(query);
         }catch(SQLException e){
             e.printStackTrace();
@@ -92,8 +93,7 @@ public class ItemDAO {
         try{
             while(rs.next()){
                 array.add(new ItemDTO(rs.getInt("id"), rs.getString("nombre"), rs.getInt("cantidad"),
-                        rs.getInt("precio"), new ProveedorDAO().getProveedorById(rs.getInt("rut_proveedor")).getRut()
-                        , rs.getString("marca")));
+                        rs.getInt("precio"), rs.getInt("p.rut") , rs.getString("marca")));
             }
         }catch(SQLException e){
             e.printStackTrace();
