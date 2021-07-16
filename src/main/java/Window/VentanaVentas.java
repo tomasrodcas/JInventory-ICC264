@@ -1,8 +1,7 @@
 package Window;
 
-import DAO.ItemDAO;
+
 import DAO.VentaDAO;
-import DTO.ItemDTO;
 import DTO.VentaDTO;
 
 import javax.swing.*;
