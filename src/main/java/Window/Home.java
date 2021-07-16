@@ -28,7 +28,6 @@ public class Home extends JFrame implements ActionListener {
         }catch (Exception e){
 
         }
-
         productosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,6 +39,20 @@ public class Home extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) { VentanaVentas ventanaVentas = new VentanaVentas();}
         });
         tablaProductos.setModel(new DefaultTableModel(null, new String[]{"Productos sin stock"}));
+        clientesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaClientes ventanaClientes = new VentanaClientes();
+            }
+        });
+
+        proveedoresButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaProveedores ventanaProveedores = new VentanaProveedores();
+            }
+        });
+
     }
 
     public void rellenarTabla(ArrayList<Object[]> datos){
