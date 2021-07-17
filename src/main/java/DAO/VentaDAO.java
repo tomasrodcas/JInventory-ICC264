@@ -6,7 +6,9 @@ import DTO.VentaDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-
+/**
+ * Maneja el CRUD de ventas en la base de datos
+ */
 public class VentaDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
@@ -15,6 +17,12 @@ public class VentaDAO {
     private ItemDTO item = null;
     private VentaDTO venta = null;
 
+    /**
+     * El constructor de la clase, se encarga de generar la conexion a la base de datos con DBConnection
+     * y almacenar la informacion de la venta recibida
+     *
+     * @param venta un objeto VentaDTO
+     */
     public VentaDAO(VentaDTO venta){
         try {
             con = new DBConnection().getConnection();
@@ -25,6 +33,10 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Se encarga de crear la conexion a la base de datos con DBConnection
+     */
     public VentaDAO(){
         try {
             con = new DBConnection().getConnection();
@@ -33,6 +45,12 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Ejecuta una venta en la base de datos
+     * @param saleMaxStock realizar venta con el maximo stock en
+     *                     caso de no existir el deseado
+     */
 
     public void executeSale(boolean saleMaxStock){
         if(this.item !=  null){
@@ -52,10 +70,12 @@ public class VentaDAO {
         }
 
     }
+
+    /**
+     * Se encarga de guardar la venta en la base de datos
+     */
     private void saveSaleDB(){
-
         try{
-
             String query = "INSERT INTO ventas VALUES (null, ?,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(query);
             int total = this.item.getPrecio()*this.venta.getCantidadVendida();
@@ -74,6 +94,12 @@ public class VentaDAO {
 
         }
     }
+
+    /**
+     * Edita una venta en la base de datos mediante el identificador id
+     * @param id identificador de la venta a editar
+     * @param infoVenta informacion nueva de la venta
+     */
     public void editSaleById(int id, VentaDTO infoVenta){
         this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
 
@@ -83,11 +109,11 @@ public class VentaDAO {
                     "WHERE id='"+id+"'";
             pstmt = (PreparedStatement) con.prepareStatement(query);
             int total = this.item.getPrecio()*infoVenta.getCantidadVendida();
-            pstmt.setString(1, new VentaDAO(infoVenta).getItem().getNombre());
+            pstmt.setString(1, this.item.getNombre());
             pstmt.setInt(2, infoVenta.getIdProducto());
             pstmt.setInt(3, infoVenta.getCantidadVendida());
             pstmt.setInt(4, total);
-            pstmt.setInt(5, infoVenta.getRutCliente());
+            pstmt.setInt(5, new ClienteDAO().getClienteByRut(infoVenta.getRutCliente()).getId());
             java.sql.Date sqlDate = new java.sql.Date(infoVenta.getFecha().getTime());
             pstmt.setDate(6, sqlDate);
 
@@ -98,6 +124,10 @@ public class VentaDAO {
         }
     }
 
+    /**
+     * Corrobora que exista stock suficiente del item para realizar la venta
+     * @return booleano que describe si existe suficiente stock
+     */
     private boolean checkStockSufficiency(){
         boolean existsStock = false;
         if(this.venta.getCantidadVendida() <= this.item.getCantidad()){
@@ -106,6 +136,10 @@ public class VentaDAO {
         return existsStock;
     }
 
+    /**
+     * Metodo para obtener todas las ventas almacenadas en la DB
+     * @return ArrayList de VentasDTO con cada una de las ventas almacenadas
+     */
     public ArrayList<VentaDTO> getVentasDB(){
         ResultSet rs;
 
@@ -122,6 +156,11 @@ public class VentaDAO {
         return rsIntoArrayList(rs);
     }
 
+    /**
+     * Transforma el ResultSet de todas las ventas a un ArrayList de VentaDTO que contiene la informacion de todas las ventas
+     * @param rs
+     * @return
+     */
     private ArrayList<VentaDTO> rsIntoArrayList(ResultSet rs){
         ArrayList<VentaDTO> array = new ArrayList<>();
         try{
@@ -135,6 +174,12 @@ public class VentaDAO {
         }
         return array;
     }
+
+    /**
+     * Obtiene la venta de la base de datos mediante su identificador id
+     * @param id identificador de la venta
+     * @return un objeto VentaDTO con la informacion de la venta
+     */
 
     public VentaDTO getVentaById(int id){
         VentaDTO venta = null;
@@ -154,6 +199,11 @@ public class VentaDAO {
 
         return venta;
     }
+
+    /**
+     * Elimina una venta de la BD mediante su identificador id
+     * @param id identificador de la venta
+     */
 
     public void deleteSaleById(int id){
         if(checkSaleExistenceById(id)){
@@ -176,6 +226,12 @@ public class VentaDAO {
         }
     }
 
+    /**
+     * Corrobora que exista la venta en la base de datos mediante identificador
+     * @param id identificador de la venta
+     * @return booleano si la venta existe o no
+     */
+
     private boolean checkSaleExistenceById(int id){
         boolean exists = false;
         try{
@@ -191,9 +247,6 @@ public class VentaDAO {
         return exists;
     }
 
-    public ItemDTO getItem(){
-        return this.item;
-    }
 
 
 }

@@ -2,6 +2,9 @@ package DTO;
 
 import DAO.ClienteDAO;
 
+/**
+ * Clase encargada de almacenar la informacion de un Cliente
+ */
 public class ClienteDTO {
 
     private final String nombre;
@@ -10,6 +13,13 @@ public class ClienteDTO {
     private final int rut;
     private final int id;
 
+    /**
+     * Constructor de la clase para crear o editar un cliente.
+     * @param nombre nombre del cliente
+     * @param email email del cliente
+     * @param telefono telefono del cliente
+     * @param rut rut del cliente (como entero y sin digito verificador)
+     */
     public ClienteDTO(String nombre, String email, int telefono, int rut){
         this.id = -1;
         this.nombre = nombre;
@@ -18,6 +28,16 @@ public class ClienteDTO {
         this.rut = rut;
 
     }
+
+    /**
+     * Constructor de la clase utilizado para recibir la informacion de la
+     * base de datos, este contiene identificador
+     * @param id identificador del cliente
+     * @param nombre nombre del cliente
+     * @param email email del cliente
+     * @param telefono telefono del cliente
+     * @param rut rut del cliente
+     */
     public ClienteDTO(int id, String nombre, String email, int telefono, int rut){
         this.id = id;
         this.nombre = nombre;
@@ -39,6 +59,10 @@ public class ClienteDTO {
     }
     public int getId(){return this.id;}
 
+    /**
+     * Convierte todos los atributos a String y los retorna en un array
+     * @return String array conteniendo todos los atributos en orden id, nombre, email, telefono, rut
+     */
     public String[] toArray(){
         String id = Integer.toString(this.id);
         String telefono = Integer.toString(this.telefono);
@@ -47,6 +71,11 @@ public class ClienteDTO {
         return new String[]{id, nombre, email, telefono, rut};
     }
 
+    /**
+     * Compara si los atributos entre un Objeto y el ClienteDTO son iguales
+     * @param o Objeto a comparar
+     * @return booleano resultado de si son iguales o no
+     */
     @Override
     public boolean equals(Object o){
         if( o == this){
@@ -62,6 +91,11 @@ public class ClienteDTO {
                 && this.getRut() == c.getRut() && this.getTelefono() == c.getTelefono();
 
     }
+
+    /**
+     * Se encarga de obtener un hashCode para la clase en particular.
+     * @return el hashcode generado
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

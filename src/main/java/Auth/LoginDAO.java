@@ -3,12 +3,18 @@ package Auth;
 import DBConnection.DBConnection;
 import java.sql.*;
 
+/**
+ * Clase encargada de realizar el login comparando con los datos de la BD
+ */
 public class LoginDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Constructor encargado de realizar la conexion con la base de datos
+     */
     public LoginDAO(){
         try {
             con = new DBConnection().getConnection();
@@ -17,6 +23,13 @@ public class LoginDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Realiza el login, comparando la informacion recibida con la base de datos, retorna un booleano dependiendo
+     * si los datos coinciden o no
+     * @param loginInfo objeto LoginDTO con la informacion proporcionada para el login
+     * @return booleano que describe si los datos coinciden o no
+     */
     public boolean login(LoginDTO loginInfo) {
         boolean loggedIn = false;
         String passwordDB = retrieveUsernamePassword(loginInfo);
@@ -27,6 +40,12 @@ public class LoginDAO {
         }
         return loggedIn;
     }
+
+    /**
+     * Revisa la existencia del username en la base de datos
+     * @param loginInfo Objeto LoginDTO con la informacion del login
+     * @return booleano si existe o no
+     */
     private boolean checkUsernameExistence(LoginDTO loginInfo){
         boolean existe = false;
         try{
@@ -42,6 +61,12 @@ public class LoginDAO {
         }
         return existe;
     }
+
+    /**
+     * Obtiene la password asociada al username en la base de datos
+     * @param loginInfo Objeto LoginDTO con la informacion del login
+     * @return String con la password del usuario
+     */
     private String retrieveUsernamePassword(LoginDTO loginInfo){
         if(checkUsernameExistence(loginInfo)){
             try{
@@ -62,6 +87,12 @@ public class LoginDAO {
         }
 
     }
+
+    /**
+     * Revisa si las credenciales otorgadas para realizar el login son de administrador o usuario normal
+     * @param loginInfo objeto LoginDTO con la informacion del login
+     * @return booleano que describe si las credenciales son de administrador o no
+     */
     public boolean checkAdminCredentials(LoginDTO loginInfo){
         if(login(loginInfo) && getUserType(loginInfo) == 1){
             return true;
@@ -70,6 +101,12 @@ public class LoginDAO {
             return false;
         }
     }
+
+    /**
+     * Obtiene el tipo de usuario del usuario logueado de la base de datos
+     * @param loginInfo Objeto LoginDTO con la informacion del login
+     * @return int tipo de usuario asignado al username
+     */
     private int getUserType(LoginDTO loginInfo){
         int tipo_usuario = 0;
         if(checkUsernameExistence(loginInfo)){

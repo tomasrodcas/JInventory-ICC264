@@ -5,12 +5,18 @@ import DTO.UsuarioDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de realizar el CRUD de usuarios en la base de datos
+ */
 public class UsuarioDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Constructor de la clase que obtiene la conexion a la base de datos
+     */
     public UsuarioDAO(){
         try {
             con = new DBConnection().getConnection();
@@ -20,6 +26,10 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Añade un usuario a la base de datos
+     * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     */
     public void addUser(UsuarioDTO usuario){
         if(checkUserExistence(usuario)){
             System.out.println("El usuario ya existe");
@@ -46,6 +56,12 @@ public class UsuarioDAO {
 
         }
     }
+
+    /**
+     * Añade una nueva entrada a la tabla login_attemps con el id del nuevo usuario
+     * @param id identificador del usuario
+     * @return booleano si fue exitoso o no
+     */
     private boolean addLoginAttemptsEntry(int id){
         try{
             String query = "INSERT INTO login_attempts VALUES ('"+id+"','"+0+"')";
@@ -58,11 +74,21 @@ public class UsuarioDAO {
         }
         return false;
     }
+
+    /**
+     * Obtiene el identificador del ultimo usurio existente en la base de datos
+     * @return int identifcador del ultimo usuario
+     */
     private int getLastUserId(){
         ArrayList<UsuarioDTO> usuarios = getUsersDB();
         return usuarios.get(usuarios.size()-1).getId();
     }
 
+    /**
+     * Edita un usuario en la base de datos mediante su identificador
+     * @param id identificador del usuario
+     * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     */
     public void editUserById(int id, UsuarioDTO usuario){
         if(checkUserExistenceById(id)){
             try{
@@ -81,6 +107,10 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Elimina un usuario de la base de datos mediante su identificador
+     * @param id identificador del usuario
+     */
     public void deleteUserById(int id){
         if(checkUserExistenceById(id)){
             try{
@@ -96,6 +126,11 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Valida que no exista un usuario con las mismas entradas en la base de datos
+     * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     * @return booleano si existe o no
+     */
     private boolean checkUserExistence(UsuarioDTO usuario){
         boolean existe = false;
         try{
@@ -112,6 +147,11 @@ public class UsuarioDAO {
         return existe;
     }
 
+    /**
+     * Checkea si existe una entrada en usuarios mediante el identificador
+     * @param id identificador del usuario
+     * @return boolean si existe o no
+     */
     private boolean checkUserExistenceById(int id){
         boolean existe = false;
         try{
@@ -127,6 +167,11 @@ public class UsuarioDAO {
         return existe;
     }
 
+    /**
+     * Obtiene un usuario de la base de datos mediante su identificador
+     * @param id identificador del usuario
+     * @return Objeto UsuarioDTO que contiene la informacion del usuario
+     */
     public UsuarioDTO getUserById(int id){
         UsuarioDTO usuario = null;
         if(checkUserExistenceById(id)){
@@ -151,6 +196,10 @@ public class UsuarioDAO {
         return usuario;
     }
 
+    /**
+     * Obtiene todos los usuarios almacenados en la base de datos
+     * @return ArrayList de UsuarioDTO conteniendo toda la informacion de los usuarios
+     */
     public ArrayList<UsuarioDTO> getUsersDB(){
         ArrayList<UsuarioDTO> usuarios = new ArrayList<>();
         try{
@@ -167,6 +216,12 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+    /**
+     * Transforma el ResultSet obtenido de los usuarios de la base de datos en un ArrayList de UsuarioDTO que contiene
+     * la informacion de todos los usuarios en la DB
+     * @param rs ResultSet con todos los usuarios de la DB
+     * @return ArrayList de UsuarioDTO con todos los usuarios
+     */
     private ArrayList<UsuarioDTO> rsIntoArray(ResultSet rs){
         ArrayList<UsuarioDTO> usuarios = new ArrayList<>();
         try{
