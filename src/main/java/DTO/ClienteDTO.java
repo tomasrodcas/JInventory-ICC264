@@ -37,6 +37,8 @@ public class ClienteDTO {
     public int getRut(){
         return this.rut;
     }
+    public int getId(){return this.id;}
+
     public String[] toArray(){
         String id = Integer.toString(this.id);
         String telefono = Integer.toString(this.telefono);

@@ -63,7 +63,7 @@ public class ItemDAO {
         ItemDTO item = null;
         try{
             String query = "SELECT * FROM items i INNER JOIN proveedores p ON i.id_proveedor" +
-                    "=p.id WHERE id='"+id+"'";
+                    "=p.id WHERE i.id='"+id+"'";
             rs=stmt.executeQuery(query);
             rs.next();
             String nombre = rs.getString("nombre");

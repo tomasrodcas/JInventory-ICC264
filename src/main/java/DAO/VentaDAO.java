@@ -63,7 +63,7 @@ public class VentaDAO {
             pstmt.setInt(2,this.venta.getIdProducto());
             pstmt.setInt(3, this.venta.getCantidadVendida());
             pstmt.setInt(4, total);
-            pstmt.setInt(5, this.venta.getRutCliente());
+            pstmt.setInt(5, new ClienteDAO().getClienteByRut(this.venta.getRutCliente()).getId());
             java.sql.Date sqlDate = new java.sql.Date(this.venta.getFecha().getTime());
             pstmt.setDate(6, sqlDate);
 

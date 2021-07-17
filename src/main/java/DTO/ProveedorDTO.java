@@ -34,6 +34,9 @@ public class ProveedorDTO {
     public int getTelefono(){
         return this.telefono;
     }
+    public int getId(){
+        return this.id;
+    }
     public String[] toArray(){
         String id = Integer.toString(this.id);
         String rut = Integer.toString(this.rut);

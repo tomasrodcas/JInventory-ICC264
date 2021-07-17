@@ -2,6 +2,8 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ClienteDTO;
+import DTO.ProveedorDTO;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -147,6 +149,25 @@ public class ClienteDAO {
             e.printStackTrace();
         }
         return existe;
+    }
+    public ClienteDTO getClienteByRut(int rut){
+        ClienteDTO cliente = null;
+
+        try{
+            String query = "SELECT * FROM clientes WHERE rut='"+rut+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            rs.next();
+            String nombre = rs.getString("nombre");
+            String email = rs.getString("email");
+            int id = rs.getInt("id");
+            int telefono = rs.getInt("telefono");
+            cliente =  new ClienteDTO(id, nombre, email, telefono, rut);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return cliente;
     }
 
 
