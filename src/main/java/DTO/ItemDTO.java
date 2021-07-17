@@ -1,5 +1,8 @@
 package DTO;
 
+/**
+ * Clase que almacena la informacion de un item
+ */
 public class ItemDTO {
     private final String nombre;
     private final int cantidad;
@@ -8,6 +11,14 @@ public class ItemDTO {
     private final String marca;
     private final int id;
 
+    /**
+     * Constructor de la clase para crear o editar un item
+     * @param nombre nombre del producto
+     * @param cantidad cantidad almacenada del producto
+     * @param precio precio del producto
+     * @param proveedor proveedor del producto (Rut entero sin digito verificador)
+     * @param marca marca del producto
+     */
     public ItemDTO(String nombre, int cantidad, int precio, int proveedor, String marca) {
         this.id = -1;
         this.nombre = nombre;
@@ -16,6 +27,17 @@ public class ItemDTO {
         this.proveedor = proveedor;
         this.marca = marca;
     }
+
+    /**
+     * Constructor de la clase utilizado para obtener la informacion de la
+     * base de datos. Contiene el identificador de la BD
+     * @param id identificador del item
+     * @param nombre nombre del producto
+     * @param cantidad cantidad almacenada del producto
+     * @param precio precio del producto
+     * @param proveedor proveedor del producto (Rut entero sin digito verificador)
+     * @param marca marca del producto
+     */
     public ItemDTO(int id, String nombre, int cantidad, int precio, int proveedor, String marca){
         this.id = id;
         this.nombre = nombre;
@@ -45,7 +67,10 @@ public class ItemDTO {
         return this.id;
     }
 
-
+    /**
+     * Convierte todos los atributos a String y los retorna en un array
+     * @return String array conteniendo todos los atributos en orden id, nombre, cantidad, precio, proveedor, marca
+     */
     public String[] toArray(){
         String id = Integer.toString(this.id);
         String cantidad = Integer.toString(this.cantidad);
@@ -54,6 +79,11 @@ public class ItemDTO {
         return new String[]{id, this.nombre,cantidad, precio, proveedor, this.marca};
     }
 
+    /**
+     * Compara si los atributos entre un Objeto y el ItemDTO son iguales
+     * @param o Objeto a comparar
+     * @return booleano resultado de si son iguales o no
+     */
     @Override
     public boolean equals(Object o) {
         if(o == this){
@@ -68,6 +98,10 @@ public class ItemDTO {
                 && this.getProveedor() == c.getProveedor() && this.getPrecio() == c.getPrecio()
                 && this.getMarca().toLowerCase().equals(c.getMarca().toLowerCase());
     }
+    /**
+     * Se encarga de obtener un hashCode para la clase en particular.
+     * @return el hashcode generado
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

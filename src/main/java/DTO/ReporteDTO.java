@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * Clase encargada de almacenar la informacion del reporte
+ */
 public class ReporteDTO {
 
     private final int ventasUltimoMes;
@@ -12,6 +15,14 @@ public class ReporteDTO {
     private final int total12Meses;
     private final List<Entry<ItemDTO, Integer>> itemsMasVendidos;
 
+    /**
+     * Constructor de la clase que recibe toda la informacion del reporte a almacenar
+     * @param ventasUltimoMes ventas del ultimo mes
+     * @param ventas12Meses ventas de los ultimos 12 meses
+     * @param totalUltimoMes el total del ultimo mes ingresado
+     * @param total12Meses el total ingresado en los ultimos 12 meses
+     * @param itemsMasVendidos los 5 items mas vendidos de los ultimos 12 meses
+     */
     public ReporteDTO(int ventasUltimoMes, ArrayList<Integer> ventas12Meses, int totalUltimoMes, int total12Meses,
                       List<Entry<ItemDTO, Integer>> itemsMasVendidos){
         this.ventasUltimoMes = ventasUltimoMes;

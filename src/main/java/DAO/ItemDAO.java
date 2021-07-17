@@ -5,12 +5,18 @@ import DTO.ItemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de manejar el CRUD de items en la BD
+ */
 public class ItemDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Constructor que se encarga de obtener la conexion con la base de datos
+     */
     public ItemDAO(){
         try {
             con = new DBConnection().getConnection();
@@ -19,6 +25,11 @@ public class ItemDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Se encarga de añadir un item a la base de datos
+     * @param item Objeto ItemDTO que contiene la informacion del item
+     */
     public void addItem(ItemDTO item){
         boolean existe = checkItemExistence(item);
         if(existe){
@@ -27,6 +38,12 @@ public class ItemDAO {
             saveItemDB(item);
         }
     }
+
+    /**
+     * Valida la existencia del item a crear en la base de datos
+     * @param item Objeto ItemDTO con la informacion del item
+     * @return booleano si existe o no
+     */
     private boolean checkItemExistence(ItemDTO item){
         boolean existe = false;
         try{
@@ -43,6 +60,11 @@ public class ItemDAO {
         }
         return existe;
     }
+
+    /**
+     * Guarda el nuevo item en la base de datos
+     * @param item Objeto ItemDTO con la informacion del item
+     */
     private void saveItemDB(ItemDTO item){
         try{
             String query = "INSERT INTO items VALUES(NULL, ?,?,?,?,?)";
@@ -59,6 +81,11 @@ public class ItemDAO {
         }
     }
 
+    /**
+     * Obtiene un item de la BD mediante su identificador
+     * @param id Identificador del cliente
+     * @return Objeto ItemDTO que contiene la informacion del item
+     */
     public ItemDTO getItemById(int id){
         ItemDTO item = null;
         try{
@@ -78,6 +105,11 @@ public class ItemDAO {
         }
         return item;
     }
+
+    /**
+     * Obtiene todos los items almacenados en la base de datos.
+     * @return ArrayList de ItemDTO que contienen la informacion de cada item
+     */
     public ArrayList<ItemDTO> getItemsDB(){
         rs = null;
         try{
@@ -88,6 +120,13 @@ public class ItemDAO {
         }
         return rsIntoArrayList(rs);
     }
+
+    /**
+     * Transforma el ResultSet de items de la base de datos en un ArrayList de
+     * ItemDTO con la informacion de todos los items
+     * @param rs ResultSet con los items de la BD
+     * @return ArrayList de ItemDTO con la informacion de los items
+     */
     private ArrayList<ItemDTO> rsIntoArrayList(ResultSet rs){
         ArrayList<ItemDTO> array = new ArrayList<>();
         try{
@@ -100,6 +139,12 @@ public class ItemDAO {
         }
         return array;
     }
+
+    /**
+     * Actualiza la informacion de un item mediante su identificador
+     * @param id Identificador del item
+     * @param item Objeto ItemDTO que contiene la informacion del item
+     */
     public void updateItemById(int id, ItemDTO item){
         try{
             String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, rut_proveedor=?, marca=? WHERE id='"+id+"'";
@@ -114,6 +159,12 @@ public class ItemDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Revisa la existencia de un item mediante su identificador
+     * @param id identificador del item
+     * @return booleano si existe o no
+     */
     private boolean checkItemExistenceById(int id ){
         boolean exists = false;
         try{
@@ -129,6 +180,12 @@ public class ItemDAO {
         return exists;
     }
 
+    /**
+     * Actualiza el stock de un item una cantidad definida (En caso de no existir suficiente
+     * este queda en 0)
+     * @param id identificador del item
+     * @param cantidad cantidad a añadir o substraer del stock
+     */
     public void updateStock(int id, int cantidad){
         if(checkItemExistenceById(id)){
             try{
@@ -146,6 +203,11 @@ public class ItemDAO {
             System.out.println("El item no existe en los registros");
         }
     }
+
+    /**
+     * Elimina un item mediante su identificador id
+     * @param id identificador del item
+     */
     public void deleteItemById(int id){
         if(checkItemExistenceById(id)){
             try{
