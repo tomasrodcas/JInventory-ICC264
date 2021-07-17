@@ -1,8 +1,6 @@
 package Window;
 
-import DAO.ItemDAO;
 import DAO.ProveedorDAO;
-import DTO.ClienteDTO;
 import DTO.ProveedorDTO;
 
 import javax.swing.*;
@@ -21,8 +19,8 @@ public class VentanaProveedores extends JFrame implements ActionListener {
     private JTextField emailTextField;
     private JTextField telefonoTextField;
     private JTable tablaProveedores;
-    private JButton agregarClienteButton;
-    private JButton eliminarClienteButton;
+    private JButton agregarProveedorButton;
+    private JButton eliminarProveedorButton;
 
     public VentanaProveedores(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -33,7 +31,7 @@ public class VentanaProveedores extends JFrame implements ActionListener {
         Object [] nombreColumnas = {"ID","Nombre","RUT","Email","Telefono"};
         tablaProveedores.setModel(new DefaultTableModel(null,nombreColumnas));
         rellenarTabla(new ProveedorDAO().getProveedoresDB());
-        agregarClienteButton.addActionListener(new ActionListener() {
+        agregarProveedorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ProveedorDAO().addProveedor(new ProveedorDTO(Integer.parseInt(idTextField.getText()), nombreTextField.getText()
@@ -48,7 +46,7 @@ public class VentanaProveedores extends JFrame implements ActionListener {
             }
         });
         tablaProveedores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        eliminarClienteButton.addActionListener(new ActionListener() {
+        eliminarProveedorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
