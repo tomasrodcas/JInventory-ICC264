@@ -53,7 +53,7 @@ public class VentanaClientes extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if(tablaClientes.getSelectedRow()!= -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaClientes.getModel();
-                    new ClienteDAO().deleteUserById(Integer.parseInt((String) modelo.getValueAt(
+                    new ClienteDAO().deleteClienteById(Integer.parseInt((String) modelo.getValueAt(
                             tablaClientes.getSelectedRow(),0)));
                     modelo.removeRow(tablaClientes.getSelectedRow());
 

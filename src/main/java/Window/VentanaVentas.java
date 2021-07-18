@@ -18,7 +18,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
     private JTextField IDProductotextField;
     private JTextField CantidadtextField;
     private JTextField RUTtextField;
-    private JButton eliminarProductoButton;
+    private JButton eliminarVentaButton;
 
     public VentanaVentas(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -44,7 +44,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
             }
         });
         tablaVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        eliminarProductoButton.addActionListener(new ActionListener() {
+        eliminarVentaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tablaVentas.getSelectedRow() != -1){

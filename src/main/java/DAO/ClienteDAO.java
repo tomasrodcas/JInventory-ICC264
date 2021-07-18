@@ -2,15 +2,24 @@ package DAO;
 
 import DBConnection.DBConnection;
 import DTO.ClienteDTO;
+import DTO.ProveedorDTO;
+
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de manejar el CRUD de clientes en la BD
+ */
 public class ClienteDAO {
     private Connection con = null;
     private PreparedStatement pstmt = null;
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Constructor el cual se encarga de realizar la conexion a la base de datos con DBConnection
+     *
+     */
     public ClienteDAO(){
         try {
             con = new DBConnection().getConnection();
@@ -19,6 +28,11 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metodo para añadir un cliente a la BD
+     * @param cliente objeto ClienteDTO que contiene la informacion del cliente
+     */
     public void addCliente(ClienteDTO cliente){
         if(checkClientExistence(cliente)){
             System.out.println("El usuario ya existe");
@@ -39,6 +53,12 @@ public class ClienteDAO {
             }
         }
     }
+
+    /**
+     * Metodo para editar un cliente en la BD mediante su identificador
+     * @param cliente objeto ClienteDTO conteniendo la nueva informacion del cliente
+     * @param id identificador del cliente
+     */
     public void editClienteById(ClienteDTO cliente, int id){
         if(checkClientExistenceById(id)){
             try{
@@ -56,7 +76,12 @@ public class ClienteDAO {
             }
         }
     }
-    public void deleteUserById(int id){
+
+    /**
+     * Metodo para eliminar un cliente de la BD mediante su identificador
+     * @param id identificador del cliente
+     */
+    public void deleteClienteById(int id){
         if(checkClientExistenceById(id)){
             try{
                 String query = "DELETE FROM clientes WHERE id='"+id+"'";
@@ -69,6 +94,11 @@ public class ClienteDAO {
         }
 
     }
+
+    /**
+     * Obtiene todos los clientes almacenados en la base de datos
+     * @return ArrayList de ClienteDTOs almacenando la informacion de cada cliente
+     */
     public ArrayList<ClienteDTO> getClientesDB(){
         ArrayList<ClienteDTO> clientes = new ArrayList<>();
         try{
@@ -83,6 +113,12 @@ public class ClienteDAO {
         return clientes;
     }
 
+    /**
+     * Transforma el ResultSet de clientes de la BD en un ArrayList de ClienteDTO conteniendo toda la informacion
+     * de los clientes en la base de datos
+     * @param rs ResultSet que contiene todos los usuarios de la BD
+     * @return ArrayList de ClienteDTO con toda la informacion de los clientes
+     */
     private ArrayList<ClienteDTO> rsIntoArrayList(ResultSet rs){
         ArrayList<ClienteDTO> array = new ArrayList<>();
         try{
@@ -95,6 +131,12 @@ public class ClienteDAO {
         }
         return array;
     }
+
+    /**
+     * Obtiene un cliente de la BD mediante su identificador
+     * @param id identificador del cliente
+     * @return Objeto ClienteDTO con la informacion del cliente
+     */
     public ClienteDTO getClienteById(int id ){
         ClienteDTO cliente = null;
         if(checkClientExistenceById(id)){
@@ -115,6 +157,12 @@ public class ClienteDAO {
         return cliente;
 
     }
+
+    /**
+     * Revisa la existencia de un cliente mediante su identificador
+     * @param id identificador del cliente
+     * @return booleano si existe o no
+     */
     private boolean checkClientExistenceById(int id){
         boolean existe =  false;
         try{
@@ -129,6 +177,12 @@ public class ClienteDAO {
         }
         return existe;
     }
+
+    /**
+     * Revisa la existencia de un cliente chekando sus datos
+     * @param cliente Objeto ClienteDTO con la informacion del cliente
+     * @return booleano si existe o no
+     */
     private boolean checkClientExistence(ClienteDTO cliente){
         boolean existe = false;
         try{
@@ -147,6 +201,31 @@ public class ClienteDAO {
             e.printStackTrace();
         }
         return existe;
+    }
+
+    /**
+     * Obtiene un cliente mediante su rut como identificador
+     * @param rut rut del cliente guardado en la base de datos
+     * @return Objeto ClienteDTO con la informacion del cliente
+     */
+    public ClienteDTO getClienteByRut(int rut){
+        ClienteDTO cliente = null;
+
+        try{
+            String query = "SELECT * FROM clientes WHERE rut='"+rut+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            rs.next();
+            String nombre = rs.getString("nombre");
+            String email = rs.getString("email");
+            int id = rs.getInt("id");
+            int telefono = rs.getInt("telefono");
+            cliente =  new ClienteDTO(id, nombre, email, telefono, rut);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return cliente;
     }
 
 
