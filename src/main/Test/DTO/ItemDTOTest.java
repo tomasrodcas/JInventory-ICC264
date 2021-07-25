@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemDTOTest {
 
-    @ParameterizedTest
+   /* @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
         String[][] arrays = {{"1","Teasd","100","112312","2008213","Apple"}, {"1","Teasd","100","112312","2008213","Apple"},
@@ -49,5 +49,5 @@ class ItemDTOTest {
 
         assertEquals(resultados[i], resultadoObtenido);
 
-    }
+    }*/
 }

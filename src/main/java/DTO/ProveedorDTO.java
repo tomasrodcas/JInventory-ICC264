@@ -5,7 +5,7 @@ package DTO;
  */
 public class ProveedorDTO {
     private final String nombre;
-    private final int rut;
+    private final String rut;
     private final String email;
     private final int telefono;
     private final int id;
@@ -17,7 +17,7 @@ public class ProveedorDTO {
      * @param email email del proveedor
      * @param telefono telefono del proveedor
      */
-    public ProveedorDTO(String nombre, int rut, String email, int telefono){
+    public ProveedorDTO(String nombre, String rut, String email, int telefono){
         this.id = -1;
         this.nombre = nombre;
         this.rut = rut;
@@ -34,7 +34,7 @@ public class ProveedorDTO {
      * @param email email del proveedor
      * @param telefono telefono del proveedor
      */
-    public ProveedorDTO(int id, String nombre, int rut, String email, int telefono){
+    public ProveedorDTO(int id, String nombre, String rut, String email, int telefono){
         this.id = id;
         this.nombre = nombre;
         this.rut = rut;
@@ -45,7 +45,7 @@ public class ProveedorDTO {
     public String getNombre(){
         return this.nombre;
     }
-    public int getRut() {
+    public String getRut() {
         return this.rut;
     }
     public String getEmail(){
@@ -64,7 +64,6 @@ public class ProveedorDTO {
      */
     public String[] toArray(){
         String id = Integer.toString(this.id);
-        String rut = Integer.toString(this.rut);
         String telefono =Integer.toString(this.telefono);
 
         return new String[]{id, nombre, rut, email, telefono};
@@ -84,8 +83,10 @@ public class ProveedorDTO {
         }
         ProveedorDTO c = (ProveedorDTO) o;
 
-        return this.getNombre().toLowerCase().equals(c.getNombre().toLowerCase()) && this.getRut() == c.getRut()
-                && this.getEmail().toLowerCase().equals(c.getEmail().toLowerCase()) && this.getTelefono() == c.getTelefono();
+        return this.getNombre().toLowerCase().equals(c.getNombre().toLowerCase())
+                && this.getRut().toLowerCase().equals(c.getRut().toLowerCase())
+                && this.getEmail().toLowerCase().equals(c.getEmail().toLowerCase())
+                && this.getTelefono() == c.getTelefono();
 
     }
     /**

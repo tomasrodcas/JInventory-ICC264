@@ -39,7 +39,6 @@ public class DataValidation {
             return false;
         }
 
-
     }
 
     /**
@@ -151,40 +150,6 @@ public class DataValidation {
     }
 
     /**
-     * Valida que el rut proveniente de la base de datos sea valido
-     * @param rut rut entero proveniente de la BD
-     * @return boolean si es valido o no
-     */
-    private boolean validarRutDB(int rut){
-        return 1000000 <= rut && rut <= 100000000;
-    }
-
-    /**
-     * Transforma el rut de la base de datos a un rut completo con guion y digito verificador
-     * @param rut rut como entero sin digito verificador
-     * @return String rut con guion y digito verificador
-     */
-    public String getCompleteRut(int rut){
-        if(validarRutDB(rut)){
-            char dv = calcularDV(Integer.toString(rut));
-            return Integer.toString(rut)+"-"+dv;
-        }else{
-            return "";
-        }
-    }
-
-    /**
-     * Obtiene el rut como entero y sin digito verificador desde un String rut con puntos guion y digito verificador
-     * @param rut String rut con puntos guion y digito verificador
-     * @return int rut sin digito verificador
-     */
-    public int getRut(String rut){
-        rut = replaceRutCharacters(rut);
-        rut = rut.substring(0,rut.length()-1);
-        return Integer.parseInt(rut);
-    }
-
-    /**
      * Revisa que los datos ingresados para crear o editar un cliente sean validos
      * @param nombre nombre del cliente
      * @param email email del cliente
@@ -192,8 +157,8 @@ public class DataValidation {
      * @param rut rut del cliente
      * @return booleano que describe si todos los datos son validos o no
      */
-    public boolean clienteDTOValidation(String nombre, String email, int telefono, String rut){
-        if( nombreValidation(nombre) && validateEmail(email) && telefonoValidation(telefono) && validarRut(rut))
+    public boolean clienteDTOValidation(String nombre, String email, String telefono, String rut){
+        if(nombreValidation(nombre) && validateEmail(email) && telefonoValidation(telefono) && validarRut(rut))
             return true;
         else
             return false;
@@ -208,12 +173,10 @@ public class DataValidation {
         try {
             int isNro = Integer.parseInt(nombre);
             return false;
-        }catch (NumberFormatException e){
-            if(nombre.equals(""))
-                return false;
-            else
-                return true;
+        }catch (NumberFormatException ignored){
         }
+
+        return !nombre.equals("");
     }
 
     /**
@@ -221,11 +184,17 @@ public class DataValidation {
      * @param telefono int telefono a verificar
      * @return booleano si es valido o no
      */
-    private boolean telefonoValidation(int telefono){
-        if( telefono < 100000000 || telefono >= 1000000000 )
-            return false;
-        else
-            return true;
+    private boolean telefonoValidation(String telefono){
+        try{
+            int telefonoInt = Integer.parseInt(telefono);
+
+            if( telefonoInt > 100000000 && telefonoInt < 1000000000 ){
+                return true;
+            }
+        }catch(NumberFormatException ignore){
+        }
+
+        return false;
     }
 
     /**
@@ -237,8 +206,8 @@ public class DataValidation {
      * @param marca marca del item
      * @return booleano que describe si todos los datos son validos o no
      */
-    public boolean itemDTOValidation(String nombre, int cantidad, int precio, int proveedor, String marca){
-        if(nombreValidation(nombre) && intPositiveValidation(precio) && intPositiveValidation(proveedor) && marcaValidation(marca))
+    public boolean itemDTOValidation(String nombre, String cantidad, String precio, String proveedor, String marca){
+        if(nombreValidation(nombre) && intPositiveValidation(precio) && idValidation(proveedor) && marcaValidation(marca))
             return true;
         else
             return false;
@@ -246,14 +215,28 @@ public class DataValidation {
 
     /**
      * Valida que el parametro entregado corresponda  a un entero mayor que 0
-     * @param entero numero entero a validar
+     * @param numero numero entero a validar
      * @return booleano si es mayor que 0 o no
      */
-    private boolean intPositiveValidation(int entero){
-        if(entero <= 0 )
-            return false;
-        else
-            return true;
+    private boolean intPositiveValidation(String numero){
+        try{
+            int entero = Integer.parseInt(numero);
+            if(entero > 0) {
+                return true;
+            }
+        }catch(NumberFormatException ignored){
+        }
+        return false;
+    }
+    public boolean idValidation(String id){
+        try{
+            int entero = Integer.parseInt(id);
+            if(entero >= 0) {
+                return true;
+            }
+        }catch(NumberFormatException ignored){
+        }
+        return false;
     }
 
     /**
@@ -283,7 +266,7 @@ public class DataValidation {
      * @param telefono telefono proveedor
      * @return booleano que describe si todos los datos son validos o no
      */
-    public boolean proveedorDTOValidation(String nombre, String rut, String email, int telefono){
+    public boolean proveedorDTOValidation(String nombre, String rut, String email, String telefono){
         if(nombreValidation(nombre) && validarRut(rut) && validateEmail(email) && telefonoValidation(telefono))
             return true;
         else
@@ -332,8 +315,8 @@ public class DataValidation {
      * @param rutCliente rut del cliente
      * @return booleano que describe si todos los datos son validos o no
      */
-    public boolean ventaDTOValidation(int idProducto, int cantidadVendida, String rutCliente){
-      if(intPositiveValidation(idProducto) && intPositiveValidation(cantidadVendida) && validarRut(rutCliente))
+    public boolean ventaDTOValidation(String idProducto, String cantidadVendida, String rutCliente){
+      if(idValidation(idProducto) && intPositiveValidation(cantidadVendida) && validarRut(rutCliente))
           return true;
       else
           return false;

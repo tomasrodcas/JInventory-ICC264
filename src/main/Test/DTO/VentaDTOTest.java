@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class VentaDTOTest {
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
         Date fecha = new Date();
@@ -43,5 +43,5 @@ class VentaDTOTest {
         boolean[] resultado = {true, false, true, false};
         boolean resultadoObtenido = new VentaDTO(productos[i], cantidades[i], cliente[i], fecha).equals(new VentaDTO(productos2[i], cantidades2[i], cliente2[i], fecha));
         assertEquals(resultado[i], resultadoObtenido);
-    }
+    }*/
 }

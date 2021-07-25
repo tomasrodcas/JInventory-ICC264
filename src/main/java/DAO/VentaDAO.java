@@ -52,29 +52,30 @@ public class VentaDAO {
      *                     caso de no existir el deseado
      */
 
-    public void executeSale(boolean saleMaxStock){
+    public boolean executeSale(boolean saleMaxStock){
+        boolean exito = false;
         if(this.item !=  null){
 
             if(checkStockSufficiency()){
-                    saveSaleDB();
+                    exito = saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
             }
             else{
 
                 if(saleMaxStock){
                     venta.setCantidadVendida(item.getCantidad());
-                    saveSaleDB();
+                    exito = saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
                 }
             }
         }
-
+        return exito;
     }
 
     /**
      * Se encarga de guardar la venta en la base de datos
      */
-    private void saveSaleDB(){
+    private boolean saveSaleDB(){
         try{
             String query = "INSERT INTO ventas VALUES (null, ?,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(query);
@@ -88,11 +89,12 @@ public class VentaDAO {
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
-
+            return true;
         }catch(SQLException e){
             e.printStackTrace();
 
         }
+        return false;
     }
 
     /**
@@ -100,7 +102,7 @@ public class VentaDAO {
      * @param id identificador de la venta a editar
      * @param infoVenta informacion nueva de la venta
      */
-    public void editSaleById(int id, VentaDTO infoVenta){
+    public boolean editSaleById(int id, VentaDTO infoVenta){
         this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
 
         try{
@@ -118,10 +120,11 @@ public class VentaDAO {
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
-
+            return true;
         }catch(SQLException e){
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -166,7 +169,7 @@ public class VentaDAO {
         try{
             while(rs.next()){
                 array.add(new VentaDTO( rs.getInt("id_producto"),
-                        rs.getInt("cantidad"), rs.getInt("c.rut"), rs.getDate("fecha"),
+                        rs.getInt("cantidad"), rs.getString("c.rut"), rs.getDate("fecha"),
                         rs.getInt("total"), rs.getInt("id"), rs.getString("i.nombre")));
             }
         }catch(SQLException e){
@@ -190,8 +193,10 @@ public class VentaDAO {
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             rs.next();
-            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("c.rut"),
-                    rs.getDate("fecha"), rs.getInt("total"), id, rs.getString("i.nombre"));
+
+            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"),
+                    rs.getString("c.rut"), rs.getDate("fecha"),
+                    rs.getInt("total"), id, rs.getString("i.nombre"));
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -205,7 +210,7 @@ public class VentaDAO {
      * @param id identificador de la venta
      */
 
-    public void deleteSaleById(int id){
+    public boolean deleteSaleById(int id){
         if(checkSaleExistenceById(id)){
 
             this.venta = getVentaById(id);
@@ -216,14 +221,13 @@ public class VentaDAO {
                 pstmt.executeUpdate();
 
                 new ItemDAO().updateStock(this.venta.getIdProducto(), this.venta.getCantidadVendida());
-
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
             }
 
-        }else{
-            System.out.println("La venta no existe en los registros");
         }
+        return false;
     }
 
     /**

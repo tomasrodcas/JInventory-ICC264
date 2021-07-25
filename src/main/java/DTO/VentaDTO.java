@@ -13,7 +13,7 @@ public class VentaDTO {
     private final int id;
     private final int idProducto;
     private int cantidadVendida;
-    private final int rutCliente;
+    private final String rutCliente;
     private final Date fecha;
     private final int  total;
     private final String nombreProducto;
@@ -25,7 +25,7 @@ public class VentaDTO {
      * @param rutCliente rut del cliente (numero entero y sin digito verificador)
      * @param fecha fecha de la venta
      */
-    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha){
+    public VentaDTO(int idProducto, int cantidadVendida, String rutCliente, Date fecha){
         this.idProducto = idProducto;
         this.cantidadVendida = cantidadVendida;
         this.rutCliente =  rutCliente;
@@ -46,7 +46,9 @@ public class VentaDTO {
      * @param id identificador de la venta
      * @param nombreProducto nombre del producto vendido
      */
-    public VentaDTO(int idProducto, int cantidadVendida, int rutCliente, Date fecha, int total, int id, String nombreProducto){
+    public VentaDTO(int idProducto, int cantidadVendida, String rutCliente,
+                    Date fecha, int total, int id, String nombreProducto){
+
         this.idProducto = idProducto;
         this.cantidadVendida = cantidadVendida;
         this.rutCliente =  rutCliente;
@@ -64,7 +66,7 @@ public class VentaDTO {
     public void setCantidadVendida(int cantidad){
         this.cantidadVendida = cantidad;
     }
-    public int getRutCliente(){
+    public String getRutCliente(){
         return this.rutCliente;
     }
     public int getId(){
@@ -87,7 +89,6 @@ public class VentaDTO {
         String id = Integer.toString(this.id);
         String idProducto = Integer.toString(this.idProducto);
         String cantidadVendida = Integer.toString(this.cantidadVendida);
-        String rutCliente = new DataValidation().getCompleteRut(this.rutCliente);
         String fecha = this.fecha.toString();
         String total = Integer.toString(this.total);
 
@@ -110,8 +111,8 @@ public class VentaDTO {
         VentaDTO c = (VentaDTO) o;
 
         return this.getIdProducto() == c.getIdProducto() && this.getCantidadVendida() == c.getCantidadVendida()
-                && this.getRutCliente() == c.getRutCliente() && this.getFecha().getTime() == c.getFecha().getTime()
-                && this.total == c.getTotal();
+                && this.getRutCliente().toLowerCase().equals(c.getRutCliente().toLowerCase())
+                && this.getFecha().getTime() == c.getFecha().getTime() && this.total == c.getTotal();
     }
     /**
      * Se encarga de obtener un hashCode para la clase en particular.
