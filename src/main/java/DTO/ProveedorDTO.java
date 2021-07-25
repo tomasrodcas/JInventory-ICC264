@@ -13,7 +13,7 @@ public class ProveedorDTO {
     /**
      * Constructor encargado de almacenar la informacion de un proveedor para su creacion o edicion
      * @param nombre nombre del proveedor
-     * @param rut rut del proveedor como entero y sin digito verificador
+     * @param rut rut del proveedor
      * @param email email del proveedor
      * @param telefono telefono del proveedor
      */
@@ -30,7 +30,7 @@ public class ProveedorDTO {
      * con su correspondiente identificador
      * @param id identificador del proveedor
      * @param nombre nombre del proveedor
-     * @param rut rut del proveedor como entero y sin digito verificador
+     * @param rut rut del proveedor
      * @param email email del proveedor
      * @param telefono telefono del proveedor
      */

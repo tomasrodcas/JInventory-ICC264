@@ -32,6 +32,7 @@ public class ClienteDAO {
     /**
      * Metodo para añadir un cliente a la BD
      * @param cliente objeto ClienteDTO que contiene la informacion del cliente
+     * @return boolean si fue exitoso o no
      */
     public boolean addCliente(ClienteDTO cliente){
         if(!checkClientExistence(cliente)){
@@ -57,6 +58,7 @@ public class ClienteDAO {
      * Metodo para editar un cliente en la BD mediante su identificador
      * @param cliente objeto ClienteDTO conteniendo la nueva informacion del cliente
      * @param id identificador del cliente
+     * @return boolean si fue exitoso o no
      */
     public boolean editClienteById(ClienteDTO cliente, int id){
         if(checkClientExistenceById(id)){
@@ -79,6 +81,7 @@ public class ClienteDAO {
     /**
      * Metodo para eliminar un cliente de la BD mediante su identificador
      * @param id identificador del cliente
+     * @return boolean si fue exitoso o no
      */
     public boolean deleteClienteById(int id){
         if(checkClientExistenceById(id)){

@@ -14,7 +14,7 @@ public class ReporteDTO {
     private final int totalUltimoMes;
     private final int total12Meses;
     private final List<Entry<ItemDTO, Integer>> itemsMasVendidos;
-    private final int ventasHoy;
+    private final ArrayList<VentaDTO> ventasHoy;
     private final int totalHoy;
 
     /**
@@ -25,10 +25,10 @@ public class ReporteDTO {
      * @param total12Meses el total ingresado en los ultimos 12 meses
      * @param itemsMasVendidos los 5 items mas vendidos de los ultimos 12 meses
      * @param ventasHoy las ventas producidas el dia de hoy
-     * @param totalHoy las ventas producidas el dia de hoy
+     * @param totalHoy el total producido el dia de hoy
      */
     public ReporteDTO(int ventasUltimoMes, ArrayList<Integer> ventas12Meses, int totalUltimoMes, int total12Meses,
-                      List<Entry<ItemDTO, Integer>> itemsMasVendidos, int ventasHoy, int totalHoy){
+                      List<Entry<ItemDTO, Integer>> itemsMasVendidos, ArrayList<VentaDTO> ventasHoy, int totalHoy){
         this.ventasUltimoMes = ventasUltimoMes;
         this.ventas12Meses = ventas12Meses;
         this.totalUltimoMes = totalUltimoMes;
@@ -53,6 +53,6 @@ public class ReporteDTO {
     public List<Entry<ItemDTO, Integer>> getItemsMasVendidos(){
         return this.itemsMasVendidos;
     }
-    public int getVentasHoy(){return this.ventasHoy;}
+    public ArrayList<VentaDTO> getVentasHoy(){return this.ventasHoy;}
     public int getTotalHoy(){return this.totalHoy;}
 }

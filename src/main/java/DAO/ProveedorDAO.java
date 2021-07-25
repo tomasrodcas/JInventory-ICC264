@@ -68,6 +68,7 @@ public class ProveedorDAO {
      * Actualiza la informacion de un proveedor en la BD mediante su identificador
      * @param id identificador del proveedor
      * @param proveedor Objeto ProveedorDTO con la informacion nueva del proveedor
+     * @return boolean si fue exitoso o no
      */
     public boolean editProveedorById(int id, ProveedorDTO proveedor) {
         try {
@@ -113,6 +114,7 @@ public class ProveedorDAO {
     /**
      * Elimina un proveedor de la base de datos mediante su identificador
      * @param id identificador del proveedor
+     * @return boolean si fue exitoso o no
      */
     public boolean deleteProveedorById(int id) {
         try {
@@ -130,6 +132,7 @@ public class ProveedorDAO {
     /**
      * Añade un proveedor a la base de datos
      * @param proveedor Objeto ProveedorDTO que contiene la informacion del proveedor
+     * @return boolean si fue exitoso o no
      */
     public boolean addProveedor(ProveedorDTO proveedor) {
         boolean existe = checkProveedorExistence(proveedor);
@@ -163,6 +166,7 @@ public class ProveedorDAO {
     /**
      * Se encarga de guardar el nuevo proveedor en la base de datos
      * @param proveedor Objeto ProveedorDTO con la informacion del proveedor
+     * @return boolean si fue exitoso o no
      */
     private boolean saveProveedorDB(ProveedorDTO proveedor) {
         try {

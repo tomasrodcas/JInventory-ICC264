@@ -3,6 +3,8 @@ package Window;
 import DAO.ItemDAO;
 import DTO.ItemDTO;
 import DAO.ReporteDAO;
+import DTO.VentaDTO;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ public class Home extends JFrame implements ActionListener {
     private JTable tablaVentasHoy;
     private JTable tablaItemsVendidos;
     private JButton totalIngresado;
+    private JButton usuariosButton;
 
     public Home(){
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,8 +38,8 @@ public class Home extends JFrame implements ActionListener {
         }catch (Exception e){
 
         }
+
         totalIngresado.setText(Integer.toString(new ReporteDAO().getReporte().getTotalHoy()));
-        System.out.println(new ReporteDAO().getReporte().getTotalHoy());
 
         Object[] nombreColumnas = {"Producto Sin Stock", "ID Producto"};
         tablaProductos1.setModel(new DefaultTableModel(null, nombreColumnas));
@@ -45,6 +48,9 @@ public class Home extends JFrame implements ActionListener {
 
         tablaItemsVendidos.setModel(new DefaultTableModel(null, new String[]{"Items Mas Vendidos"}));
         rellanarTablaMasVendidos(new ReporteDAO().getReporte().getItemsMasVendidos());
+
+        tablaVentasHoy.setModel(new DefaultTableModel(null, new String[]{"ID", "Producto", "Total"}));
+        rellenarTablaVentasHoy(new ReporteDAO().getReporte().getVentasHoy());
 
         productosButton.addActionListener(new ActionListener() {
             @Override
@@ -70,6 +76,23 @@ public class Home extends JFrame implements ActionListener {
                 VentanaProveedores ventanaProveedores = new VentanaProveedores();
             }
         });
+        actualizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                totalIngresado.setText(Integer.toString(new ReporteDAO().getReporte().getTotalHoy()));
+
+                Object[] nombreColumnas = {"Producto Sin Stock", "ID Producto"};
+                tablaProductos1.setModel(new DefaultTableModel(null, nombreColumnas));
+                rellenarTablaSinStock(new ItemDAO().getItemsSinStock());
+
+
+                tablaItemsVendidos.setModel(new DefaultTableModel(null, new String[]{"Items Mas Vendidos"}));
+                rellanarTablaMasVendidos(new ReporteDAO().getReporte().getItemsMasVendidos());
+
+                tablaVentasHoy.setModel(new DefaultTableModel(null, new String[]{"ID", "Producto", "Total"}));
+                rellenarTablaVentasHoy(new ReporteDAO().getReporte().getVentasHoy());
+            }
+        });
 
     }
 
@@ -82,12 +105,16 @@ public class Home extends JFrame implements ActionListener {
             modelo.addRow(datos);
         }
     }
-    public void rellenarTablaVentasHoy(){
+    public void rellenarTablaVentasHoy(ArrayList<VentaDTO> ventas){
+        for(VentaDTO venta : ventas){
+            DefaultTableModel modelo = (DefaultTableModel) tablaVentasHoy.getModel();
+            String[] datos = new String[]{Integer.toString(venta.getId())
+                    , venta.getNombreProducto(), Integer.toString(venta.getTotal())};
 
+            modelo.addRow(datos);
+        }
     }
-    public void rellenarTablaIngresosHoy(){
 
-    }
     public void rellanarTablaMasVendidos(List<Entry<ItemDTO, Integer>> itemsMasVendidos){
         for(Entry<ItemDTO, Integer> entry : itemsMasVendidos){
 

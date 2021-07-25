@@ -16,6 +16,10 @@ public class DataValidation {
      */
     private static final String passRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
     /**
+     * regex pattern para la validacion del rut
+     */
+    private static final String rutRegex = "^(\\d{1,3}(?:\\.\\d{3}){2}-[\\dkK])$";
+    /**
      * Valida un rut ingresado como String con puntos guion y digito verificador
      * @param rut rut ingresado como String
      * @return boolean si es valido o no
@@ -158,7 +162,8 @@ public class DataValidation {
      * @return booleano que describe si todos los datos son validos o no
      */
     public boolean clienteDTOValidation(String nombre, String email, String telefono, String rut){
-        if(nombreValidation(nombre) && validateEmail(email) && telefonoValidation(telefono) && validarRut(rut))
+        if(nombreValidation(nombre) && validateEmail(email) && telefonoValidation(telefono)
+                && validarRut(rut) && validateRutRegex(rut) )
             return true;
         else
             return false;
@@ -267,7 +272,8 @@ public class DataValidation {
      * @return booleano que describe si todos los datos son validos o no
      */
     public boolean proveedorDTOValidation(String nombre, String rut, String email, String telefono){
-        if(nombreValidation(nombre) && validarRut(rut) && validateEmail(email) && telefonoValidation(telefono))
+        if(nombreValidation(nombre) && validarRut(rut) && validateRutRegex(rut)
+                && validateEmail(email) && telefonoValidation(telefono))
             return true;
         else
             return false;
@@ -320,6 +326,19 @@ public class DataValidation {
           return true;
       else
           return false;
+    }
+
+    /**
+     * Valida mediante regex la composicion del rut, que contenga los puntos y guiones que corresponden
+     * y donde corresponden
+     * @param rut String rut a revisar
+     * @return boolean si cumple o no las condiciones
+     */
+    private boolean validateRutRegex(String rut){
+        Pattern pattern = Pattern.compile(rutRegex);
+        Matcher matcher = pattern.matcher(rut);
+
+        return matcher.matches();
     }
 
 

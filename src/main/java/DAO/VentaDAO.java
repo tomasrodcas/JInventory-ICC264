@@ -50,6 +50,7 @@ public class VentaDAO {
      * Ejecuta una venta en la base de datos
      * @param saleMaxStock realizar venta con el maximo stock en
      *                     caso de no existir el deseado
+     * @return boolean si fue exitoso o no
      */
 
     public boolean executeSale(boolean saleMaxStock){
@@ -74,6 +75,7 @@ public class VentaDAO {
 
     /**
      * Se encarga de guardar la venta en la base de datos
+     * @return boolean si fue exitoso o no
      */
     private boolean saveSaleDB(){
         try{
@@ -101,6 +103,7 @@ public class VentaDAO {
      * Edita una venta en la base de datos mediante el identificador id
      * @param id identificador de la venta a editar
      * @param infoVenta informacion nueva de la venta
+     * @return boolean si fue exitoso o no
      */
     public boolean editSaleById(int id, VentaDTO infoVenta){
         this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
@@ -208,6 +211,7 @@ public class VentaDAO {
     /**
      * Elimina una venta de la BD mediante su identificador id
      * @param id identificador de la venta
+     * @return boolean si fue exitoso o no
      */
 
     public boolean deleteSaleById(int id){

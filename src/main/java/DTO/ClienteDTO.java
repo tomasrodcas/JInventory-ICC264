@@ -18,7 +18,7 @@ public class ClienteDTO {
      * @param nombre nombre del cliente
      * @param email email del cliente
      * @param telefono telefono del cliente
-     * @param rut rut del cliente (como entero y sin digito verificador)
+     * @param rut rut del cliente
      */
     public ClienteDTO(String nombre, String email, int telefono, String rut){
         this.id = -1;

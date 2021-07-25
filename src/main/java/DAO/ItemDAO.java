@@ -29,6 +29,7 @@ public class ItemDAO {
     /**
      * Se encarga de añadir un item a la base de datos
      * @param item Objeto ItemDTO que contiene la informacion del item
+     * @return boolean si fue exitoso o no
      */
     public boolean addItem(ItemDTO item){
         boolean existe = checkItemExistence(item);
@@ -140,6 +141,7 @@ public class ItemDAO {
      * Actualiza la informacion de un item mediante su identificador
      * @param id Identificador del item
      * @param item Objeto ItemDTO que contiene la informacion del item
+     * @return boolean si fue exitoso o no
      */
     public boolean editItemById(int id, ItemDTO item){
         if(checkItemExistenceById(id)){
@@ -187,6 +189,7 @@ public class ItemDAO {
      * este queda en 0)
      * @param id identificador del item
      * @param cantidad cantidad a añadir o substraer del stock
+     * @return boolean si fue exitoso o no
      */
     public boolean updateStock(int id, int cantidad){
 
@@ -210,6 +213,7 @@ public class ItemDAO {
     /**
      * Elimina un item mediante su identificador id
      * @param id identificador del item
+     * @return boolean si fue exitoso o no
      */
     public boolean deleteItemById(int id){
         if(checkItemExistenceById(id)){

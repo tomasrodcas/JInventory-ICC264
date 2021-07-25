@@ -29,6 +29,7 @@ public class UsuarioDAO {
     /**
      * Añade un usuario a la base de datos
      * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     * @return boolean si fue exitoso o no
      */
     public boolean addUser(UsuarioDTO usuario){
         if(checkUserExistence(usuario)){
@@ -91,6 +92,7 @@ public class UsuarioDAO {
      * Edita un usuario en la base de datos mediante su identificador
      * @param id identificador del usuario
      * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     * @return boolean si fue exitoso o no
      */
     public boolean editUserById(int id, UsuarioDTO usuario){
         if(checkUserExistenceById(id)) {
@@ -113,6 +115,7 @@ public class UsuarioDAO {
     /**
      * Elimina un usuario de la base de datos mediante su identificador
      * @param id identificador del usuario
+     * @return boolean si fue exitoso o no
      */
     public boolean deleteUserById(int id){
         if(checkUserExistenceById(id)){

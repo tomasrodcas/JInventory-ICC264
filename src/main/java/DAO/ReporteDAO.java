@@ -24,7 +24,7 @@ public class ReporteDAO {
     private final List<Entry<ItemDTO, Integer>> mostSaledItems;
     private int totalUltimoMes;
     private int totalUltimos12Meses;
-    private final int ventasHoy;
+    private final ArrayList<VentaDTO> ventasHoy;
     private int totalHoy;
 
     /**
@@ -58,8 +58,14 @@ public class ReporteDAO {
             }
         return items;
     }
-    private int getSalesToday(){
-        int salesToday = 0;
+
+    /**
+     * Obtiene un ArrayList de VentaDTO que contiene todas las ventas
+     * realizadas el mismo dia de la revision
+     * @return ArrayList de VentasDTO con las ventas del dia
+     */
+    private ArrayList<VentaDTO> getSalesToday(){
+        ArrayList<VentaDTO> ventasHoy = new ArrayList<>();
 
         int[] fechaActual = getTodaysDate();
         int diaActual = fechaActual[0];
@@ -74,12 +80,17 @@ public class ReporteDAO {
             int year = fechaVenta[2];
 
             if(year == yearActual && month == mesActual && day == diaActual){
-                salesToday += 1;
+                ventasHoy.add(venta);
                 this.totalHoy += venta.getTotal();
             }
         }
-        return salesToday;
+        return ventasHoy;
     }
+
+    /**
+     * Consigue la fecha del dia de hoy como array de enteros
+     * @return array entero con dia, mes y año
+     */
     private int[] getTodaysDate(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
