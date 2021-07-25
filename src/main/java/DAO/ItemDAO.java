@@ -227,6 +227,18 @@ public class ItemDAO {
         return false;
     }
 
+    public ArrayList<ItemDTO> getItemsSinStock(){
+        ArrayList<ItemDTO> itemsSinStock = new ArrayList<>();
+        ArrayList<ItemDTO> items = getItemsDB();
+
+        for(ItemDTO item : items){
+            if(item.getCantidad() == 0){
+                itemsSinStock.add(item);
+            }
+        }
+        return itemsSinStock;
+    }
+
 
 
 }

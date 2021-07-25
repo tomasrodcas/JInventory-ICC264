@@ -14,6 +14,8 @@ public class ReporteDTO {
     private final int totalUltimoMes;
     private final int total12Meses;
     private final List<Entry<ItemDTO, Integer>> itemsMasVendidos;
+    private final int ventasHoy;
+    private final int totalHoy;
 
     /**
      * Constructor de la clase que recibe toda la informacion del reporte a almacenar
@@ -22,14 +24,18 @@ public class ReporteDTO {
      * @param totalUltimoMes el total del ultimo mes ingresado
      * @param total12Meses el total ingresado en los ultimos 12 meses
      * @param itemsMasVendidos los 5 items mas vendidos de los ultimos 12 meses
+     * @param ventasHoy las ventas producidas el dia de hoy
+     * @param totalHoy las ventas producidas el dia de hoy
      */
     public ReporteDTO(int ventasUltimoMes, ArrayList<Integer> ventas12Meses, int totalUltimoMes, int total12Meses,
-                      List<Entry<ItemDTO, Integer>> itemsMasVendidos){
+                      List<Entry<ItemDTO, Integer>> itemsMasVendidos, int ventasHoy, int totalHoy){
         this.ventasUltimoMes = ventasUltimoMes;
         this.ventas12Meses = ventas12Meses;
         this.totalUltimoMes = totalUltimoMes;
         this.total12Meses = total12Meses;
         this.itemsMasVendidos = itemsMasVendidos;
+        this.ventasHoy = ventasHoy;
+        this.totalHoy = totalHoy;
     }
 
     public int getVentasUltimoMes(){
@@ -47,4 +53,6 @@ public class ReporteDTO {
     public List<Entry<ItemDTO, Integer>> getItemsMasVendidos(){
         return this.itemsMasVendidos;
     }
+    public int getVentasHoy(){return this.ventasHoy;}
+    public int getTotalHoy(){return this.totalHoy;}
 }

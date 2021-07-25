@@ -39,9 +39,9 @@ public class VentanaVentas extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
 
-                String idProducto = IDVenta.getText();
-                String cantidad = IDProductotextField.getText();
-                String rut = CantidadTextField.getText();
+                String idProducto = IDProductotextField.getText();
+                String cantidad = CantidadTextField.getText();
+                String rut = RutTextField.getText();
 
                 if(new DataValidation().ventaDTOValidation(idProducto, cantidad, rut)){
                     boolean vendido = new VentaDAO(new VentaDTO(Integer.parseInt(idProducto),
@@ -50,6 +50,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
                         IDVenta.setText("");
                         IDProductotextField.setText("");
                         CantidadTextField.setText("");
+                        RutTextField.setText("");
 
                         tablaVentas.setModel(new DefaultTableModel(null,columnas));
                         rellenarTabla(new VentaDAO().getVentasDB());
@@ -62,14 +63,14 @@ public class VentanaVentas extends JFrame implements ActionListener {
                 }
             }
         });
-        agregarButton.addActionListener(new ActionListener() {
+        editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
                 String idVenta = IDVenta.getText();
                 String idProducto = IDProductotextField.getText();
-                String cantidad = IDProductotextField.getText();
-                String rut = CantidadTextField.getText();
+                String cantidad = CantidadTextField.getText();
+                String rut = RutTextField.getText();
 
                 if(new DataValidation().idValidation(idVenta)){
                     if(new DataValidation().ventaDTOValidation(idProducto, cantidad, rut)){
@@ -80,6 +81,7 @@ public class VentanaVentas extends JFrame implements ActionListener {
                             IDVenta.setText("");
                             IDProductotextField.setText("");
                             CantidadTextField.setText("");
+                            RutTextField.setText("");
 
                             tablaVentas.setModel(new DefaultTableModel(null,columnas));
                             rellenarTabla(new VentaDAO().getVentasDB());
