@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * Clase encargada de almacenar la informacion del reporte
+ */
 public class ReporteDTO {
 
     private final int ventasUltimoMes;
@@ -11,14 +14,28 @@ public class ReporteDTO {
     private final int totalUltimoMes;
     private final int total12Meses;
     private final List<Entry<ItemDTO, Integer>> itemsMasVendidos;
+    private final ArrayList<VentaDTO> ventasHoy;
+    private final int totalHoy;
 
+    /**
+     * Constructor de la clase que recibe toda la informacion del reporte a almacenar
+     * @param ventasUltimoMes ventas del ultimo mes
+     * @param ventas12Meses ventas de los ultimos 12 meses
+     * @param totalUltimoMes el total del ultimo mes ingresado
+     * @param total12Meses el total ingresado en los ultimos 12 meses
+     * @param itemsMasVendidos los 5 items mas vendidos de los ultimos 12 meses
+     * @param ventasHoy las ventas producidas el dia de hoy
+     * @param totalHoy el total producido el dia de hoy
+     */
     public ReporteDTO(int ventasUltimoMes, ArrayList<Integer> ventas12Meses, int totalUltimoMes, int total12Meses,
-                      List<Entry<ItemDTO, Integer>> itemsMasVendidos){
+                      List<Entry<ItemDTO, Integer>> itemsMasVendidos, ArrayList<VentaDTO> ventasHoy, int totalHoy){
         this.ventasUltimoMes = ventasUltimoMes;
         this.ventas12Meses = ventas12Meses;
         this.totalUltimoMes = totalUltimoMes;
         this.total12Meses = total12Meses;
         this.itemsMasVendidos = itemsMasVendidos;
+        this.ventasHoy = ventasHoy;
+        this.totalHoy = totalHoy;
     }
 
     public int getVentasUltimoMes(){
@@ -36,4 +53,6 @@ public class ReporteDTO {
     public List<Entry<ItemDTO, Integer>> getItemsMasVendidos(){
         return this.itemsMasVendidos;
     }
+    public ArrayList<VentaDTO> getVentasHoy(){return this.ventasHoy;}
+    public int getTotalHoy(){return this.totalHoy;}
 }

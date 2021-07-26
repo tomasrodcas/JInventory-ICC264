@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProveedorDTOTest {
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
         String[][] arrays = {{"1","Tomas", "123124", "email@email.com","12231"}, {"1","Alejandro", "123", "a@a.com", "1232"},
@@ -32,5 +32,5 @@ class ProveedorDTOTest {
         int ruts[] = {};
         String[] emails = {};
         int[] telefonos = {};
-    }
+    }*/
 }

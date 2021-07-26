@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class VentaDAOTest {
 
-    @Order(1)
+    /*@Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
     void executeSale(int i) {
@@ -112,5 +112,5 @@ class VentaDAOTest {
         new VentaDAO(ventasDB.get(0)).deleteSaleById(id);
         assertNull(new VentaDAO().getVentaById(id));
 
-    }
+    }*/
 }
