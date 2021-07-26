@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProveedorDAOTest {
 
 
-    @Order(1)
+   /* @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
     void addProveedor(int i) {
@@ -101,5 +101,5 @@ class ProveedorDAOTest {
 
     }
 
-
+*/
 }

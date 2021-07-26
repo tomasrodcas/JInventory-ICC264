@@ -3,6 +3,7 @@ package Window;
 
 import DAO.VentaDAO;
 import DTO.VentaDTO;
+import Utils.DataValidation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +16,12 @@ public class VentanaVentas extends JFrame implements ActionListener {
     private JPanel panel1;
     private JTable tablaVentas;
     private JButton agregarButton;
+    private JTextField IDVenta;
     private JTextField IDProductotextField;
-    private JTextField CantidadtextField;
-    private JTextField RUTtextField;
+    private JTextField CantidadTextField;
     private JButton eliminarVentaButton;
+    private JTextField RutTextField;
+    private JButton editarButton;
 
     public VentanaVentas(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -27,33 +30,91 @@ public class VentanaVentas extends JFrame implements ActionListener {
         this.setTitle("Ventas");
         this.setVisible(true);
         Object[] columnas = {"ID Venta","ID Producto","Nombre Producto","Cantidad","Total","RUT Cliente","Fecha"};
+
         tablaVentas.setModel(new DefaultTableModel(null,columnas));
         rellenarTabla(new VentaDAO().getVentasDB());
+
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
-                new VentaDAO(new VentaDTO(Integer.parseInt(IDProductotextField.getText()),Integer.parseInt(CantidadtextField.getText())
-                        ,Integer.parseInt(RUTtextField.getText()),new Date())).executeSale(true);
-                IDProductotextField.setText("");
-                CantidadtextField.setText("");
-                RUTtextField.setText("");
 
-                tablaVentas.setModel(new DefaultTableModel(null,columnas));
-                rellenarTabla(new VentaDAO().getVentasDB());
+                String idProducto = IDProductotextField.getText();
+                String cantidad = CantidadTextField.getText();
+                String rut = RutTextField.getText();
+
+                if(new DataValidation().ventaDTOValidation(idProducto, cantidad, rut)){
+                    boolean vendido = new VentaDAO(new VentaDTO(Integer.parseInt(idProducto),
+                            Integer.parseInt(cantidad),rut,new Date())).executeSale(true);
+                    if(vendido){
+                        IDVenta.setText("");
+                        IDProductotextField.setText("");
+                        CantidadTextField.setText("");
+                        RutTextField.setText("");
+
+                        tablaVentas.setModel(new DefaultTableModel(null,columnas));
+                        rellenarTabla(new VentaDAO().getVentasDB());
+                        JOptionPane.showMessageDialog(null,"Venta Exitosa!");
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Error al generar venta!");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null,"Datos invalidos!");
+                }
             }
         });
+        editarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+                String idVenta = IDVenta.getText();
+                String idProducto = IDProductotextField.getText();
+                String cantidad = CantidadTextField.getText();
+                String rut = RutTextField.getText();
+
+                if(new DataValidation().idValidation(idVenta)){
+                    if(new DataValidation().ventaDTOValidation(idProducto, cantidad, rut)){
+                        boolean vendido = new VentaDAO().editSaleById(Integer.parseInt(idVenta),
+                                new VentaDTO(Integer.parseInt(idProducto),
+                                Integer.parseInt(cantidad),rut,new Date()));
+                        if(vendido){
+                            IDVenta.setText("");
+                            IDProductotextField.setText("");
+                            CantidadTextField.setText("");
+                            RutTextField.setText("");
+
+                            tablaVentas.setModel(new DefaultTableModel(null,columnas));
+                            rellenarTabla(new VentaDAO().getVentasDB());
+                            JOptionPane.showMessageDialog(null,"Editado Exitosamente!");
+                        }else{
+                            JOptionPane.showMessageDialog(null,"Error al editar la venta!");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Datos invalidos!");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null,"ID Invalido!");
+                }
+            }
+        });
+
         tablaVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         eliminarVentaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tablaVentas.getSelectedRow() != -1){
                     DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
-                    new VentaDAO().deleteSaleById(Integer.parseInt((String) modelo.getValueAt(
+                    boolean eliminado = new VentaDAO().deleteSaleById(Integer.parseInt((String) modelo.getValueAt(
                             tablaVentas.getSelectedRow(),0)));
-                    modelo.removeRow(tablaVentas.getSelectedRow());
-                    tablaVentas.setModel(new DefaultTableModel(null,columnas));
-                    rellenarTabla(new VentaDAO().getVentasDB());
+
+                    if(eliminado){
+                        tablaVentas.setModel(new DefaultTableModel(null,columnas));
+                        rellenarTabla(new VentaDAO().getVentasDB());
+                        JOptionPane.showMessageDialog(null,"Eliminado correctamente!");
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Error al eliminar!");
+                    }
+
 
                 }
             }

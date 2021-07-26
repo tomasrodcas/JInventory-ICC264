@@ -29,11 +29,10 @@ public class UsuarioDAO {
     /**
      * Añade un usuario a la base de datos
      * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     * @return boolean si fue exitoso o no
      */
-    public void addUser(UsuarioDTO usuario){
-        if(checkUserExistence(usuario)){
-            System.out.println("El usuario ya existe");
-        }else{
+    public boolean addUser(UsuarioDTO usuario){
+        if(!checkUserExistence(usuario)){
             try{
                 String query = "INSERT INTO usuarios VALUES (null, ?,?,?,?)";
                 pstmt = con.prepareStatement(query);
@@ -48,6 +47,8 @@ public class UsuarioDAO {
                 
                 if(!loginAttemptsAdded){
                     deleteUserById(id);
+                }else{
+                    return true;
                 }
 
             }catch(SQLException e){
@@ -55,6 +56,7 @@ public class UsuarioDAO {
             }
 
         }
+        return false;
     }
 
     /**
@@ -88,42 +90,44 @@ public class UsuarioDAO {
      * Edita un usuario en la base de datos mediante su identificador
      * @param id identificador del usuario
      * @param usuario Objeto UsuarioDTO que contiene la informacion del usuario
+     * @return boolean si fue exitoso o no
      */
-    public void editUserById(int id, UsuarioDTO usuario){
-        if(checkUserExistenceById(id)){
-            try{
-                String query = "UPDATE usuarios SET nombre=?, usuario=?, password=? WHERE id='"+id+"'";
+    public boolean editUserById(int id, UsuarioDTO usuario){
+        if(checkUserExistenceById(id)) {
+            try {
+                String query = "UPDATE usuarios SET nombre=?, usuario=?, password=? WHERE id='" + id + "'";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, usuario.getNombre());
                 pstmt.setString(2, usuario.getUsuario());
                 pstmt.setString(3, usuario.getPassword());
-                pstmt.executeUpdate();
 
-            }catch(SQLException e){
+
+                return true;
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }else{
-            System.out.println("El usuario no existe");
         }
+        return false;
     }
 
     /**
      * Elimina un usuario de la base de datos mediante su identificador
      * @param id identificador del usuario
+     * @return boolean si fue exitoso o no
      */
-    public void deleteUserById(int id){
+    public boolean deleteUserById(int id){
         if(checkUserExistenceById(id)){
             try{
                 String query = "DELETE FROM usuarios WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();
+
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
-        else{
-            System.out.println("El usuario no existe");
-        }
+        return false;
     }
 
     /**

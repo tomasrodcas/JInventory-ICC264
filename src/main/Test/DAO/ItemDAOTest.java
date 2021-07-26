@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ItemDAOTest {
 
-    @Order(1)
+   /* @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
     void addItem(int i) {
@@ -103,5 +103,5 @@ class ItemDAOTest {
         }
         assertNull(new ItemDAO().getItemById(id));
 
-    }
+    }*/
 }

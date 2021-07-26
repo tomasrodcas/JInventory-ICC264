@@ -7,7 +7,8 @@ public class ItemDTO {
     private final String nombre;
     private final int cantidad;
     private final int precio;
-    private final int proveedor;
+    private final int idProveedor;
+    private final String rutProveedor;
     private final String marca;
     private final int id;
 
@@ -16,16 +17,17 @@ public class ItemDTO {
      * @param nombre nombre del producto
      * @param cantidad cantidad almacenada del producto
      * @param precio precio del producto
-     * @param proveedor proveedor del producto (Rut entero sin digito verificador)
+     * @param idProveedor identificador del proveedor del producto
      * @param marca marca del producto
      */
-    public ItemDTO(String nombre, int cantidad, int precio, int proveedor, String marca) {
+    public ItemDTO(String nombre, int cantidad, int precio, int idProveedor, String marca) {
         this.id = -1;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.precio = precio;
-        this.proveedor = proveedor;
+        this.idProveedor = idProveedor;
         this.marca = marca;
+        this.rutProveedor = "";
     }
 
     /**
@@ -35,15 +37,18 @@ public class ItemDTO {
      * @param nombre nombre del producto
      * @param cantidad cantidad almacenada del producto
      * @param precio precio del producto
-     * @param proveedor proveedor del producto (Rut entero sin digito verificador)
+     * @param idProveedor identificador del proveedor del producto
+     * @param rutProveedor Rut del proveedor del producto
      * @param marca marca del producto
      */
-    public ItemDTO(int id, String nombre, int cantidad, int precio, int proveedor, String marca){
+    public ItemDTO(int id, String nombre, int cantidad, int precio, int idProveedor,
+                   String rutProveedor, String marca){
         this.id = id;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.precio = precio;
-        this.proveedor = proveedor;
+        this.idProveedor = idProveedor;
+        this.rutProveedor = rutProveedor;
         this.marca = marca;
     }
 
@@ -54,9 +59,10 @@ public class ItemDTO {
     public int getCantidad() {
         return this.cantidad;
     }
-    public int getProveedor(){
-        return this.proveedor;
+    public int getIdProveedor(){
+        return this.idProveedor;
     }
+    public String getRutProveedor(){return this.rutProveedor;}
     public int getPrecio() {
         return this.precio;
     }
@@ -75,8 +81,7 @@ public class ItemDTO {
         String id = Integer.toString(this.id);
         String cantidad = Integer.toString(this.cantidad);
         String precio = Integer.toString(this.precio);
-        String proveedor = Integer.toString(this.proveedor);
-        return new String[]{id, this.nombre,cantidad, precio, proveedor, this.marca};
+        return new String[]{id, this.nombre,cantidad, precio, rutProveedor, this.marca};
     }
 
     /**
@@ -95,7 +100,7 @@ public class ItemDTO {
         ItemDTO c = (ItemDTO) o;
 
         return this.getNombre().toLowerCase().equals(c.getNombre().toLowerCase()) && this.getCantidad() == c.getCantidad()
-                && this.getProveedor() == c.getProveedor() && this.getPrecio() == c.getPrecio()
+                && this.getIdProveedor() == c.getIdProveedor() && this.getPrecio() == c.getPrecio()
                 && this.getMarca().toLowerCase().equals(c.getMarca().toLowerCase());
     }
     /**

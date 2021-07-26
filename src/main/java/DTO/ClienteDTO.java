@@ -10,7 +10,7 @@ public class ClienteDTO {
     private final String nombre;
     private final String email;
     private final int telefono;
-    private final int rut;
+    private final String rut;
     private final int id;
 
     /**
@@ -18,9 +18,9 @@ public class ClienteDTO {
      * @param nombre nombre del cliente
      * @param email email del cliente
      * @param telefono telefono del cliente
-     * @param rut rut del cliente (como entero y sin digito verificador)
+     * @param rut rut del cliente
      */
-    public ClienteDTO(String nombre, String email, int telefono, int rut){
+    public ClienteDTO(String nombre, String email, int telefono, String rut){
         this.id = -1;
         this.nombre = nombre;
         this.email = email;
@@ -38,7 +38,7 @@ public class ClienteDTO {
      * @param telefono telefono del cliente
      * @param rut rut del cliente
      */
-    public ClienteDTO(int id, String nombre, String email, int telefono, int rut){
+    public ClienteDTO(int id, String nombre, String email, int telefono, String rut){
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -54,7 +54,7 @@ public class ClienteDTO {
     public int getTelefono(){
         return this.telefono;
     }
-    public int getRut(){
+    public String getRut(){
         return this.rut;
     }
     public int getId(){return this.id;}
@@ -66,7 +66,6 @@ public class ClienteDTO {
     public String[] toArray(){
         String id = Integer.toString(this.id);
         String telefono = Integer.toString(this.telefono);
-        String rut = Integer.toString(this.rut);
 
         return new String[]{id, nombre, email, telefono, rut};
     }
@@ -88,10 +87,10 @@ public class ClienteDTO {
 
         return this.getNombre().toLowerCase().equals(c.getNombre().toLowerCase())
                 && this.getEmail().toLowerCase().equals(c.getEmail().toLowerCase())
-                && this.getRut() == c.getRut() && this.getTelefono() == c.getTelefono();
+                && this.getRut().toLowerCase().equals(c.getRut().toLowerCase())
+                && this.getTelefono() == c.getTelefono();
 
     }
-
     /**
      * Se encarga de obtener un hashCode para la clase en particular.
      * @return el hashcode generado

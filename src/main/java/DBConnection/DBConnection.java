@@ -17,14 +17,13 @@ public class DBConnection {
      * @return Connection o null en error.
      */
     public Connection getConnection() {
-        Connection con;
+        Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(URL,"root", "");
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            return null;
         }
         return con;
     }

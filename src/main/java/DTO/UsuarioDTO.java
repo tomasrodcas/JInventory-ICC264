@@ -29,6 +29,7 @@ public class UsuarioDTO {
 
     }
 
+
     /**
      * Constructor encargado de recibir un usuario desde la base de datos, posee identificador, intentos fallidos de login
      * y el tipo de usuario al que corresponde

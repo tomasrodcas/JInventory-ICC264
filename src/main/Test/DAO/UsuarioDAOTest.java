@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UsuarioDAOTest {
 
-    @Order(1)
+   /* @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2})
     void addUser(int i) {
@@ -91,5 +91,5 @@ class UsuarioDAOTest {
             assertEquals(usuario, usuariosDB.get(i));
         }
 
-    }
+    }*/
 }
