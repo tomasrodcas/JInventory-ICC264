@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class VentanaUsusarios extends JFrame implements ActionListener {
+public class VentanaUsuarios extends JFrame implements ActionListener {
 
 
     private JPanel panel1;
@@ -25,7 +25,7 @@ public class VentanaUsusarios extends JFrame implements ActionListener {
     private JButton eliminarUsuarioButton;
     private JButton editarUsuarioButton;
 
-    public VentanaUsusarios(){
+    public VentanaUsuarios(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setContentPane(panel1);
         this.pack();
