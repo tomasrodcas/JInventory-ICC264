@@ -32,6 +32,7 @@ public class Grafica extends JFrame {
         for (Integer venta : ventasAnuales) {
             data = new DefaultCategoryDataset();
             data.addValue(venta, "Ventas del mes " + i, "Mes " + i);
+            i++;
 
         }
 
