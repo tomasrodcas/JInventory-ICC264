@@ -97,7 +97,13 @@ public class Home extends JFrame implements ActionListener {
         usuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VentanaUsusarios ventanaUsusarios = new VentanaUsusarios();
+                VentanaUsuarios ventanaUsuarios= new VentanaUsuarios();
+            }
+        });
+        reportesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
 
