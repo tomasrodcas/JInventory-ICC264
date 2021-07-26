@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class VentanaProveedores extends JFrame implements ActionListener {
 
-
     private JPanel panel1;
     private JTextField idTextField;
     private JTextField nombreTextField;
@@ -104,7 +103,6 @@ public class VentanaProveedores extends JFrame implements ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(null,"ID Invalido!");
                 }
-
             }
         });
 
@@ -134,7 +132,6 @@ public class VentanaProveedores extends JFrame implements ActionListener {
             DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
             String[] dato = proveedor.toArray();
             modelo.addRow(dato);
-
         }
     }
 

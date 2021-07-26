@@ -26,7 +26,6 @@ public class Login extends JFrame implements ActionListener {
                 char[] passwordChars = passwordField1.getPassword();
                 String password = String.valueOf(passwordChars);
                 if(new LoginDAO().login(new LoginDTO(usuario, password))){
-                    System.out.println("Logueado");
                     Home home = new Home();
                     dispose();
                 }else{

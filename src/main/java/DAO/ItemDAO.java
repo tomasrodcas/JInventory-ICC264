@@ -146,7 +146,7 @@ public class ItemDAO {
     public boolean editItemById(int id, ItemDTO item){
         if(checkItemExistenceById(id)){
             try{
-                String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, rut_proveedor=?, marca=? WHERE id='"+id+"'";
+                String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, id_proveedor=?, marca=? WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, item.getNombre());
                 pstmt.setInt(2, item.getCantidad());

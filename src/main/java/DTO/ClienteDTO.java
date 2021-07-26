@@ -91,7 +91,6 @@ public class ClienteDTO {
                 && this.getTelefono() == c.getTelefono();
 
     }
-
     /**
      * Se encarga de obtener un hashCode para la clase en particular.
      * @return el hashcode generado

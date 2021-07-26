@@ -33,7 +33,6 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
-
     /**
      * Se encarga de crear la conexion a la base de datos con DBConnection
      */
@@ -45,7 +44,6 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
-
     /**
      * Ejecuta una venta en la base de datos
      * @param saleMaxStock realizar venta con el maximo stock en
@@ -91,6 +89,7 @@ public class VentaDAO {
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
+
             return true;
         }catch(SQLException e){
             e.printStackTrace();
@@ -110,7 +109,7 @@ public class VentaDAO {
 
         try{
 
-            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, rut_cliente=?, fecha=? " +
+            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, id_cliente=?, fecha=? " +
                     "WHERE id='"+id+"'";
             pstmt = (PreparedStatement) con.prepareStatement(query);
             int total = this.item.getPrecio()*infoVenta.getCantidadVendida();
@@ -161,7 +160,6 @@ public class VentaDAO {
         }
         return rsIntoArrayList(rs);
     }
-
     /**
      * Transforma el ResultSet de todas las ventas a un ArrayList de VentaDTO que contiene la informacion de todas las ventas
      * @param rs
@@ -204,7 +202,6 @@ public class VentaDAO {
         }catch(SQLException e){
             e.printStackTrace();
         }
-
         return venta;
     }
 
@@ -215,6 +212,7 @@ public class VentaDAO {
      */
 
     public boolean deleteSaleById(int id){
+
         if(checkSaleExistenceById(id)){
 
             this.venta = getVentaById(id);
@@ -229,7 +227,6 @@ public class VentaDAO {
             }catch(SQLException e){
                 e.printStackTrace();
             }
-
         }
         return false;
     }

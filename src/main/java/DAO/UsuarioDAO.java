@@ -32,9 +32,7 @@ public class UsuarioDAO {
      * @return boolean si fue exitoso o no
      */
     public boolean addUser(UsuarioDTO usuario){
-        if(checkUserExistence(usuario)){
-            System.out.println("El usuario ya existe");
-        }else{
+        if(!checkUserExistence(usuario)){
             try{
                 String query = "INSERT INTO usuarios VALUES (null, ?,?,?,?)";
                 pstmt = con.prepareStatement(query);
