@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClienteDTOTest {
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
         String[][] arrays = {{"1","Tomas", "email@email.com", "123124", "12231"}, {"1","Alejandro", "a@a.com", "123", "1232"},
@@ -44,5 +44,5 @@ class ClienteDTOTest {
 
         assertEquals(resultadosEsperados[i], cliente1.equals(cliente2));
 
-    }
+    }*/
 }

@@ -32,34 +32,35 @@ public class ClienteDAO {
     /**
      * Metodo para añadir un cliente a la BD
      * @param cliente objeto ClienteDTO que contiene la informacion del cliente
+     * @return boolean si fue exitoso o no
      */
-    public void addCliente(ClienteDTO cliente){
-        if(checkClientExistence(cliente)){
-            System.out.println("El usuario ya existe");
-        }
-        else{
+    public boolean addCliente(ClienteDTO cliente){
+        if(!checkClientExistence(cliente)){
             try{
                 String query = "INSERT INTO clientes VALUES (null, ?,?,?,?) ";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, cliente.getNombre());
-                pstmt.setInt(2, cliente.getRut());
+                pstmt.setString(2, cliente.getRut());
                 pstmt.setString(3, cliente.getEmail());
                 pstmt.setInt(4, cliente.getTelefono());
 
                 pstmt.executeUpdate();
 
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     /**
      * Metodo para editar un cliente en la BD mediante su identificador
      * @param cliente objeto ClienteDTO conteniendo la nueva informacion del cliente
      * @param id identificador del cliente
+     * @return boolean si fue exitoso o no
      */
-    public void editClienteById(ClienteDTO cliente, int id){
+    public boolean editClienteById(ClienteDTO cliente, int id){
         if(checkClientExistenceById(id)){
             try{
                 String query = "UPDATE clientes SET nombre=?, email=?, telefono=?, rut=? WHERE id='"+id+"'";
@@ -67,31 +68,34 @@ public class ClienteDAO {
                 pstmt.setString(1, cliente.getNombre());
                 pstmt.setString(2, cliente.getEmail());
                 pstmt.setInt(3, cliente.getTelefono());
-                pstmt.setInt(4, cliente.getRut());
+                pstmt.setString(4, cliente.getRut());
                 pstmt.executeUpdate();
-
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
-                System.out.println("El cliente no existe");
             }
         }
+        return false;
     }
 
     /**
      * Metodo para eliminar un cliente de la BD mediante su identificador
      * @param id identificador del cliente
+     * @return boolean si fue exitoso o no
      */
-    public void deleteClienteById(int id){
+    public boolean deleteClienteById(int id){
         if(checkClientExistenceById(id)){
             try{
                 String query = "DELETE FROM clientes WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();
+                return true;
             }catch(SQLException e){
                 System.out.println("El usuario no existe");
                 e.printStackTrace();
             }
         }
+        return false;
 
     }
 
@@ -124,7 +128,7 @@ public class ClienteDAO {
         try{
             while(rs.next()){
                 array.add(new ClienteDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("email"),
-                        rs.getInt("telefono"), rs.getInt("rut")));
+                        rs.getInt("telefono"), rs.getString("rut")));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -147,7 +151,7 @@ public class ClienteDAO {
                 rs.next();
                 String nombre = rs.getString("nombre");
                 String email = rs.getString("email");
-                int rut = rs.getInt("rut");
+                String rut = rs.getString("rut");
                 int telefono = rs.getInt("telefono");
                 cliente =  new ClienteDTO(id, nombre, email, telefono, rut);
             }catch(SQLException e){
@@ -191,7 +195,7 @@ public class ClienteDAO {
             pstmt.setString(1, cliente.getNombre());
             pstmt.setString(2, cliente.getEmail());
             pstmt.setInt(3, cliente.getTelefono());
-            pstmt.setInt(4, cliente.getRut());
+            pstmt.setString(4, cliente.getRut());
 
             rs = pstmt.executeQuery();
             if(rs.next()){
@@ -208,7 +212,7 @@ public class ClienteDAO {
      * @param rut rut del cliente guardado en la base de datos
      * @return Objeto ClienteDTO con la informacion del cliente
      */
-    public ClienteDTO getClienteByRut(int rut){
+    public ClienteDTO getClienteByRut(String rut){
         ClienteDTO cliente = null;
 
         try{

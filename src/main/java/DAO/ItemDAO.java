@@ -29,14 +29,28 @@ public class ItemDAO {
     /**
      * Se encarga de añadir un item a la base de datos
      * @param item Objeto ItemDTO que contiene la informacion del item
+     * @return boolean si fue exitoso o no
      */
-    public void addItem(ItemDTO item){
+    public boolean addItem(ItemDTO item){
         boolean existe = checkItemExistence(item);
-        if(existe){
-            System.out.println("El item ya existe!");
-        }else{
-            saveItemDB(item);
+
+        if(!existe){
+
+            try{
+                String query = "INSERT INTO items VALUES(NULL, ?,?,?,?,?)";
+                pstmt = (PreparedStatement) con.prepareStatement(query);
+                pstmt.setString(1, item.getNombre());
+                pstmt.setInt(2, item.getCantidad());
+                pstmt.setInt(3, item.getPrecio());
+                pstmt.setString(4, item.getMarca());
+                pstmt.setInt(5, item.getIdProveedor());
+                pstmt.executeUpdate();
+                return true;
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
         }
+        return false;
     }
 
     /**
@@ -48,7 +62,7 @@ public class ItemDAO {
         boolean existe = false;
         try{
             String query = "SELECT * FROM items WHERE nombre='"+item.getNombre()+"' AND precio='"+item.getPrecio()+"' AND " +
-                    "cantidad='"+item.getCantidad()+"' AND marca='"+item.getMarca()+"' AND rut_proveedor='"+item.getProveedor()+"'";
+                    "cantidad='"+item.getCantidad()+"' AND marca='"+item.getMarca()+"' AND id_proveedor='"+item.getIdProveedor()+"'";
             rs=stmt.executeQuery(query);
             if(rs.next()){
                 existe = true;
@@ -59,26 +73,6 @@ public class ItemDAO {
             e.printStackTrace();
         }
         return existe;
-    }
-
-    /**
-     * Guarda el nuevo item en la base de datos
-     * @param item Objeto ItemDTO con la informacion del item
-     */
-    private void saveItemDB(ItemDTO item){
-        try{
-            String query = "INSERT INTO items VALUES(NULL, ?,?,?,?,?)";
-            pstmt = (PreparedStatement) con.prepareStatement(query);
-            pstmt.setString(1, item.getNombre());
-            pstmt.setInt(2, item.getCantidad());
-            pstmt.setInt(3, item.getPrecio());
-            pstmt.setString(4, item.getMarca());
-            pstmt.setInt(5, item.getProveedor());
-            pstmt.executeUpdate();
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -97,8 +91,9 @@ public class ItemDAO {
             int precio = rs.getInt("precio");
             int cantidad = rs.getInt("cantidad");
             String marca = rs.getString("marca");
-            int rutProveedor =  new ProveedorDAO().getProveedorById(rs.getInt("id_proveedor")).getRut();
-            item = new ItemDTO(id, nombre, cantidad, precio, rutProveedor, marca);
+            String rutProveedor =  rs.getString("p.rut");
+            int idProveedor = rs.getInt("p.id");
+            item = new ItemDTO(id, nombre, cantidad, precio, idProveedor, rutProveedor, marca);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -131,8 +126,10 @@ public class ItemDAO {
         ArrayList<ItemDTO> array = new ArrayList<>();
         try{
             while(rs.next()){
-                array.add(new ItemDTO(rs.getInt("id"), rs.getString("nombre"), rs.getInt("cantidad"),
-                        rs.getInt("precio"), rs.getInt("p.rut") , rs.getString("marca")));
+                array.add(new ItemDTO(rs.getInt("id"), rs.getString("nombre"),
+                        rs.getInt("cantidad"), rs.getInt("precio"),
+                        rs.getInt("p.id"), rs.getString("p.rut") ,
+                        rs.getString("marca")));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -144,20 +141,27 @@ public class ItemDAO {
      * Actualiza la informacion de un item mediante su identificador
      * @param id Identificador del item
      * @param item Objeto ItemDTO que contiene la informacion del item
+     * @return boolean si fue exitoso o no
      */
-    public void updateItemById(int id, ItemDTO item){
-        try{
-            String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, rut_proveedor=?, marca=? WHERE id='"+id+"'";
-            pstmt = con.prepareStatement(query);
-            pstmt.setString(1, item.getNombre());
-            pstmt.setInt(2, item.getCantidad());
-            pstmt.setInt(3, item.getPrecio());
-            pstmt.setInt(4, item.getProveedor());
-            pstmt.setString(5, item.getMarca());
-            pstmt.executeUpdate();
-        }catch(SQLException e){
-            e.printStackTrace();
+    public boolean editItemById(int id, ItemDTO item){
+        if(checkItemExistenceById(id)){
+            try{
+                String query = "UPDATE items SET nombre=?, cantidad=?, precio=?, id_proveedor=?, marca=? WHERE id='"+id+"'";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, item.getNombre());
+                pstmt.setInt(2, item.getCantidad());
+                pstmt.setInt(3, item.getPrecio());
+                pstmt.setInt(4, item.getIdProveedor());
+                pstmt.setString(5, item.getMarca());
+                pstmt.executeUpdate();
+
+                return true;
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
         }
+
+        return false;
     }
 
     /**
@@ -185,9 +189,12 @@ public class ItemDAO {
      * este queda en 0)
      * @param id identificador del item
      * @param cantidad cantidad a añadir o substraer del stock
+     * @return boolean si fue exitoso o no
      */
-    public void updateStock(int id, int cantidad){
+    public boolean updateStock(int id, int cantidad){
+
         if(checkItemExistenceById(id)){
+
             try{
                 ItemDTO item = getItemById(id);
                 int stockResultante = Math.max(0, item.getCantidad() + cantidad);
@@ -195,30 +202,45 @@ public class ItemDAO {
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();
 
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
-        else{
-            System.out.println("El item no existe en los registros");
-        }
+        return false;
     }
 
     /**
      * Elimina un item mediante su identificador id
      * @param id identificador del item
+     * @return boolean si fue exitoso o no
      */
-    public void deleteItemById(int id){
+    public boolean deleteItemById(int id){
         if(checkItemExistenceById(id)){
             try{
                 String query = "DELETE FROM items WHERE id='"+id+"'";
                 pstmt = con.prepareStatement(query);
                 pstmt.executeUpdate();
 
+                return true;
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
+        return false;
+    }
+
+    public ArrayList<ItemDTO> getItemsSinStock(){
+        ArrayList<ItemDTO> itemsSinStock = new ArrayList<>();
+        ArrayList<ItemDTO> items = getItemsDB();
+
+        for(ItemDTO item : items){
+            if(item.getCantidad() == 0){
+                itemsSinStock.add(item);
+            }
+        }
+        return itemsSinStock;
     }
 
 

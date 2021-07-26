@@ -33,7 +33,6 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
-
     /**
      * Se encarga de crear la conexion a la base de datos con DBConnection
      */
@@ -45,36 +44,38 @@ public class VentaDAO {
             e.printStackTrace();
         }
     }
-
     /**
      * Ejecuta una venta en la base de datos
      * @param saleMaxStock realizar venta con el maximo stock en
      *                     caso de no existir el deseado
+     * @return boolean si fue exitoso o no
      */
 
-    public void executeSale(boolean saleMaxStock){
+    public boolean executeSale(boolean saleMaxStock){
+        boolean exito = false;
         if(this.item !=  null){
 
             if(checkStockSufficiency()){
-                    saveSaleDB();
+                    exito = saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
             }
             else{
 
                 if(saleMaxStock){
                     venta.setCantidadVendida(item.getCantidad());
-                    saveSaleDB();
+                    exito = saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
                 }
             }
         }
-
+        return exito;
     }
 
     /**
      * Se encarga de guardar la venta en la base de datos
+     * @return boolean si fue exitoso o no
      */
-    private void saveSaleDB(){
+    private boolean saveSaleDB(){
         try{
             String query = "INSERT INTO ventas VALUES (null, ?,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(query);
@@ -89,23 +90,26 @@ public class VentaDAO {
 
             pstmt.executeUpdate();
 
+            return true;
         }catch(SQLException e){
             e.printStackTrace();
 
         }
+        return false;
     }
 
     /**
      * Edita una venta en la base de datos mediante el identificador id
      * @param id identificador de la venta a editar
      * @param infoVenta informacion nueva de la venta
+     * @return boolean si fue exitoso o no
      */
-    public void editSaleById(int id, VentaDTO infoVenta){
+    public boolean editSaleById(int id, VentaDTO infoVenta){
         this.item = new ItemDAO().getItemById(infoVenta.getIdProducto());
 
         try{
 
-            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, rut_cliente=?, fecha=? " +
+            String query = "UPDATE ventas SET producto=?, id_producto=?, cantidad=?, total=?, id_cliente=?, fecha=? " +
                     "WHERE id='"+id+"'";
             pstmt = (PreparedStatement) con.prepareStatement(query);
             int total = this.item.getPrecio()*infoVenta.getCantidadVendida();
@@ -118,10 +122,11 @@ public class VentaDAO {
             pstmt.setDate(6, sqlDate);
 
             pstmt.executeUpdate();
-
+            return true;
         }catch(SQLException e){
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -155,7 +160,6 @@ public class VentaDAO {
         }
         return rsIntoArrayList(rs);
     }
-
     /**
      * Transforma el ResultSet de todas las ventas a un ArrayList de VentaDTO que contiene la informacion de todas las ventas
      * @param rs
@@ -166,7 +170,7 @@ public class VentaDAO {
         try{
             while(rs.next()){
                 array.add(new VentaDTO( rs.getInt("id_producto"),
-                        rs.getInt("cantidad"), rs.getInt("c.rut"), rs.getDate("fecha"),
+                        rs.getInt("cantidad"), rs.getString("c.rut"), rs.getDate("fecha"),
                         rs.getInt("total"), rs.getInt("id"), rs.getString("i.nombre")));
             }
         }catch(SQLException e){
@@ -190,22 +194,25 @@ public class VentaDAO {
             pstmt = con.prepareStatement(query);
             rs = pstmt.executeQuery();
             rs.next();
-            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"), rs.getInt("c.rut"),
-                    rs.getDate("fecha"), rs.getInt("total"), id, rs.getString("i.nombre"));
+
+            venta = new VentaDTO( rs.getInt("id_producto"), rs.getInt("cantidad"),
+                    rs.getString("c.rut"), rs.getDate("fecha"),
+                    rs.getInt("total"), id, rs.getString("i.nombre"));
 
         }catch(SQLException e){
             e.printStackTrace();
         }
-
         return venta;
     }
 
     /**
      * Elimina una venta de la BD mediante su identificador id
      * @param id identificador de la venta
+     * @return boolean si fue exitoso o no
      */
 
-    public void deleteSaleById(int id){
+    public boolean deleteSaleById(int id){
+
         if(checkSaleExistenceById(id)){
 
             this.venta = getVentaById(id);
@@ -216,14 +223,12 @@ public class VentaDAO {
                 pstmt.executeUpdate();
 
                 new ItemDAO().updateStock(this.venta.getIdProducto(), this.venta.getCantidadVendida());
-
+                return true;
             }catch(SQLException e){
                 e.printStackTrace();
             }
-
-        }else{
-            System.out.println("La venta no existe en los registros");
         }
+        return false;
     }
 
     /**
