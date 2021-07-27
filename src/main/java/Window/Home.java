@@ -33,6 +33,7 @@ public class Home extends JFrame implements ActionListener {
         this.pack();
         this.setTitle("Home");
         this.setVisible(true);
+
         try{
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         }catch (Exception e){
@@ -103,39 +104,45 @@ public class Home extends JFrame implements ActionListener {
         reportesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                VentanaReportes ventanaReportes = new VentanaReportes();
             }
         });
 
     }
 
     public void rellenarTablaSinStock(ArrayList<ItemDTO> items){
-        for(ItemDTO item : items){
+        if(items != null){
+            for(ItemDTO item : items){
 
-            DefaultTableModel modelo = (DefaultTableModel) tablaProductos1.getModel();
+                DefaultTableModel modelo = (DefaultTableModel) tablaProductos1.getModel();
 
-            String[] datos = new String[]{item.getNombre(), Integer.toString(item.getId())};
-            modelo.addRow(datos);
+                String[] datos = new String[]{item.getNombre(), Integer.toString(item.getId())};
+                modelo.addRow(datos);
+            }
         }
     }
     public void rellenarTablaVentasHoy(ArrayList<VentaDTO> ventas){
-        for(VentaDTO venta : ventas){
-            DefaultTableModel modelo = (DefaultTableModel) tablaVentasHoy.getModel();
-            String[] datos = new String[]{Integer.toString(venta.getId())
-                    , venta.getNombreProducto(), Integer.toString(venta.getTotal())};
+        if(ventas != null){
+            for(VentaDTO venta : ventas){
+                DefaultTableModel modelo = (DefaultTableModel) tablaVentasHoy.getModel();
+                String[] datos = new String[]{Integer.toString(venta.getId())
+                        , venta.getNombreProducto(), Integer.toString(venta.getTotal())};
 
-            modelo.addRow(datos);
+                modelo.addRow(datos);
+            }
         }
     }
 
     public void rellanarTablaMasVendidos(List<Entry<ItemDTO, Integer>> itemsMasVendidos){
-        for(Entry<ItemDTO, Integer> entry : itemsMasVendidos){
+        if(itemsMasVendidos != null){
+            for(Entry<ItemDTO, Integer> entry : itemsMasVendidos){
 
-            DefaultTableModel modelo = (DefaultTableModel) tablaItemsVendidos.getModel();
-            String[] datos = new String[]{entry.getKey().getNombre(),
-                    Integer.toString(entry.getValue())};
+                DefaultTableModel modelo = (DefaultTableModel) tablaItemsVendidos.getModel();
+                String[] datos = new String[]{entry.getKey().getNombre(),
+                        Integer.toString(entry.getValue())};
 
-            modelo.addRow(datos);
+                modelo.addRow(datos);
+            }
         }
     }
 

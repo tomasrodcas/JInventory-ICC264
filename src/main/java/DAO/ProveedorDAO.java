@@ -112,20 +112,43 @@ public class ProveedorDAO {
     }
 
     /**
+     * Revisa que el proveedor exista en la base de datos mediante el id
+     * @param id identificador del proveedor
+     * @return booleano si existe o no
+     */
+    private boolean checkProveedorExistenceById(int id){
+        try{
+            String query = "SELECT nombre FROM proveedores WHERE id='"+id+"'";
+            pstmt = con.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Elimina un proveedor de la base de datos mediante su identificador
      * @param id identificador del proveedor
      * @return boolean si fue exitoso o no
      */
     public boolean deleteProveedorById(int id) {
-        try {
-            String query = "DELETE FROM proveedores WHERE id='" + id + "'";
-            pstmt = con.prepareStatement(query);
-            pstmt.executeUpdate();
+        if(checkProveedorExistenceById(id)){
+            try {
+                String query = "DELETE FROM proveedores WHERE id='"+id+"'";
+                pstmt = con.prepareStatement(query);
+                pstmt.executeUpdate();
 
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+                return true;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
         return false;
     }
 

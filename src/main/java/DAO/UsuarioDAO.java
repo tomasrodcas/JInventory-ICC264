@@ -43,7 +43,7 @@ public class UsuarioDAO {
                 pstmt.executeUpdate();
 
                 int id = getLastUserId();
-                boolean loginAttemptsAdded = addLoginAttemptsEntry(id);
+                boolean loginAttemptsAdded = addLoginAttemptsEntry(id+1);
                 
                 if(!loginAttemptsAdded){
                     deleteUserById(id);
@@ -83,7 +83,13 @@ public class UsuarioDAO {
      */
     private int getLastUserId(){
         ArrayList<UsuarioDTO> usuarios = getUsersDB();
-        return usuarios.get(usuarios.size()-1).getId();
+        int id = 0;
+        for(UsuarioDTO usuario : usuarios){
+            if(usuario.getId() > id){
+                id = usuario.getId();
+            }
+        }
+        return id;
     }
 
     /**
@@ -95,12 +101,14 @@ public class UsuarioDAO {
     public boolean editUserById(int id, UsuarioDTO usuario){
         if(checkUserExistenceById(id)) {
             try {
-                String query = "UPDATE usuarios SET nombre=?, usuario=?, password=? WHERE id='" + id + "'";
+                String query = "UPDATE usuarios SET nombre=?, usuario=?, password=? WHERE id=?";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, usuario.getNombre());
                 pstmt.setString(2, usuario.getUsuario());
                 pstmt.setString(3, usuario.getPassword());
+                pstmt.setInt(4, id);
 
+                pstmt.executeUpdate();
 
                 return true;
             } catch (SQLException e) {
@@ -181,8 +189,9 @@ public class UsuarioDAO {
         if(checkUserExistenceById(id)){
             try{
                 String query = "SELECT * FROM usuarios u INNER JOIN login_attempts l" +
-                        "ON u.id = l.id_usuario WHERE id= '"+id+"'";
+                        " ON u.id = l.id_usuario WHERE id=?";
                 pstmt = con.prepareStatement(query);
+                pstmt.setInt(1, id);
                 rs = pstmt.executeQuery();
                 rs.next();
                 String user = rs.getString("usuario");
@@ -207,7 +216,7 @@ public class UsuarioDAO {
     public ArrayList<UsuarioDTO> getUsersDB(){
         ArrayList<UsuarioDTO> usuarios = new ArrayList<>();
         try{
-            String query = "SELECT * FROM usuarios u INNER JOIN login_attempts l" +
+            String query = "SELECT * FROM usuarios u INNER JOIN login_attempts l " +
                     "ON u.id = l.id_usuario";
 
             pstmt = con.prepareStatement(query);

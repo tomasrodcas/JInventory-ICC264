@@ -20,7 +20,7 @@ public class ProveedorDTO {
     public ProveedorDTO(String nombre, String rut, String email, int telefono){
         this.id = -1;
         this.nombre = nombre;
-        this.rut = rut;
+        this.rut = rut.replace(".","");
         this.email = email;
         this.telefono = telefono;
     }

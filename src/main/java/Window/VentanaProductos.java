@@ -31,6 +31,7 @@ public class VentanaProductos extends JFrame implements ActionListener {
         this.pack();
         this.setTitle("Productos");
         this.setVisible(true);
+
         Object [] nombreColumnas = {"ID","Nombre","Cantidad","Precio","Rut Proveedor","Marca"};
 
         tablaproductos.setModel(new DefaultTableModel(null,nombreColumnas));

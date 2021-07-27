@@ -34,13 +34,22 @@ public class ReporteDAO {
         this.totalUltimoMes = 0;
         this.totalUltimos12Meses = 0;
         this.ventas = new VentaDAO().getVentasDB();
-        this.items = new HashMap<ItemDTO, Integer>();
-        this.ventas12Meses = processSalesLast12Months();
-        this.ventasUltimoMes = this.ventas12Meses.get(this.ventas12Meses.size()-1);
-        this.mostSaledItems = findMostSaledItems(items, 5);
-        this.ventasHoy = getSalesToday();
-
-
+        if(this.ventas != null && this.ventas.size() > 0){
+            this.items = new HashMap<ItemDTO, Integer>();
+            this.ventas12Meses = processSalesLast12Months();
+            this.ventasUltimoMes = this.ventas12Meses.get(this.ventas12Meses.size()-1);
+            this.mostSaledItems = findMostSaledItems(items, 5);
+            this.ventasHoy = getSalesToday();
+        }else{
+            this.items = null;
+            this.ventas12Meses = null;
+            this.ventasUltimoMes = 0;
+            this.mostSaledItems = null;
+            this.ventasHoy = null;
+            this.totalHoy = 0;
+            this.totalUltimos12Meses = 0;
+            this.totalUltimoMes = 0;
+        }
     }
 
     /**
@@ -135,7 +144,7 @@ public class ReporteDAO {
             ItemDTO currItem = getItemVenta(venta);
 
             if (yearVenta > initialYear) {
-                monthRelative = 10 + monthVenta - initialMonth;
+                monthRelative = 11 + monthVenta - initialMonth;
                 salesLastYear.set(monthRelative, salesLastYear.get(monthRelative) + 1);
                 this.totalUltimos12Meses += venta.getTotal();
                 if(monthRelative == 11){

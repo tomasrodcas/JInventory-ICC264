@@ -28,7 +28,7 @@ public class VentaDTO {
     public VentaDTO(int idProducto, int cantidadVendida, String rutCliente, Date fecha){
         this.idProducto = idProducto;
         this.cantidadVendida = cantidadVendida;
-        this.rutCliente =  rutCliente;
+        this.rutCliente =  rutCliente.replace(".","");
         this.fecha = fecha;
         this.total = 0;
         this.id = -1;

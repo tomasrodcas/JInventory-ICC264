@@ -29,6 +29,7 @@ public class VentanaProveedores extends JFrame implements ActionListener {
         this.pack();
         this.setTitle("Proveedores");
         this.setVisible(true);
+
         Object [] nombreColumnas = {"ID","Nombre","RUT","Email","Telefono"};
 
         tablaProveedores.setModel(new DefaultTableModel(null,nombreColumnas));

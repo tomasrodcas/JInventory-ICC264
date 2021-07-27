@@ -30,6 +30,8 @@ public class VentanaClientes extends JFrame implements ActionListener {
         this.pack();
         this.setTitle("Clientes");
         this.setVisible(true);
+
+
         Object [] nombreColumnas = {"ID","Nombre","Email","Telefono","RUT"};
         tablaClientes.setModel(new DefaultTableModel(null,nombreColumnas));
         rellenarTabla(new ClienteDAO().getClientesDB());

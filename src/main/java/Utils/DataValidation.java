@@ -24,7 +24,7 @@ public class DataValidation {
      * @param rut rut ingresado como String
      * @return boolean si es valido o no
      */
-    private boolean validarRut(String rut) {
+    public boolean validarRut(String rut) {
 
         boolean validacion = false;
         if(rut.length() == 0){
@@ -233,6 +233,12 @@ public class DataValidation {
         }
         return false;
     }
+
+    /**
+     * Se encarga de validar que un identificador sea valido
+     * @param id identificador
+     * @return boolean si es valido o no
+     */
     public boolean idValidation(String id){
         try{
             int entero = Integer.parseInt(id);
@@ -334,7 +340,7 @@ public class DataValidation {
      * @param rut String rut a revisar
      * @return boolean si cumple o no las condiciones
      */
-    private boolean validateRutRegex(String rut){
+    public boolean validateRutRegex(String rut){
         Pattern pattern = Pattern.compile(rutRegex);
         Matcher matcher = pattern.matcher(rut);
 

@@ -25,7 +25,7 @@ public class ClienteDTO {
         this.nombre = nombre;
         this.email = email;
         this.telefono  = telefono;
-        this.rut = rut;
+        this.rut = rut.replace(".","");
 
     }
 
