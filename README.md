@@ -69,7 +69,9 @@ https://localhost/phpmyadmin
 Donde podremos configurar nuestras bases de datos. Luego de importar nuestra base de datos podremos empezar a utilizar el programa
 
 ## Testing
-Si se desea realizar la rutina de tests unitarios incluidos en el proyecto, es necesario utilizar la base de datos para tests, la cual esta nombrada como jinventorytest. Sabemos que esto no es algo comodo, pero es la mejor forma para poder comprobar todas las funcionalidades del software. 
+Si se desea realizar la rutina de tests unitarios incluidos en el proyecto, es necesario utilizar la base de datos para tests, la cual esta nombrada como jinventorytest. Sabemos que esto no es algo comodo, pero es la mejor forma para poder comprobar todas las funcionalidades del software.
+
+Luego de instalar la base de datos jinventorytest, es necesario configurar DBConnection cambiando la URL e insertando la direccion a la nueva base de datos en esta, en este caso en vez de jinventory, sera jinventorytest
 
 
 
