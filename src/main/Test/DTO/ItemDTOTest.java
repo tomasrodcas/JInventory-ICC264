@@ -9,21 +9,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemDTOTest {
 
-   /* @ParameterizedTest
+   @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
-        String[][] arrays = {{"1","Teasd","100","112312","2008213","Apple"}, {"1","Teasd","100","112312","2008213","Apple"},
-                {"1","Teasd","100","112312","2008213","Apple"}, {"1","Teasd","100","112312","2008213","Apple"}};
-        String[] items = new ItemDTO(parseInt(arrays[i][0]),arrays[i][1],parseInt(arrays[i][2]),parseInt(arrays[i][3]),parseInt(arrays[i][4]), arrays[i][5]).toArray();
+        String[][] arrayConstructor = {{"1","Teasd","100","112312","2008213", "2008213","Apple"},
+                {"1","Tea2sd","100","1122312","2008213","2008213","Apple"},
+                {"1","Teasd","100","112312","20082213","2008213","Apple"},
+                {"1","Tea2sd","100","112312","2008213","20082213","Apple"}};
 
-        boolean sonIguales = true;
-        for(int j = 0; j < items.length; j++){
-            if(!arrays[i][j].equals(items[j])){
-                sonIguales = false;
-            }
-        }
-        assertTrue(sonIguales);
+       String[][] arrayCheck = {{"1","Teasd","100","112312", "2008213","Apple"},
+               {"1","Tea2sd","100","1122312","2008213","Apple"},
+               {"1","Teasd","100","112312","2008213","Apple"},
+               {"1","Tea2sd","100","112312","20082213","Apple"}};
 
+        String[] item = new ItemDTO(parseInt(arrayConstructor[i][0]),
+                arrayConstructor[i][1],parseInt(arrayConstructor[i][2]), parseInt(arrayConstructor[i][3]),
+                parseInt(arrayConstructor[i][4]), arrayConstructor[i][5], arrayConstructor[i][6]).toArray();
+
+        boolean iguales = true;
+        for(int j = 0; j < arrayCheck[i].length; j++){
+            if(!arrayCheck[i][j].equals(item[j])){
+                iguales = false;
+
+            }        }
+
+        assertTrue(iguales);
     }
 
     @ParameterizedTest
@@ -49,5 +59,6 @@ class ItemDTOTest {
 
         assertEquals(resultados[i], resultadoObtenido);
 
-    }*/
+    }
+
 }

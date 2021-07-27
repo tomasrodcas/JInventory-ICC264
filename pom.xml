@@ -29,6 +29,23 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/mysql-connector-java-8.0.16.jar</systemPath>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jfree/jcommon -->
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.16</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

@@ -15,93 +15,110 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ItemDAOTest {
 
-   /* @Order(1)
+    @Order(1)
     @ParameterizedTest
-    @ValueSource(ints = {0,1,2})
+    @ValueSource(ints = {0,1,2,3})
     void addItem(int i) {
-        int id = i+4;
-        String[] nombres = {"Microfono 1", "Audifonos 2", "Teclado 2"};
-        int[] cantidades = {100, 200, 300};
-        int[] precios = {1000, 200000, 12};
-        int[] rut_proveedores = {29293, 23123, 412131};
-        String[] marcas = {"Apple", "Microsoft", "Logitech"};
+        int id = i+7;
+        String[] nombres = {"Microfono 1", "Audifonos 2", "Teclado 3", "Teclado 3", "Teclado 4"};
+        int[] cantidades = {100, 200, 300, 300, 500};
+        int[] precios = {1000, 200000, 12, 12, 20};
+        int[] id_proveedores = {1, 2, 3, 3 , 10};
+        String[] marcas = {"Apple", "Microsoft", "Logitech", "Logitech", "RoyalKludge"};
 
-        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], rut_proveedores[i], marcas[i]);
-        new ItemDAO().addItem(item);
-        ItemDTO itemDB = new ItemDAO().getItemById(id);
-        assertEquals(item, new ItemDAO().getItemById(id));
+        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], id_proveedores[i], marcas[i]);
+        if(i < 3){
+            assertTrue(new ItemDAO().addItem(item));
+            ItemDTO itemDB = new ItemDAO().getItemById(id);
+            assertEquals(item, new ItemDAO().getItemById(id));
+        }else{
+            assertFalse(new ItemDAO().addItem(item));
+            assertNull(new ItemDAO().getItemById(id));
+        }
+    }
+
+    @Order(2)
+    @ParameterizedTest
+    @ValueSource(ints = {0,1,2,3})
+    void editItemById(int i) {
+        int id = i+7;
+        String[] nombres = {"MicrOfono 1", "AUdifonos 2", "TeClado 3", "TeClado 3", "Teclado 4"};
+        int[] cantidades = {100, 200, 300, 300, 500};
+        int[] precios = {1000, 2000, 12, 12, 20};
+        int[] id_proveedores = {2, 2, 3, 3 , 10};
+        String[] marcas = {"Apple", "Microsoft", "LogItech", "LogItech", "RoyAlKludge"};
+        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], id_proveedores[i], marcas[i]);
+
+        if(i < 3){
+            assertTrue(new ItemDAO().editItemById(id, item));
+            ItemDTO itemDB = new ItemDAO().getItemById(id);
+            assertEquals(item, new ItemDAO().getItemById(id));
+        }else if (i == 3){
+            assertFalse(new ItemDAO().editItemById(id, item));
+        }else{
+            assertFalse(new ItemDAO().editItemById(id, item));
+        }
     }
 
     @Order(3)
     @ParameterizedTest
-    @ValueSource(ints = {0,1,2,3,4,5})
-    void getItemById(int i) {
+    @ValueSource(ints = {0,1,2,3})
+    void deleteItemById(int i){
+        int id = i+7;
 
-        String[] nombres = {"iphone","Teclado RK61","Audifonos G935","Microfono 1", "Audifonos 2", "Teclado 2"};
-        int[] cantidades = {300,100, 10, 100, 200, 300};
-        int[] precios = {1000, 69990, 150000, 1000, 200000, 12};
-        int[] rut_proveedores = {20079829, 20079853, 7051267, 29293, 23123, 412131};
-        String[] marcas = {"Apple","RoyalKludge","Logitech","Apple", "Microsoft", "Logitech"};
-
-        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], rut_proveedores[i], marcas[i]);
-        assertEquals(item, new ItemDAO().getItemById(i+1));
+        if(i < 3){
+            assertTrue(new ItemDAO().deleteItemById(id));
+            assertNull(new ItemDAO().getItemById(id));
+        }else{
+            assertFalse(new ItemDAO().deleteItemById(id));
+            assertNull(new ItemDAO().getItemById(id));
+        }
     }
 
-    @Order(2)
+    @Order(4)
     @Test
     void getItemsDB() {
-        String[] nombres = {"iphone","Teclado RK61","Audifonos G935","Microfono 1", "Audifonos 2", "Teclado 2"};
-        int[] cantidades = {300,100, 10, 100, 200, 300};
-        int[] precios = {1000, 69990, 150000, 1000, 200000, 12};
-        int[] rut_proveedores = {20079829, 20079853, 7051267, 29293, 23123, 412131};
-        String[] marcas = {"Apple","RoyalKludge","Logitech","Apple", "Microsoft", "Logitech"};
+
+        String[] nombres = {"Iphone XR", "Teclado RK61", "Audifonos G935",
+                "Ryzen 5600X", "8 Port Desktop Switch"};
+        int[] cantidades = {295, 86, 0, 99, 90};
+        int[] precios = {499990, 69990, 150000, 276000, 15990};
+        int[] id_proveedores = {1, 2, 3, 1 , 4};
+        String[] marcas = {"Apple", "RoyalKludge", "Logitech", "Ryzen", "Mercusys"};
 
         ArrayList<ItemDTO> items = new ItemDAO().getItemsDB();
 
         for(int i = 0; i < items.size(); i++){
-            assertEquals(items.get(i), new ItemDTO(nombres[i], cantidades[i], precios[i], rut_proveedores[i], marcas[i]));
+            assertEquals(items.get(i), new ItemDTO(nombres[i], cantidades[i], precios[i],
+                    id_proveedores[i], marcas[i]));
         }
-
     }
 
     @Order(5)
     @ParameterizedTest
-    @ValueSource(ints = {0,1,2,3,4,5})
-    void updateItemById(int i) {
-        String[] nombres = {"Aa","TecladoE RK61","AudifonSos G935","MicrofoEno 1", "Audifonos 2", "Teclado 2"};
-        int[] cantidades = {3020,1020, 102, 1020, 2020, 3020};
-        int[] precios = {10030, 699390, 1500300, 10300, 2030000, 123};
-        int[] rut_proveedores = {20079829, 20079853, 7051267, 29293, 23123, 412131};
-        String[] marcas = {"ApplAe","RoyaAlKludge","LogiAtech","AppAle", "MicrosoAft", "LogitecAh"};
-        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], rut_proveedores[i], marcas[i]);
-        new ItemDAO().updateItemById(i+1, item);
+    @ValueSource(ints = {0,1,2,3})
+    void getItemById(int i) {
 
+        String[] nombres = {"Iphone XR", "Teclado RK61", "Audifonos G935",
+                "Ryzen 5600X", "8 Port Desktop Switch"};
+        int[] cantidades = {295, 86, 0, 99, 90};
+        int[] precios = {499990, 69990, 150000, 276000, 15990};
+        int[] id_proveedores = {1, 2, 3, 1 , 4};
+        String[] marcas = {"Apple", "RoyalKludge", "Logitech", "Ryzen", "Mercusys"};
+
+        ItemDTO item = new ItemDTO(nombres[i], cantidades[i], precios[i], id_proveedores[i], marcas[i]);
         assertEquals(item, new ItemDAO().getItemById(i+1));
-    }
-
-    @Order(4)
-    @ParameterizedTest
-    @ValueSource(ints = {0,1,2,3,4,5})
-    void updateStock(int i) {
-        int[] cantidades = {300,100, 10, 100, 200, 300};
-        int[] cambios = {100, -100, -100, 98, 0, 1000};
-        int[] resultado = {400, 0, 0, 198, 200, 1300};
-        new ItemDAO().updateStock(i+1, cambios[i]);
-        assertEquals(resultado[i], new ItemDAO().getItemById(i+1).getCantidad());
     }
 
     @Order(6)
     @ParameterizedTest
-    @ValueSource(ints = {0,1,2,3,4,5})
-    void deleteItemById(int i){
-        int id = i+1;
-        new ItemDAO().deleteItemById(id);
-        ArrayList<ItemDTO> itemsDB = new ItemDAO().getItemsDB();
+    @ValueSource(ints = {0,1,2,3})
+    void updateStock(int i) {
+        int[] cantidades = {295,86, 0, 99};
+        int[] cambios = {100, -100, 100, 98};
+        int[] resultado = {395, 0, 100, 197};
+        new ItemDAO().updateStock(i+1, cambios[i]);
+        assertEquals(resultado[i], new ItemDAO().getItemById(i+1).getCantidad());
+    }
 
-        for(int j = 0; j < itemsDB.size(); j++){
-            System.out.println(itemsDB.get(j).getNombre());
-        }
-        assertNull(new ItemDAO().getItemById(id));
-
-    }*/
 }

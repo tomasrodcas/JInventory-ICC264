@@ -1,6 +1,7 @@
 package DAO;
 
 import DBConnection.DBConnection;
+import DTO.ClienteDTO;
 import DTO.ItemDTO;
 import DTO.VentaDTO;
 import java.sql.*;
@@ -61,7 +62,7 @@ public class VentaDAO {
             }
             else{
 
-                if(saleMaxStock){
+                if(saleMaxStock && item.getCantidad() > 0){
                     venta.setCantidadVendida(item.getCantidad());
                     exito = saveSaleDB();
                     new ItemDAO().updateStock(venta.getIdProducto(), -venta.getCantidadVendida());
@@ -84,7 +85,13 @@ public class VentaDAO {
             pstmt.setInt(2,this.venta.getIdProducto());
             pstmt.setInt(3, this.venta.getCantidadVendida());
             pstmt.setInt(4, total);
-            pstmt.setInt(5, new ClienteDAO().getClienteByRut(this.venta.getRutCliente()).getId());
+
+            ClienteDTO cliente = new ClienteDAO().getClienteByRut(this.venta.getRutCliente());
+
+            if(cliente == null){
+                return false;
+            }
+            pstmt.setInt(5, cliente.getId());
             java.sql.Date sqlDate = new java.sql.Date(this.venta.getFecha().getTime());
             pstmt.setDate(6, sqlDate);
 

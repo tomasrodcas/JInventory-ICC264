@@ -1,6 +1,9 @@
 package Window;
 import DAO.ReporteDAO;
-import org.jfree.chart.*;
+import org.jfree.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.*;
 import javax.swing.*;
@@ -13,10 +16,13 @@ public class Grafica extends JFrame {
         DefaultCategoryDataset data = new DefaultCategoryDataset();
         ReporteDAO reporte = new ReporteDAO();
         ArrayList<Integer> ventasAnuales = reporte.getReporte().getVentas12Meses();
-        rellenarDataset(ventasAnuales,data);
+
+        data = rellenarDataset(ventasAnuales,data);
+
         JFreeChart grafica = ChartFactory.createBarChart3D("Reporte anual", "Meses", "Ventas", data,
                 PlotOrientation.VERTICAL, true, true, false);
         ChartPanel contenedor = new ChartPanel(grafica);
+
         JFrame ventana = new JFrame("Reporte Anual");
         ventana.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         ventana.add(contenedor);
@@ -24,17 +30,17 @@ public class Grafica extends JFrame {
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
 
+
     }
 
 
-    public void rellenarDataset(ArrayList<Integer> ventasAnuales, DefaultCategoryDataset data) {
+    public DefaultCategoryDataset rellenarDataset(ArrayList<Integer> ventasAnuales, DefaultCategoryDataset data) {
         int i = 1;
         for (Integer venta : ventasAnuales) {
-            data = new DefaultCategoryDataset();
             data.addValue(venta, "Ventas del mes " + i, "Mes " + i);
             i++;
-
         }
+        return data;
 
     }
 }

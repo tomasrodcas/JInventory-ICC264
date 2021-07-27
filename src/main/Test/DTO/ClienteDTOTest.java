@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClienteDTOTest {
 
-    /*@ParameterizedTest
+    @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void toArray(int i) {
         String[][] arrays = {{"1","Tomas", "email@email.com", "123124", "12231"}, {"1","Alejandro", "a@a.com", "123", "1232"},
                 {"1","Antonia", "anto@a.com", "1232", "123"}, {"1","Max", "max@a.com", "123124", "123123"}};
-        String[] cliente = new ClienteDTO(parseInt(arrays[i][0]), arrays[i][1], arrays[i][2], parseInt(arrays[i][3]), parseInt(arrays[i][4])).toArray();
+        String[] cliente = new ClienteDTO(parseInt(arrays[i][0]), arrays[i][1], arrays[i][2], parseInt(arrays[i][3]), arrays[i][4]).toArray();
         boolean iguales = true;
         for(int j =0; j < cliente.length; j++){
             if(!arrays[i][j].equals(cliente[j])){
@@ -30,12 +30,12 @@ class ClienteDTOTest {
         String[] nombres = {"Tomas", "Jaime", "Antonia", "Alejandro"};
         String[] emails = {"email@email.com", "ae@ae.com", "anto@a.com", "a@a.com"};
         int[] telefonos = {123, 1234, 12345, 123456};
-        int[] ruts = {123, 1234, 12345, 123456};
+        String[] ruts = {"123", "1234", "12345", "123456"};
 
         String[] nombres2 = {"TOMAS", "Jime", "Antonia", "AlejAndro"};
         String[] emails2 = {"email@email.com", "AE@AE.com", "anto@a.com", "a@A.cOm"};
         int[] telefonos2 = {123, 1234, 12345, 12356};
-        int[] ruts2 = {123, 1234, 12345, 123456};
+        String[] ruts2 = {"123", "1234", "12345", "123456"};
 
         boolean[] resultadosEsperados = {true, false, true, false};
 
@@ -44,5 +44,5 @@ class ClienteDTOTest {
 
         assertEquals(resultadosEsperados[i], cliente1.equals(cliente2));
 
-    }*/
+    }
 }

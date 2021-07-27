@@ -18,92 +18,93 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class VentaDAOTest {
 
-    /*@Order(1)
-    @ParameterizedTest
-    @ValueSource(ints = {0,1,2})
-    void executeSale(int i) {
-        int id = 7+i;
-        int[] productos = {1, 2, 3};
-        int[] cantidades = {400, 1, 300};
-        int[] ruts = {20079, 123123, 12123};
-        Date[] fechas = {new Date(),new Date(),new Date()};
-        int[] totales = {300000, 69990, 0};
-        boolean[] saleMaxStock = {true, false, false};
-        int[] cantidadVendida = {300, 1};
-        int[] cantidadesResultantes = {0, 99, 10};
-        int[] ids = {5,6,7,8};
-
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], fechas[i], totales[i], ids[i], "");
-        new VentaDAO(venta).executeSale(saleMaxStock[i]);
-        VentaDTO ventaDB = new VentaDAO().getVentaById(id);
-
-        if(i < 2){
-            venta = new VentaDTO(productos[i], cantidadVendida[i], ruts[i], ventaDB.getFecha(), totales[i], ids[i],"");
-            assertEquals(venta, ventaDB);
-            assertEquals(cantidadesResultantes[i], new ItemDAO().getItemById(ventaDB.getIdProducto()).getCantidad());
-        }
-        else{
-            assertNull(ventaDB);
-            assertEquals(cantidadesResultantes[i], new ItemDAO().getItemById(3).getCantidad());
-        }
-
-    }
-
-    @Order(4)
+    @Order(1)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
-    void editSaleById(int i) {
-        int id = 5+i;
-        int[] productos = {2,3,1, 2};
-        int[] cantidades = {200, 20, 3000, 10};
-        int[] ruts = {200790829, 200079853 ,200709, 1230123};
-        int[] totales = {13998000, 3000000, 3000000, 699900};
-        int[] ids = {5,6,7,8};
+    void executeSale(int i) {
+        int id = 23+i;
+        int[] productos = {1, 2, 4,6};
+        int[] cantidades = {1, 1,1, 100};
+        String[] ruts = {"20079829-5", "20079829-5", "20079829-5", "20079829-5"};
+        Date[] fechas = {new Date(),new Date(),new Date(), new Date()};
+        int[] totales = {499990, 69990, 276000, 1439100};
+        int[] cantidadVendida = {1,1,1, 90};
+
+
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], fechas[i], totales[i], id, "");
+        new VentaDAO(venta).executeSale(true);
+
         VentaDTO ventaDB = new VentaDAO().getVentaById(id);
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], ids[i], "");
-        new VentaDAO().editSaleById(id, venta);
-        ventaDB = new VentaDAO().getVentaById(id);
-        System.out.println(ventaDB.getTotal()+" "+venta.getTotal());
+
+
+        venta = new VentaDTO(productos[i], cantidadVendida[i], ruts[i], ventaDB.getFecha(), totales[i], id,"");
         assertEquals(venta, ventaDB);
 
-    }
 
-    @Order(3)
-    @Test
-    void getVentasDB() {
-        int[] productos = {2,3,1, 2};
-        int[] cantidades = {20, 2, 300, 1};
-        int[] ruts = {20079829, 20079853 ,20079, 123123};
-        int[] totales = {100000, 300000, 300000, 69990};
-        int[] ids = {5,6,7,8};
-
-        ArrayList<VentaDTO> ventasDB = new VentaDAO().getVentasDB();
-        for(int i = 0; i < ventasDB.size(); i++){
-            assertEquals(ventasDB.get(i), new VentaDTO(productos[i], cantidades[i], ruts[i], ventasDB.get(i).getFecha(), totales[i], ids[i], ""));
-        }
     }
 
     @Order(2)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
-    void getVentaById(int i) {
-        int id = i+5;
-        int[] productos = {2,3,1, 2};
-        int[] cantidades = {20, 2, 300, 1};
-        int[] ruts = {20079829, 20079853 ,20079, 123123};
-        int[] totales = {100000, 300000, 300000, 69990};
-        int[] ids = {5,6,7,8};
+    void editSaleById(int i) {
+        int id = 23+i;
+        int[] productos = {1, 2, 4,6};
+        int[] cantidades = {2, 2,2, 90};
+        String[] ruts = {"20079829-5", "20079829-5", "20079829-5", "20079829-5"};
+        int[] totales = {2*499990, 2*69990, 2*276000, 1439100};
+
+
         VentaDTO ventaDB = new VentaDAO().getVentaById(id);
-        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], ids[i],"");
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], id, "");
+
+        new VentaDAO().editSaleById(id, venta);
+
+        ventaDB = new VentaDAO().getVentaById(id);
+
+        assertEquals(venta, ventaDB);
+
+    }
+
+    @Order(5)
+    @Test
+    void getVentasDB() {
+
+        int[] productos = {1, 4, 6,2,2};
+        int[] cantidades = {2, 1,10, 1, 2};
+        String[] ruts = {"20079829-5", "20079829-5", "76523553-7", "7051267-k","20079853-8"};
+        Date[] fechas = {new Date(),new Date(),new Date(), new Date(), new Date()};
+        int[] totales = {999980, 276000, 159900, 69990, 139980};
+
+        int[] ids = {18,19,20,21, 22};
+
+        ArrayList<VentaDTO> ventasDB = new VentaDAO().getVentasDB();
+        for(int i = 0; i < productos.length; i++){
+            assertEquals(ventasDB.get(i), new VentaDTO(productos[i], cantidades[i], ruts[i], ventasDB.get(i).getFecha(), totales[i], ids[i], ""));
+        }
+    }
+
+    @Order(3)
+    @ParameterizedTest
+    @ValueSource(ints = {0,1,2,3})
+    void getVentaById(int i) {
+        int id = i+23;
+        int[] productos = {1, 2, 4,6};
+        int[] cantidades = {2, 2,2, 90};
+        String[] ruts = {"20079829-5", "20079829-5", "20079829-5", "20079829-5"};
+        Date[] fechas = {new Date(),new Date(),new Date(), new Date()};
+        int[] totales = {2*499990, 2*69990, 2*276000, 1439100};
+
+        VentaDTO ventaDB = new VentaDAO().getVentaById(id);
+        VentaDTO venta = new VentaDTO(productos[i], cantidades[i], ruts[i], ventaDB.getFecha() , totales[i], id,"");
 
         assertEquals(venta, ventaDB);
     }
 
-    @Order(5)
+    @Order(4)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3})
     void deleteSaleById(int i) {
-        int id = 5+i;
+        int id = 23+i;
         ArrayList<VentaDTO> ventasDB = new VentaDAO().getVentasDB();
 
         for(int j = 0; j < ventasDB.size(); j++){
@@ -112,5 +113,5 @@ class VentaDAOTest {
         new VentaDAO(ventasDB.get(0)).deleteSaleById(id);
         assertNull(new VentaDAO().getVentaById(id));
 
-    }*/
+    }
 }
